@@ -8578,8 +8578,28 @@
 /* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global, process) {;
-	;
+	/* WEBPACK VAR INJECTION */(function(global, process) {/**
+	* @license
+	* Copyright Google Inc. All Rights Reserved.
+	*
+	* Use of this source code is governed by an MIT-style license that can be
+	* found in the LICENSE file at https://angular.io/license
+	*/
+	(function (global, factory) {
+	     true ? factory() :
+	    typeof define === 'function' && define.amd ? define(factory) :
+	    (factory());
+	}(this, (function () { 'use strict';
+
+	/**
+	 * @license
+	 * Copyright Google Inc. All Rights Reserved.
+	 *
+	 * Use of this source code is governed by an MIT-style license that can be
+	 * found in the LICENSE file at https://angular.io/license
+	 */
+
+
 	var Zone$1 = (function (global) {
 	    if (global.Zone) {
 	        throw new Error('Zone already loaded.');
@@ -8590,41 +8610,50 @@
 	            this._parent = parent;
 	            this._name = zoneSpec ? zoneSpec.name || 'unnamed' : '<root>';
 	            this._properties = zoneSpec && zoneSpec.properties || {};
-	            this._zoneDelegate = new ZoneDelegate(this, this._parent && this._parent._zoneDelegate, zoneSpec);
+	            this._zoneDelegate =
+	                new ZoneDelegate(this, this._parent && this._parent._zoneDelegate, zoneSpec);
 	        }
 	        Zone.assertZonePatched = function () {
 	            if (global.Promise !== ZoneAwarePromise) {
-	                throw new Error("Zone.js has detected that ZoneAwarePromise `(window|global).Promise` " +
-	                    "has been overwritten.\n" +
-	                    "Most likely cause is that a Promise polyfill has been loaded " +
-	                    "after Zone.js (Polyfilling Promise api is not necessary when zone.js is loaded. " +
-	                    "If you must load one, do so before loading zone.js.)");
+	                throw new Error('Zone.js has detected that ZoneAwarePromise `(window|global).Promise` ' +
+	                    'has been overwritten.\n' +
+	                    'Most likely cause is that a Promise polyfill has been loaded ' +
+	                    'after Zone.js (Polyfilling Promise api is not necessary when zone.js is loaded. ' +
+	                    'If you must load one, do so before loading zone.js.)');
 	            }
 	        };
 	        Object.defineProperty(Zone, "current", {
-	            get: function () { return _currentZone; },
+	            get: function () {
+	                return _currentZone;
+	            },
 	            enumerable: true,
 	            configurable: true
 	        });
-	        ;
+	        
 	        Object.defineProperty(Zone, "currentTask", {
-	            get: function () { return _currentTask; },
+	            get: function () {
+	                return _currentTask;
+	            },
 	            enumerable: true,
 	            configurable: true
 	        });
-	        ;
+	        
 	        Object.defineProperty(Zone.prototype, "parent", {
-	            get: function () { return this._parent; },
+	            get: function () {
+	                return this._parent;
+	            },
 	            enumerable: true,
 	            configurable: true
 	        });
-	        ;
+	        
 	        Object.defineProperty(Zone.prototype, "name", {
-	            get: function () { return this._name; },
+	            get: function () {
+	                return this._name;
+	            },
 	            enumerable: true,
 	            configurable: true
 	        });
-	        ;
+	        
 	        Zone.prototype.get = function (key) {
 	            var zone = this.getZoneWith(key);
 	            if (zone)
@@ -8691,8 +8720,8 @@
 	        Zone.prototype.runTask = function (task, applyThis, applyArgs) {
 	            task.runCount++;
 	            if (task.zone != this)
-	                throw new Error('A task can only be run in the zone which created it! (Creation: ' +
-	                    task.zone.name + '; Execution: ' + this.name + ')');
+	                throw new Error('A task can only be run in the zone which created it! (Creation: ' + task.zone.name +
+	                    '; Execution: ' + this.name + ')');
 	            var previousTask = _currentTask;
 	            _currentTask = task;
 	            var oldZone = _currentZone;
@@ -8733,7 +8762,7 @@
 	        Zone.__symbol__ = __symbol__;
 	        return Zone;
 	    }());
-	    ;
+	    
 	    var ZoneDelegate = (function () {
 	        function ZoneDelegate(zone, parentDelegate, zoneSpec) {
 	            this._taskCounts = { microTask: 0, macroTask: 0, eventTask: 0 };
@@ -8741,40 +8770,51 @@
 	            this._parentDelegate = parentDelegate;
 	            this._forkZS = zoneSpec && (zoneSpec && zoneSpec.onFork ? zoneSpec : parentDelegate._forkZS);
 	            this._forkDlgt = zoneSpec && (zoneSpec.onFork ? parentDelegate : parentDelegate._forkDlgt);
-	            this._interceptZS = zoneSpec && (zoneSpec.onIntercept ? zoneSpec : parentDelegate._interceptZS);
-	            this._interceptDlgt = zoneSpec && (zoneSpec.onIntercept ? parentDelegate : parentDelegate._interceptDlgt);
+	            this._interceptZS =
+	                zoneSpec && (zoneSpec.onIntercept ? zoneSpec : parentDelegate._interceptZS);
+	            this._interceptDlgt =
+	                zoneSpec && (zoneSpec.onIntercept ? parentDelegate : parentDelegate._interceptDlgt);
 	            this._invokeZS = zoneSpec && (zoneSpec.onInvoke ? zoneSpec : parentDelegate._invokeZS);
-	            this._invokeDlgt = zoneSpec && (zoneSpec.onInvoke ? parentDelegate : parentDelegate._invokeDlgt);
-	            this._handleErrorZS = zoneSpec && (zoneSpec.onHandleError ? zoneSpec : parentDelegate._handleErrorZS);
-	            this._handleErrorDlgt = zoneSpec && (zoneSpec.onHandleError ? parentDelegate : parentDelegate._handleErrorDlgt);
-	            this._scheduleTaskZS = zoneSpec && (zoneSpec.onScheduleTask ? zoneSpec : parentDelegate._scheduleTaskZS);
-	            this._scheduleTaskDlgt = zoneSpec && (zoneSpec.onScheduleTask ? parentDelegate : parentDelegate._scheduleTaskDlgt);
-	            this._invokeTaskZS = zoneSpec && (zoneSpec.onInvokeTask ? zoneSpec : parentDelegate._invokeTaskZS);
-	            this._invokeTaskDlgt = zoneSpec && (zoneSpec.onInvokeTask ? parentDelegate : parentDelegate._invokeTaskDlgt);
-	            this._cancelTaskZS = zoneSpec && (zoneSpec.onCancelTask ? zoneSpec : parentDelegate._cancelTaskZS);
-	            this._cancelTaskDlgt = zoneSpec && (zoneSpec.onCancelTask ? parentDelegate : parentDelegate._cancelTaskDlgt);
+	            this._invokeDlgt =
+	                zoneSpec && (zoneSpec.onInvoke ? parentDelegate : parentDelegate._invokeDlgt);
+	            this._handleErrorZS =
+	                zoneSpec && (zoneSpec.onHandleError ? zoneSpec : parentDelegate._handleErrorZS);
+	            this._handleErrorDlgt =
+	                zoneSpec && (zoneSpec.onHandleError ? parentDelegate : parentDelegate._handleErrorDlgt);
+	            this._scheduleTaskZS =
+	                zoneSpec && (zoneSpec.onScheduleTask ? zoneSpec : parentDelegate._scheduleTaskZS);
+	            this._scheduleTaskDlgt =
+	                zoneSpec && (zoneSpec.onScheduleTask ? parentDelegate : parentDelegate._scheduleTaskDlgt);
+	            this._invokeTaskZS =
+	                zoneSpec && (zoneSpec.onInvokeTask ? zoneSpec : parentDelegate._invokeTaskZS);
+	            this._invokeTaskDlgt =
+	                zoneSpec && (zoneSpec.onInvokeTask ? parentDelegate : parentDelegate._invokeTaskDlgt);
+	            this._cancelTaskZS =
+	                zoneSpec && (zoneSpec.onCancelTask ? zoneSpec : parentDelegate._cancelTaskZS);
+	            this._cancelTaskDlgt =
+	                zoneSpec && (zoneSpec.onCancelTask ? parentDelegate : parentDelegate._cancelTaskDlgt);
 	            this._hasTaskZS = zoneSpec && (zoneSpec.onHasTask ? zoneSpec : parentDelegate._hasTaskZS);
-	            this._hasTaskDlgt = zoneSpec && (zoneSpec.onHasTask ? parentDelegate : parentDelegate._hasTaskDlgt);
+	            this._hasTaskDlgt =
+	                zoneSpec && (zoneSpec.onHasTask ? parentDelegate : parentDelegate._hasTaskDlgt);
 	        }
 	        ZoneDelegate.prototype.fork = function (targetZone, zoneSpec) {
-	            return this._forkZS
-	                ? this._forkZS.onFork(this._forkDlgt, this.zone, targetZone, zoneSpec)
-	                : new Zone(targetZone, zoneSpec);
+	            return this._forkZS ? this._forkZS.onFork(this._forkDlgt, this.zone, targetZone, zoneSpec) :
+	                new Zone(targetZone, zoneSpec);
 	        };
 	        ZoneDelegate.prototype.intercept = function (targetZone, callback, source) {
-	            return this._interceptZS
-	                ? this._interceptZS.onIntercept(this._interceptDlgt, this.zone, targetZone, callback, source)
-	                : callback;
+	            return this._interceptZS ?
+	                this._interceptZS.onIntercept(this._interceptDlgt, this.zone, targetZone, callback, source) :
+	                callback;
 	        };
 	        ZoneDelegate.prototype.invoke = function (targetZone, callback, applyThis, applyArgs, source) {
-	            return this._invokeZS
-	                ? this._invokeZS.onInvoke(this._invokeDlgt, this.zone, targetZone, callback, applyThis, applyArgs, source)
-	                : callback.apply(applyThis, applyArgs);
+	            return this._invokeZS ?
+	                this._invokeZS.onInvoke(this._invokeDlgt, this.zone, targetZone, callback, applyThis, applyArgs, source) :
+	                callback.apply(applyThis, applyArgs);
 	        };
 	        ZoneDelegate.prototype.handleError = function (targetZone, error) {
-	            return this._handleErrorZS
-	                ? this._handleErrorZS.onHandleError(this._handleErrorDlgt, this.zone, targetZone, error)
-	                : true;
+	            return this._handleErrorZS ?
+	                this._handleErrorZS.onHandleError(this._handleErrorDlgt, this.zone, targetZone, error) :
+	                true;
 	        };
 	        ZoneDelegate.prototype.scheduleTask = function (targetZone, task) {
 	            try {
@@ -8800,12 +8840,13 @@
 	        };
 	        ZoneDelegate.prototype.invokeTask = function (targetZone, task, applyThis, applyArgs) {
 	            try {
-	                return this._invokeTaskZS
-	                    ? this._invokeTaskZS.onInvokeTask(this._invokeTaskDlgt, this.zone, targetZone, task, applyThis, applyArgs)
-	                    : task.callback.apply(applyThis, applyArgs);
+	                return this._invokeTaskZS ?
+	                    this._invokeTaskZS.onInvokeTask(this._invokeTaskDlgt, this.zone, targetZone, task, applyThis, applyArgs) :
+	                    task.callback.apply(applyThis, applyArgs);
 	            }
 	            finally {
-	                if (targetZone == this.zone && (task.type != 'eventTask') && !(task.data && task.data.isPeriodic)) {
+	                if (targetZone == this.zone && (task.type != 'eventTask') &&
+	                    !(task.data && task.data.isPeriodic)) {
 	                    this._updateTaskCount(task.type, -1);
 	                }
 	            }
@@ -8828,7 +8869,8 @@
 	            return value;
 	        };
 	        ZoneDelegate.prototype.hasTask = function (targetZone, isEmpty) {
-	            return this._hasTaskZS && this._hasTaskZS.onHasTask(this._hasTaskDlgt, this.zone, targetZone, isEmpty);
+	            return this._hasTaskZS &&
+	                this._hasTaskZS.onHasTask(this._hasTaskDlgt, this.zone, targetZone, isEmpty);
 	        };
 	        ZoneDelegate.prototype._updateTaskCount = function (type, count) {
 	            var counts = this._taskCounts;
@@ -8885,13 +8927,15 @@
 	                return this.data.handleId;
 	            }
 	            else {
-	                return this.toString();
+	                return Object.prototype.toString.call(this);
 	            }
 	        };
 	        return ZoneTask;
 	    }());
-	    function __symbol__(name) { return '__zone_symbol__' + name; }
-	    ;
+	    function __symbol__(name) {
+	        return '__zone_symbol__' + name;
+	    }
+	    
 	    var symbolSetTimeout = __symbol__('setTimeout');
 	    var symbolPromise = __symbol__('Promise');
 	    var symbolThen = __symbol__('then');
@@ -8945,7 +8989,9 @@
 	                var _loop_1 = function() {
 	                    var uncaughtPromiseError = _uncaughtPromiseErrors.shift();
 	                    try {
-	                        uncaughtPromiseError.zone.runGuarded(function () { throw uncaughtPromiseError; });
+	                        uncaughtPromiseError.zone.runGuarded(function () {
+	                            throw uncaughtPromiseError;
+	                        });
 	                    }
 	                    catch (e) {
 	                        consoleError(e);
@@ -8961,8 +9007,12 @@
 	    function isThenable(value) {
 	        return value && value.then;
 	    }
-	    function forwardResolution(value) { return value; }
-	    function forwardRejection(rejection) { return ZoneAwarePromise.reject(rejection); }
+	    function forwardResolution(value) {
+	        return value;
+	    }
+	    function forwardRejection(rejection) {
+	        return ZoneAwarePromise.reject(rejection);
+	    }
 	    var symbolState = __symbol__('state');
 	    var symbolValue = __symbol__('value');
 	    var source = 'Promise.then';
@@ -8995,15 +9045,16 @@
 	                if (queue.length == 0 && state == REJECTED) {
 	                    promise[symbolState] = REJECTED_NO_CATCH;
 	                    try {
-	                        throw new Error("Uncaught (in promise): " + value);
+	                        throw new Error('Uncaught (in promise): ' + value +
+	                            (value && value.stack ? '\n' + value.stack : ''));
 	                    }
 	                    catch (e) {
-	                        var error = e;
-	                        error.rejection = value;
-	                        error.promise = promise;
-	                        error.zone = Zone.current;
-	                        error.task = Zone.currentTask;
-	                        _uncaughtPromiseErrors.push(error);
+	                        var error_1 = e;
+	                        error_1.rejection = value;
+	                        error_1.promise = promise;
+	                        error_1.zone = Zone.current;
+	                        error_1.task = Zone.currentTask;
+	                        _uncaughtPromiseErrors.push(error_1);
 	                        scheduleQueueDrain();
 	                    }
 	                }
@@ -9059,9 +9110,16 @@
 	        ZoneAwarePromise.race = function (values) {
 	            var resolve;
 	            var reject;
-	            var promise = new this(function (res, rej) { resolve = res; reject = rej; });
-	            function onResolve(value) { promise && (promise = null || resolve(value)); }
-	            function onReject(error) { promise && (promise = null || reject(error)); }
+	            var promise = new this(function (res, rej) {
+	                _a = [res, rej], resolve = _a[0], reject = _a[1];
+	                var _a;
+	            });
+	            function onResolve(value) {
+	                promise && (promise = null || resolve(value));
+	            }
+	            function onReject(error) {
+	                promise && (promise = null || reject(error));
+	            }
 	            for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
 	                var value = values_1[_i];
 	                if (!isThenable(value)) {
@@ -9074,7 +9132,10 @@
 	        ZoneAwarePromise.all = function (values) {
 	            var resolve;
 	            var reject;
-	            var promise = new this(function (res, rej) { resolve = res; reject = rej; });
+	            var promise = new this(function (res, rej) {
+	                resolve = res;
+	                reject = rej;
+	            });
 	            var count = 0;
 	            var resolvedValues = [];
 	            for (var _i = 0, values_2 = values; _i < values_2.length; _i++) {
@@ -9121,13 +9182,14 @@
 	    global.Promise = ZoneAwarePromise;
 	    function patchThen(NativePromise) {
 	        var NativePromiseProtototype = NativePromise.prototype;
-	        var NativePromiseThen = NativePromiseProtototype[__symbol__('then')]
-	            = NativePromiseProtototype.then;
+	        var NativePromiseThen = NativePromiseProtototype[__symbol__('then')] =
+	            NativePromiseProtototype.then;
 	        NativePromiseProtototype.then = function (onResolve, onReject) {
 	            var nativePromise = this;
 	            return new ZoneAwarePromise(function (resolve, reject) {
 	                NativePromiseThen.call(nativePromise, resolve, reject);
-	            }).then(onResolve, onReject);
+	            })
+	                .then(onResolve, onReject);
 	        };
 	    }
 	    if (NativePromise) {
@@ -9144,7 +9206,8 @@
 	            }
 	            // ignore output to prevent error;
 	            fetchPromise.then(function () { return null; }, function () { return null; });
-	            if (fetchPromise.constructor != NativePromise) {
+	            if (fetchPromise.constructor != NativePromise &&
+	                fetchPromise.constructor != ZoneAwarePromise) {
 	                patchThen(fetchPromise.constructor);
 	            }
 	        }
@@ -9155,9 +9218,11 @@
 	})(typeof window === 'object' && window || typeof self === 'object' && self || global);
 
 	/**
-	 * Suppress closure compiler errors about unknown 'process' variable
-	 * @fileoverview
-	 * @suppress {undefinedVars}
+	 * @license
+	 * Copyright Google Inc. All Rights Reserved.
+	 *
+	 * Use of this source code is governed by an MIT-style license that can be
+	 * found in the LICENSE file at https://angular.io/license
 	 */
 	var zoneSymbol = Zone['__symbol__'];
 	var _global$1 = typeof window === 'object' && window || typeof self === 'object' && self || global;
@@ -9169,7 +9234,7 @@
 	    }
 	    return args;
 	}
-	;
+
 	function patchPrototype(prototype, fnNames) {
 	    var source = prototype.constructor['name'];
 	    var _loop_1 = function(i) {
@@ -9187,15 +9252,12 @@
 	        _loop_1(i);
 	    }
 	}
-	;
+
 	var isWebWorker = (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope);
 	var isNode = (typeof process !== 'undefined' && {}.toString.call(process) === '[object process]');
 	var isBrowser = !isNode && !isWebWorker && !!(typeof window !== 'undefined' && window['HTMLElement']);
 	function patchProperty(obj, prop) {
-	    var desc = Object.getOwnPropertyDescriptor(obj, prop) || {
-	        enumerable: true,
-	        configurable: true
-	    };
+	    var desc = Object.getOwnPropertyDescriptor(obj, prop) || { enumerable: true, configurable: true };
 	    // A property descriptor cannot have getter/setter and be writable
 	    // deleting the writable and value properties avoids this error:
 	    //
@@ -9224,13 +9286,14 @@
 	            this[_prop] = null;
 	        }
 	    };
-	    // The getter would return undefined for unassigned properties but the default value of an unassigned property is null
+	    // The getter would return undefined for unassigned properties but the default value of an
+	    // unassigned property is null
 	    desc.get = function () {
 	        return this[_prop] || null;
 	    };
 	    Object.defineProperty(obj, prop, desc);
 	}
-	;
+
 	function patchOnProperties(obj, properties) {
 	    var onProperties = [];
 	    for (var prop in obj) {
@@ -9247,7 +9310,7 @@
 	        }
 	    }
 	}
-	;
+
 	var EVENT_TASKS = zoneSymbol('eventTasks');
 	// For EventTarget
 	var ADD_EVENT_LISTENER = 'addEventListener';
@@ -9258,9 +9321,7 @@
 	        for (var i = 0; i < eventTasks.length; i++) {
 	            var eventTask = eventTasks[i];
 	            var data = eventTask.data;
-	            if (data.handler === handler
-	                && data.useCapturing === capture
-	                && data.eventName === name) {
+	            if (data.handler === handler && data.useCapturing === capture && data.eventName === name) {
 	                if (remove) {
 	                    eventTasks.splice(i, 1);
 	                }
@@ -9313,13 +9374,14 @@
 	            // In cross site contexts (such as WebDriver frameworks like Selenium),
 	            // accessing the handler object here will cause an exception to be thrown which
 	            // will fail tests prematurely.
-	            validZoneHandler = handler && handler.toString() === "[object FunctionWrapper]";
+	            validZoneHandler = handler && handler.toString() === '[object FunctionWrapper]';
 	        }
 	        catch (e) {
 	            // Returning nothing here is fine, because objects in a cross-site context are unusable
 	            return;
 	        }
-	        // Ignore special listeners of IE11 & Edge dev tools, see https://github.com/angular/zone.js/issues/150
+	        // Ignore special listeners of IE11 & Edge dev tools, see
+	        // https://github.com/angular/zone.js/issues/150
 	        if (!delegate || validZoneHandler) {
 	            return target[addFnSymbol](eventName, handler, useCapturing);
 	        }
@@ -9363,6 +9425,7 @@
 	        }
 	    };
 	}
+
 	var zoneAwareAddEventListener = makeZoneAwareAddListener(ADD_EVENT_LISTENER, REMOVE_EVENT_LISTENER);
 	var zoneAwareRemoveEventListener = makeZoneAwareRemoveListener(REMOVE_EVENT_LISTENER);
 	function patchEventTargetMethods(obj) {
@@ -9399,7 +9462,8 @@
 	            case 4:
 	                this[originalInstanceKey] = new OriginalClass(a[0], a[1], a[2], a[3]);
 	                break;
-	            default: throw new Error('Arg list too long.');
+	            default:
+	                throw new Error('Arg list too long.');
 	        }
 	    };
 	    var instance = new OriginalClass(function () { });
@@ -9437,7 +9501,7 @@
 	        }
 	    }
 	}
-	;
+
 	function createNamedFn(name, delegate) {
 	    try {
 	        return (Function('f', "return function " + name + "(){return f(this, arguments)}"))(delegate);
@@ -9451,7 +9515,7 @@
 	}
 	function patchMethod(target, name, patchFn) {
 	    var proto = target;
-	    while (proto && !proto.hasOwnProperty(name)) {
+	    while (proto && Object.getOwnPropertyNames(proto).indexOf(name) === -1) {
 	        proto = Object.getPrototypeOf(proto);
 	    }
 	    if (!proto && target[name]) {
@@ -9467,36 +9531,90 @@
 	    return delegate;
 	}
 
-	var WTF_ISSUE_555 = 'Anchor,Area,Audio,BR,Base,BaseFont,Body,Button,Canvas,Content,DList,Directory,Div,Embed,FieldSet,Font,Form,Frame,FrameSet,HR,Head,Heading,Html,IFrame,Image,Input,Keygen,LI,Label,Legend,Link,Map,Marquee,Media,Menu,Meta,Meter,Mod,OList,Object,OptGroup,Option,Output,Paragraph,Pre,Progress,Quote,Script,Select,Source,Span,Style,TableCaption,TableCell,TableCol,Table,TableRow,TableSection,TextArea,Title,Track,UList,Unknown,Video';
-	var NO_EVENT_TARGET = 'ApplicationCache,EventSource,FileReader,InputMethodContext,MediaController,MessagePort,Node,Performance,SVGElementInstance,SharedWorker,TextTrack,TextTrackCue,TextTrackList,WebKitNamedFlow,Window,Worker,WorkerGlobalScope,XMLHttpRequest,XMLHttpRequestEventTarget,XMLHttpRequestUpload,IDBRequest,IDBOpenDBRequest,IDBDatabase,IDBTransaction,IDBCursor,DBIndex'.split(',');
-	var EVENT_TARGET = 'EventTarget';
-	function eventTargetPatch(_global) {
-	    var apis = [];
-	    var isWtf = _global['wtf'];
-	    if (isWtf) {
-	        // Workaround for: https://github.com/google/tracing-framework/issues/555
-	        apis = WTF_ISSUE_555.split(',').map(function (v) { return 'HTML' + v + 'Element'; }).concat(NO_EVENT_TARGET);
+	/**
+	 * @license
+	 * Copyright Google Inc. All Rights Reserved.
+	 *
+	 * Use of this source code is governed by an MIT-style license that can be
+	 * found in the LICENSE file at https://angular.io/license
+	 */
+	function patchTimer(window, setName, cancelName, nameSuffix) {
+	    var setNative = null;
+	    var clearNative = null;
+	    setName += nameSuffix;
+	    cancelName += nameSuffix;
+	    var tasksByHandleId = {};
+	    function scheduleTask(task) {
+	        var data = task.data;
+	        data.args[0] = function () {
+	            task.invoke.apply(this, arguments);
+	            delete tasksByHandleId[data.handleId];
+	        };
+	        data.handleId = setNative.apply(window, data.args);
+	        tasksByHandleId[data.handleId] = task;
+	        return task;
 	    }
-	    else if (_global[EVENT_TARGET]) {
-	        apis.push(EVENT_TARGET);
+	    function clearTask(task) {
+	        delete tasksByHandleId[task.data.handleId];
+	        return clearNative(task.data.handleId);
 	    }
-	    else {
-	        // Note: EventTarget is not available in all browsers,
-	        // if it's not available, we instead patch the APIs in the IDL that inherit from EventTarget
-	        apis = NO_EVENT_TARGET;
-	    }
-	    for (var i = 0; i < apis.length; i++) {
-	        var type = _global[apis[i]];
-	        patchEventTargetMethods(type && type.prototype);
-	    }
+	    setNative =
+	        patchMethod(window, setName, function (delegate) { return function (self, args) {
+	            if (typeof args[0] === 'function') {
+	                var zone = Zone.current;
+	                var options = {
+	                    handleId: null,
+	                    isPeriodic: nameSuffix === 'Interval',
+	                    delay: (nameSuffix === 'Timeout' || nameSuffix === 'Interval') ? args[1] || 0 : null,
+	                    args: args
+	                };
+	                var task = zone.scheduleMacroTask(setName, args[0], options, scheduleTask, clearTask);
+	                if (!task) {
+	                    return task;
+	                }
+	                // Node.js must additionally support the ref and unref functions.
+	                var handle = task.data.handleId;
+	                if (handle.ref && handle.unref) {
+	                    task.ref = handle.ref.bind(handle);
+	                    task.unref = handle.unref.bind(handle);
+	                }
+	                return task;
+	            }
+	            else {
+	                // cause an error by calling it directly.
+	                return delegate.apply(window, args);
+	            }
+	        }; });
+	    clearNative =
+	        patchMethod(window, cancelName, function (delegate) { return function (self, args) {
+	            var task = typeof args[0] === 'number' ? tasksByHandleId[args[0]] : args[0];
+	            if (task && typeof task.type === 'string') {
+	                if (task.cancelFn && task.data.isPeriodic || task.runCount === 0) {
+	                    // Do not cancel already canceled functions
+	                    task.zone.cancelTask(task);
+	                }
+	            }
+	            else {
+	                // cause an error by calling it directly.
+	                delegate.apply(window, args);
+	            }
+	        }; });
 	}
 
+	/**
+	 * @license
+	 * Copyright Google Inc. All Rights Reserved.
+	 *
+	 * Use of this source code is governed by an MIT-style license that can be
+	 * found in the LICENSE file at https://angular.io/license
+	 */
 	/*
 	 * This is necessary for Chrome and Chrome mobile, to enable
 	 * things like redefining `createdCallback` on an element.
 	 */
 	var _defineProperty = Object[zoneSymbol('defineProperty')] = Object.defineProperty;
-	var _getOwnPropertyDescriptor = Object[zoneSymbol('getOwnPropertyDescriptor')] = Object.getOwnPropertyDescriptor;
+	var _getOwnPropertyDescriptor = Object[zoneSymbol('getOwnPropertyDescriptor')] =
+	    Object.getOwnPropertyDescriptor;
 	var _create = Object.create;
 	var unconfigurablesKey = zoneSymbol('unconfigurables');
 	function propertyPatch() {
@@ -9532,13 +9650,13 @@
 	        return desc;
 	    };
 	}
-	;
+
 	function _redefineProperty(obj, prop, desc) {
 	    var originalConfigurableFlag = desc.configurable;
 	    desc = rewriteDescriptor(obj, prop, desc);
 	    return _tryDefineProperty(obj, prop, desc, originalConfigurableFlag);
 	}
-	;
+
 	function isUnconfigurable(obj, prop) {
 	    return obj && obj[unconfigurablesKey] && obj[unconfigurablesKey][prop];
 	}
@@ -9558,7 +9676,8 @@
 	    }
 	    catch (e) {
 	        if (desc.configurable) {
-	            // In case of errors, when the configurable flag was likely set by rewriteDescriptor(), let's retry with the original flag value
+	            // In case of errors, when the configurable flag was likely set by rewriteDescriptor(), let's
+	            // retry with the original flag value
 	            if (typeof originalConfigurableFlag == 'undefined') {
 	                delete desc.configurable;
 	            }
@@ -9585,40 +9704,45 @@
 	    }
 	}
 
-	function registerElementPatch(_global) {
-	    if (!isBrowser || !('registerElement' in _global.document)) {
-	        return;
+	/**
+	 * @license
+	 * Copyright Google Inc. All Rights Reserved.
+	 *
+	 * Use of this source code is governed by an MIT-style license that can be
+	 * found in the LICENSE file at https://angular.io/license
+	 */
+	var WTF_ISSUE_555 = 'Anchor,Area,Audio,BR,Base,BaseFont,Body,Button,Canvas,Content,DList,Directory,Div,Embed,FieldSet,Font,Form,Frame,FrameSet,HR,Head,Heading,Html,IFrame,Image,Input,Keygen,LI,Label,Legend,Link,Map,Marquee,Media,Menu,Meta,Meter,Mod,OList,Object,OptGroup,Option,Output,Paragraph,Pre,Progress,Quote,Script,Select,Source,Span,Style,TableCaption,TableCell,TableCol,Table,TableRow,TableSection,TextArea,Title,Track,UList,Unknown,Video';
+	var NO_EVENT_TARGET = 'ApplicationCache,EventSource,FileReader,InputMethodContext,MediaController,MessagePort,Node,Performance,SVGElementInstance,SharedWorker,TextTrack,TextTrackCue,TextTrackList,WebKitNamedFlow,Window,Worker,WorkerGlobalScope,XMLHttpRequest,XMLHttpRequestEventTarget,XMLHttpRequestUpload,IDBRequest,IDBOpenDBRequest,IDBDatabase,IDBTransaction,IDBCursor,DBIndex'
+	    .split(',');
+	var EVENT_TARGET = 'EventTarget';
+	function eventTargetPatch(_global) {
+	    var apis = [];
+	    var isWtf = _global['wtf'];
+	    if (isWtf) {
+	        // Workaround for: https://github.com/google/tracing-framework/issues/555
+	        apis = WTF_ISSUE_555.split(',').map(function (v) { return 'HTML' + v + 'Element'; }).concat(NO_EVENT_TARGET);
 	    }
-	    var _registerElement = document.registerElement;
-	    var callbacks = [
-	        'createdCallback',
-	        'attachedCallback',
-	        'detachedCallback',
-	        'attributeChangedCallback'
-	    ];
-	    document.registerElement = function (name, opts) {
-	        if (opts && opts.prototype) {
-	            callbacks.forEach(function (callback) {
-	                var source = 'Document.registerElement::' + callback;
-	                if (opts.prototype.hasOwnProperty(callback)) {
-	                    var descriptor = Object.getOwnPropertyDescriptor(opts.prototype, callback);
-	                    if (descriptor && descriptor.value) {
-	                        descriptor.value = Zone.current.wrap(descriptor.value, source);
-	                        _redefineProperty(opts.prototype, callback, descriptor);
-	                    }
-	                    else {
-	                        opts.prototype[callback] = Zone.current.wrap(opts.prototype[callback], source);
-	                    }
-	                }
-	                else if (opts.prototype[callback]) {
-	                    opts.prototype[callback] = Zone.current.wrap(opts.prototype[callback], source);
-	                }
-	            });
-	        }
-	        return _registerElement.apply(document, [name, opts]);
-	    };
+	    else if (_global[EVENT_TARGET]) {
+	        apis.push(EVENT_TARGET);
+	    }
+	    else {
+	        // Note: EventTarget is not available in all browsers,
+	        // if it's not available, we instead patch the APIs in the IDL that inherit from EventTarget
+	        apis = NO_EVENT_TARGET;
+	    }
+	    for (var i = 0; i < apis.length; i++) {
+	        var type = _global[apis[i]];
+	        patchEventTargetMethods(type && type.prototype);
+	    }
 	}
 
+	/**
+	 * @license
+	 * Copyright Google Inc. All Rights Reserved.
+	 *
+	 * Use of this source code is governed by an MIT-style license that can be
+	 * found in the LICENSE file at https://angular.io/license
+	 */
 	// we have to patch the instance since the proto is non-configurable
 	function apply(_global) {
 	    var WS = _global.WebSocket;
@@ -9652,7 +9776,15 @@
 	    }
 	}
 
-	var eventNames = 'copy cut paste abort blur focus canplay canplaythrough change click contextmenu dblclick drag dragend dragenter dragleave dragover dragstart drop durationchange emptied ended input invalid keydown keypress keyup load loadeddata loadedmetadata loadstart message mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup pause play playing progress ratechange reset scroll seeked seeking select show stalled submit suspend timeupdate volumechange waiting mozfullscreenchange mozfullscreenerror mozpointerlockchange mozpointerlockerror error webglcontextrestored webglcontextlost webglcontextcreationerror'.split(' ');
+	/**
+	 * @license
+	 * Copyright Google Inc. All Rights Reserved.
+	 *
+	 * Use of this source code is governed by an MIT-style license that can be
+	 * found in the LICENSE file at https://angular.io/license
+	 */
+	var eventNames = 'copy cut paste abort blur focus canplay canplaythrough change click contextmenu dblclick drag dragend dragenter dragleave dragover dragstart drop durationchange emptied ended input invalid keydown keypress keyup load loadeddata loadedmetadata loadstart message mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup pause play playing progress ratechange reset scroll seeked seeking select show stalled submit suspend timeupdate volumechange waiting mozfullscreenchange mozfullscreenerror mozpointerlockchange mozpointerlockerror error webglcontextrestored webglcontextlost webglcontextcreationerror'
+	    .split(' ');
 	function propertyDescriptorPatch(_global) {
 	    if (isNode) {
 	        return;
@@ -9686,8 +9818,8 @@
 	    }
 	}
 	function canPatchViaPropertyDescriptor() {
-	    if (isBrowser && !Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'onclick')
-	        && typeof Element !== 'undefined') {
+	    if (isBrowser && !Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'onclick') &&
+	        typeof Element !== 'undefined') {
 	        // WebKit https://bugs.webkit.org/show_bug.cgi?id=134364
 	        // IDL interface attributes are not configurable
 	        var desc = Object.getOwnPropertyDescriptor(Element.prototype, 'onclick');
@@ -9704,7 +9836,7 @@
 	    Object.defineProperty(XMLHttpRequest.prototype, 'onreadystatechange', {});
 	    return result;
 	}
-	;
+
 	var unboundKey = zoneSymbol('unbound');
 	// Whenever any eventListener fires, we check the eventListener target and all parents
 	// for `onwhatever` properties and replace them with zone-bound functions
@@ -9713,7 +9845,7 @@
 	    var _loop_1 = function(i) {
 	        var property = eventNames[i];
 	        var onproperty = 'on' + property;
-	        document.addEventListener(property, function (event) {
+	        self.addEventListener(property, function (event) {
 	            var elt = event.target, bound, source;
 	            if (elt) {
 	                source = elt.constructor['name'] + '.' + onproperty;
@@ -9734,65 +9866,52 @@
 	    for (var i = 0; i < eventNames.length; i++) {
 	        _loop_1(i);
 	    }
-	    ;
-	}
-	;
-
-	function patchTimer(window, setName, cancelName, nameSuffix) {
-	    var setNative = null;
-	    var clearNative = null;
-	    setName += nameSuffix;
-	    cancelName += nameSuffix;
-	    function scheduleTask(task) {
-	        var data = task.data;
-	        data.args[0] = task.invoke;
-	        data.handleId = setNative.apply(window, data.args);
-	        return task;
-	    }
-	    function clearTask(task) {
-	        return clearNative(task.data.handleId);
-	    }
-	    setNative = patchMethod(window, setName, function (delegate) { return function (self, args) {
-	        if (typeof args[0] === 'function') {
-	            var zone = Zone.current;
-	            var options = {
-	                handleId: null,
-	                isPeriodic: nameSuffix === 'Interval',
-	                delay: (nameSuffix === 'Timeout' || nameSuffix === 'Interval') ? args[1] || 0 : null,
-	                args: args
-	            };
-	            var task = zone.scheduleMacroTask(setName, args[0], options, scheduleTask, clearTask);
-	            if (!task) {
-	                return task;
-	            }
-	            // Node.js must additionally support the ref and unref functions.
-	            var handle = task.data.handleId;
-	            if (handle.ref && handle.unref) {
-	                task.ref = handle.ref.bind(handle);
-	                task.unref = handle.unref.bind(handle);
-	            }
-	            return task;
-	        }
-	        else {
-	            // cause an error by calling it directly.
-	            return delegate.apply(window, args);
-	        }
-	    }; });
-	    clearNative = patchMethod(window, cancelName, function (delegate) { return function (self, args) {
-	        var task = args[0];
-	        if (task && typeof task.type === 'string') {
-	            if (task.cancelFn && task.data.isPeriodic || task.runCount === 0) {
-	                // Do not cancel already canceled functions
-	                task.zone.cancelTask(task);
-	            }
-	        }
-	        else {
-	            // cause an error by calling it directly.
-	            delegate.apply(window, args);
-	        }
-	    }; });
+	    
 	}
 
+	/**
+	 * @license
+	 * Copyright Google Inc. All Rights Reserved.
+	 *
+	 * Use of this source code is governed by an MIT-style license that can be
+	 * found in the LICENSE file at https://angular.io/license
+	 */
+	function registerElementPatch(_global) {
+	    if (!isBrowser || !('registerElement' in _global.document)) {
+	        return;
+	    }
+	    var _registerElement = document.registerElement;
+	    var callbacks = ['createdCallback', 'attachedCallback', 'detachedCallback', 'attributeChangedCallback'];
+	    document.registerElement = function (name, opts) {
+	        if (opts && opts.prototype) {
+	            callbacks.forEach(function (callback) {
+	                var source = 'Document.registerElement::' + callback;
+	                if (opts.prototype.hasOwnProperty(callback)) {
+	                    var descriptor = Object.getOwnPropertyDescriptor(opts.prototype, callback);
+	                    if (descriptor && descriptor.value) {
+	                        descriptor.value = Zone.current.wrap(descriptor.value, source);
+	                        _redefineProperty(opts.prototype, callback, descriptor);
+	                    }
+	                    else {
+	                        opts.prototype[callback] = Zone.current.wrap(opts.prototype[callback], source);
+	                    }
+	                }
+	                else if (opts.prototype[callback]) {
+	                    opts.prototype[callback] = Zone.current.wrap(opts.prototype[callback], source);
+	                }
+	            });
+	        }
+	        return _registerElement.apply(document, [name, opts]);
+	    };
+	}
+
+	/**
+	 * @license
+	 * Copyright Google Inc. All Rights Reserved.
+	 *
+	 * Use of this source code is governed by an MIT-style license that can be
+	 * found in the LICENSE file at https://angular.io/license
+	 */
 	var set = 'set';
 	var clear = 'clear';
 	var blockingMethods = ['alert', 'prompt', 'confirm'];
@@ -9843,8 +9962,7 @@
 	        sendNative.apply(data.target, data.args);
 	        return task;
 	    }
-	    function placeholderCallback() {
-	    }
+	    function placeholderCallback() { }
 	    function clearTask(task) {
 	        var data = task.data;
 	        // Note - ideally, we would call data.target.removeEventListener here, but it's too late
@@ -9863,13 +9981,7 @@
 	            return sendNative.apply(self, args);
 	        }
 	        else {
-	            var options = {
-	                target: self,
-	                isPeriodic: false,
-	                delay: null,
-	                args: args,
-	                aborted: false
-	            };
+	            var options = { target: self, isPeriodic: false, delay: null, args: args, aborted: false };
 	            return zone.scheduleMacroTask('XMLHttpRequest.send', placeholderCallback, options, scheduleTask, clearTask);
 	        }
 	    }; });
@@ -9882,16 +9994,17 @@
 	            }
 	            task.zone.cancelTask(task);
 	        }
-	        // Otherwise, we are trying to abort an XHR which has not yet been sent, so there is no task to cancel. Do nothing.
+	        // Otherwise, we are trying to abort an XHR which has not yet been sent, so there is no task
+	        // to cancel. Do nothing.
 	    }; });
 	}
 	/// GEO_LOCATION
 	if (_global['navigator'] && _global['navigator'].geolocation) {
-	    patchPrototype(_global['navigator'].geolocation, [
-	        'getCurrentPosition',
-	        'watchPosition'
-	    ]);
+	    patchPrototype(_global['navigator'].geolocation, ['getCurrentPosition', 'watchPosition']);
 	}
+
+	})));
+
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(310)))
 
 /***/ },
@@ -10085,7 +10198,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.0.2
+	 * @license Angular v2.1.1
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -10136,15 +10249,6 @@
 	    function isBlank(obj) {
 	        return obj === undefined || obj === null;
 	    }
-	    function isString(obj) {
-	        return typeof obj === 'string';
-	    }
-	    function isFunction(obj) {
-	        return typeof obj === 'function';
-	    }
-	    function isArray(obj) {
-	        return Array.isArray(obj);
-	    }
 	    function stringify(token) {
 	        if (typeof token === 'string') {
 	            return token;
@@ -10162,123 +10266,9 @@
 	        var newLineIndex = res.indexOf('\n');
 	        return newLineIndex === -1 ? res : res.substring(0, newLineIndex);
 	    }
-	    var StringWrapper = (function () {
-	        function StringWrapper() {
-	        }
-	        StringWrapper.fromCharCode = function (code) { return String.fromCharCode(code); };
-	        StringWrapper.charCodeAt = function (s, index) { return s.charCodeAt(index); };
-	        StringWrapper.split = function (s, regExp) { return s.split(regExp); };
-	        StringWrapper.equals = function (s, s2) { return s === s2; };
-	        StringWrapper.stripLeft = function (s, charVal) {
-	            if (s && s.length) {
-	                var pos = 0;
-	                for (var i = 0; i < s.length; i++) {
-	                    if (s[i] != charVal)
-	                        break;
-	                    pos++;
-	                }
-	                s = s.substring(pos);
-	            }
-	            return s;
-	        };
-	        StringWrapper.stripRight = function (s, charVal) {
-	            if (s && s.length) {
-	                var pos = s.length;
-	                for (var i = s.length - 1; i >= 0; i--) {
-	                    if (s[i] != charVal)
-	                        break;
-	                    pos--;
-	                }
-	                s = s.substring(0, pos);
-	            }
-	            return s;
-	        };
-	        StringWrapper.replace = function (s, from, replace) {
-	            return s.replace(from, replace);
-	        };
-	        StringWrapper.replaceAll = function (s, from, replace) {
-	            return s.replace(from, replace);
-	        };
-	        StringWrapper.slice = function (s, from, to) {
-	            if (from === void 0) { from = 0; }
-	            if (to === void 0) { to = null; }
-	            return s.slice(from, to === null ? undefined : to);
-	        };
-	        StringWrapper.replaceAllMapped = function (s, from, cb) {
-	            return s.replace(from, function () {
-	                var matches = [];
-	                for (var _i = 0; _i < arguments.length; _i++) {
-	                    matches[_i - 0] = arguments[_i];
-	                }
-	                // Remove offset & string from the result array
-	                matches.splice(-2, 2);
-	                // The callback receives match, p1, ..., pn
-	                return cb(matches);
-	            });
-	        };
-	        StringWrapper.contains = function (s, substr) { return s.indexOf(substr) != -1; };
-	        StringWrapper.compare = function (a, b) {
-	            if (a < b) {
-	                return -1;
-	            }
-	            else if (a > b) {
-	                return 1;
-	            }
-	            else {
-	                return 0;
-	            }
-	        };
-	        return StringWrapper;
-	    }());
-	    var NumberWrapper = (function () {
-	        function NumberWrapper() {
-	        }
-	        NumberWrapper.toFixed = function (n, fractionDigits) { return n.toFixed(fractionDigits); };
-	        NumberWrapper.equal = function (a, b) { return a === b; };
-	        NumberWrapper.parseIntAutoRadix = function (text) {
-	            var result = parseInt(text);
-	            if (isNaN(result)) {
-	                throw new Error('Invalid integer literal when parsing ' + text);
-	            }
-	            return result;
-	        };
-	        NumberWrapper.parseInt = function (text, radix) {
-	            if (radix == 10) {
-	                if (/^(\-|\+)?[0-9]+$/.test(text)) {
-	                    return parseInt(text, radix);
-	                }
-	            }
-	            else if (radix == 16) {
-	                if (/^(\-|\+)?[0-9ABCDEFabcdef]+$/.test(text)) {
-	                    return parseInt(text, radix);
-	                }
-	            }
-	            else {
-	                var result = parseInt(text, radix);
-	                if (!isNaN(result)) {
-	                    return result;
-	                }
-	            }
-	            throw new Error('Invalid integer literal when parsing ' + text + ' in base ' + radix);
-	        };
-	        Object.defineProperty(NumberWrapper, "NaN", {
-	            get: function () { return NaN; },
-	            enumerable: true,
-	            configurable: true
-	        });
-	        NumberWrapper.isNumeric = function (value) { return !isNaN(value - parseFloat(value)); };
-	        NumberWrapper.isNaN = function (value) { return isNaN(value); };
-	        NumberWrapper.isInteger = function (value) { return Number.isInteger(value); };
-	        return NumberWrapper;
-	    }());
 	    // JS has NaN !== NaN
 	    function looseIdentical(a, b) {
 	        return a === b || typeof a === 'number' && typeof b === 'number' && isNaN(a) && isNaN(b);
-	    }
-	    // JS considers NaN is the same as NaN for map Key (while NaN !== NaN otherwise)
-	    // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
-	    function getMapKey(value) {
-	        return value;
 	    }
 	    function isJsObject(o) {
 	        return o !== null && (typeof o === 'function' || typeof o === 'object');
@@ -10314,8 +10304,9 @@
 	    }
 
 	    var _nextClassId = 0;
+	    var Reflect = global$1.Reflect;
 	    function extractAnnotation(annotation) {
-	        if (isFunction(annotation) && annotation.hasOwnProperty('annotation')) {
+	        if (typeof annotation === 'function' && annotation.hasOwnProperty('annotation')) {
 	            // it is a decorator, extract annotation
 	            annotation = annotation.annotation;
 	        }
@@ -10326,14 +10317,14 @@
 	            fnOrArray === Number || fnOrArray === Array) {
 	            throw new Error("Can not use native " + stringify(fnOrArray) + " as constructor");
 	        }
-	        if (isFunction(fnOrArray)) {
+	        if (typeof fnOrArray === 'function') {
 	            return fnOrArray;
 	        }
-	        else if (fnOrArray instanceof Array) {
+	        if (Array.isArray(fnOrArray)) {
 	            var annotations = fnOrArray;
 	            var annoLength = annotations.length - 1;
 	            var fn = fnOrArray[annoLength];
-	            if (!isFunction(fn)) {
+	            if (typeof fn !== 'function') {
 	                throw new Error("Last position of Class method array must be Function in key " + key + " was '" + stringify(fn) + "'");
 	            }
 	            if (annoLength != fn.length) {
@@ -10344,12 +10335,12 @@
 	                var paramAnnotations = [];
 	                paramsAnnotations.push(paramAnnotations);
 	                var annotation = annotations[i];
-	                if (annotation instanceof Array) {
+	                if (Array.isArray(annotation)) {
 	                    for (var j = 0; j < annotation.length; j++) {
 	                        paramAnnotations.push(extractAnnotation(annotation[j]));
 	                    }
 	                }
-	                else if (isFunction(annotation)) {
+	                else if (typeof annotation === 'function') {
 	                    paramAnnotations.push(extractAnnotation(annotation));
 	                }
 	                else {
@@ -10359,9 +10350,7 @@
 	            Reflect.defineMetadata('parameters', paramsAnnotations, fn);
 	            return fn;
 	        }
-	        else {
-	            throw new Error("Only Function or Array is supported in Class definition for key '" + key + "' is '" + stringify(fnOrArray) + "'");
-	        }
+	        throw new Error("Only Function or Array is supported in Class definition for key '" + key + "' is '" + stringify(fnOrArray) + "'");
 	    }
 	    /**
 	     * Provides a way for expressing ES6 classes with parameter annotations in ES5.
@@ -10410,7 +10399,7 @@
 	     *
 	     * ```
 	     * var MyService = ng.Class({
-	     *   constructor: [String, [new Query(), QueryList], function(name, queryList) {
+	     *   constructor: [String, [new Optional(), Service], function(name, myService) {
 	     *     ...
 	     *   }]
 	     * });
@@ -10420,7 +10409,7 @@
 	     *
 	     * ```
 	     * class MyService {
-	     *   constructor(name: string, @Query() queryList: QueryList) {
+	     *   constructor(name: string, @Optional() myService: Service) {
 	     *     ...
 	     *   }
 	     * }
@@ -10449,7 +10438,7 @@
 	        var constructor = applyParams(clsDef.hasOwnProperty('constructor') ? clsDef.constructor : undefined, 'constructor');
 	        var proto = constructor.prototype;
 	        if (clsDef.hasOwnProperty('extends')) {
-	            if (isFunction(clsDef.extends)) {
+	            if (typeof clsDef.extends === 'function') {
 	                constructor.prototype = proto =
 	                    Object.create(clsDef.extends.prototype);
 	            }
@@ -10458,7 +10447,7 @@
 	            }
 	        }
 	        for (var key in clsDef) {
-	            if (key != 'extends' && key != 'prototype' && clsDef.hasOwnProperty(key)) {
+	            if (key !== 'extends' && key !== 'prototype' && clsDef.hasOwnProperty(key)) {
 	                proto[key] = applyParams(clsDef[key], key);
 	            }
 	        }
@@ -10471,7 +10460,6 @@
 	        }
 	        return constructor;
 	    }
-	    var Reflect = global$1.Reflect;
 	    function makeDecorator(name, props, parentClass, chainFn) {
 	        if (chainFn === void 0) { chainFn = null; }
 	        var metaCtor = makeMetadataCtor([props]);
@@ -10483,22 +10471,20 @@
 	                metaCtor.call(this, objOrType);
 	                return this;
 	            }
-	            else {
-	                var annotationInstance_1 = new DecoratorFactory(objOrType);
-	                var chainAnnotation = isFunction(this) && this.annotations instanceof Array ? this.annotations : [];
-	                chainAnnotation.push(annotationInstance_1);
-	                var TypeDecorator = function TypeDecorator(cls) {
-	                    var annotations = Reflect.getOwnMetadata('annotations', cls) || [];
-	                    annotations.push(annotationInstance_1);
-	                    Reflect.defineMetadata('annotations', annotations, cls);
-	                    return cls;
-	                };
-	                TypeDecorator.annotations = chainAnnotation;
-	                TypeDecorator.Class = Class;
-	                if (chainFn)
-	                    chainFn(TypeDecorator);
-	                return TypeDecorator;
-	            }
+	            var annotationInstance = new DecoratorFactory(objOrType);
+	            var chainAnnotation = typeof this === 'function' && Array.isArray(this.annotations) ? this.annotations : [];
+	            chainAnnotation.push(annotationInstance);
+	            var TypeDecorator = function TypeDecorator(cls) {
+	                var annotations = Reflect.getOwnMetadata('annotations', cls) || [];
+	                annotations.push(annotationInstance);
+	                Reflect.defineMetadata('annotations', annotations, cls);
+	                return cls;
+	            };
+	            TypeDecorator.annotations = chainAnnotation;
+	            TypeDecorator.Class = Class;
+	            if (chainFn)
+	                chainFn(TypeDecorator);
+	            return TypeDecorator;
 	        }
 	        if (parentClass) {
 	            DecoratorFactory.prototype = Object.create(parentClass.prototype);
@@ -10508,7 +10494,7 @@
 	        return DecoratorFactory;
 	    }
 	    function makeMetadataCtor(props) {
-	        function ctor() {
+	        return function ctor() {
 	            var _this = this;
 	            var args = [];
 	            for (var _i = 0; _i < arguments.length; _i++) {
@@ -10518,18 +10504,16 @@
 	                var argVal = args[i];
 	                if (Array.isArray(prop)) {
 	                    // plain parameter
-	                    var val = !argVal || argVal === undefined ? prop[1] : argVal;
-	                    _this[prop[0]] = val;
+	                    _this[prop[0]] = argVal === undefined ? prop[1] : argVal;
 	                }
 	                else {
 	                    for (var propName in prop) {
-	                        var val = !argVal || argVal[propName] === undefined ? prop[propName] : argVal[propName];
-	                        _this[propName] = val;
+	                        _this[propName] =
+	                            argVal && argVal.hasOwnProperty(propName) ? argVal[propName] : prop[propName];
 	                    }
 	                }
 	            });
-	        }
-	        return ctor;
+	        };
 	    }
 	    function makeParamDecorator(name, props, parentClass) {
 	        var metaCtor = makeMetadataCtor(props);
@@ -10553,8 +10537,7 @@
 	                    parameters.push(null);
 	                }
 	                parameters[index] = parameters[index] || [];
-	                var annotationsForParam = parameters[index];
-	                annotationsForParam.push(annotationInstance);
+	                parameters[index].push(annotationInstance);
 	                Reflect.defineMetadata('parameters', parameters, cls);
 	                return cls;
 	            }
@@ -10578,15 +10561,13 @@
 	                metaCtor.apply(this, args);
 	                return this;
 	            }
-	            else {
-	                var decoratorInstance = new ((_a = PropDecoratorFactory).bind.apply(_a, [void 0].concat(args)))();
-	                return function PropDecorator(target, name) {
-	                    var meta = Reflect.getOwnMetadata('propMetadata', target.constructor) || {};
-	                    meta[name] = meta[name] || [];
-	                    meta[name].unshift(decoratorInstance);
-	                    Reflect.defineMetadata('propMetadata', meta, target.constructor);
-	                };
-	            }
+	            var decoratorInstance = new ((_a = PropDecoratorFactory).bind.apply(_a, [void 0].concat(args)))();
+	            return function PropDecorator(target, name) {
+	                var meta = Reflect.getOwnMetadata('propMetadata', target.constructor) || {};
+	                meta[name] = meta.hasOwnProperty(name) && meta[name] || [];
+	                meta[name].unshift(decoratorInstance);
+	                Reflect.defineMetadata('propMetadata', meta, target.constructor);
+	            };
 	            var _a;
 	        }
 	        if (parentClass) {
@@ -11287,7 +11268,7 @@
 	     * @experimental
 	     */
 	    function resolveForwardRef(type) {
-	        if (isFunction(type) && type.hasOwnProperty('__forward_ref__') &&
+	        if (typeof type === 'function' && type.hasOwnProperty('__forward_ref__') &&
 	            type.__forward_ref__ === forwardRef) {
 	            return type();
 	        }
@@ -11412,41 +11393,6 @@
 	        return Injector;
 	    }());
 
-	    // Safari and Internet Explorer do not support the iterable parameter to the
-	    // Map constructor.  We work around that by manually adding the items.
-	    var createMapFromPairs = (function () {
-	        try {
-	            if (new Map([[1, 2]]).size === 1) {
-	                return function createMapFromPairs(pairs) { return new Map(pairs); };
-	            }
-	        }
-	        catch (e) {
-	        }
-	        return function createMapAndPopulateFromPairs(pairs) {
-	            var map = new Map();
-	            for (var i = 0; i < pairs.length; i++) {
-	                var pair = pairs[i];
-	                map.set(pair[0], pair[1]);
-	            }
-	            return map;
-	        };
-	    })();
-	    var _clearValues = (function () {
-	        if ((new Map()).keys().next) {
-	            return function _clearValues(m) {
-	                var keyIterator = m.keys();
-	                var k;
-	                while (!((k = keyIterator.next()).done)) {
-	                    m.set(k.value, null);
-	                }
-	            };
-	        }
-	        else {
-	            return function _clearValuesWithForeEach(m) {
-	                m.forEach(function (v, k) { m.set(k, null); });
-	            };
-	        }
-	    })();
 	    // Safari doesn't implement MapIterator.next(), which is used is Traceur's polyfill of Array.from
 	    // TODO(mlaval): remove the work around once we have a working polyfill of Array.from
 	    var _arrayFromMap = (function () {
@@ -11478,13 +11424,6 @@
 	            }
 	            return result;
 	        };
-	        MapWrapper.toStringMap = function (m) {
-	            var r = {};
-	            m.forEach(function (v, k) { return r[k] = v; });
-	            return r;
-	        };
-	        MapWrapper.createFromPairs = function (pairs) { return createMapFromPairs(pairs); };
-	        MapWrapper.iterable = function (m) { return m; };
 	        MapWrapper.keys = function (m) { return _arrayFromMap(m, false); };
 	        MapWrapper.values = function (m) { return _arrayFromMap(m, true); };
 	        return MapWrapper;
@@ -11643,7 +11582,7 @@
 	        if (isPresent(source)) {
 	            for (var i = 0; i < source.length; i++) {
 	                var item = source[i];
-	                if (isArray(item)) {
+	                if (Array.isArray(item)) {
 	                    _flattenArray(item, target);
 	                }
 	                else {
@@ -11656,7 +11595,7 @@
 	    function isListLikeIterable(obj) {
 	        if (!isJsObject(obj))
 	            return false;
-	        return isArray(obj) ||
+	        return Array.isArray(obj) ||
 	            (!(obj instanceof Map) &&
 	                getSymbolIterator() in obj); // JS Iterable have a Symbol.iterator prop
 	    }
@@ -11675,14 +11614,14 @@
 	        }
 	    }
 	    function iterateListLike(obj, fn) {
-	        if (isArray(obj)) {
+	        if (Array.isArray(obj)) {
 	            for (var i = 0; i < obj.length; i++) {
 	                fn(obj[i]);
 	            }
 	        }
 	        else {
 	            var iterator = obj[getSymbolIterator()]();
-	            var item;
+	            var item = void 0;
 	            while (!((item = iterator.next()).done)) {
 	                fn(item.value);
 	            }
@@ -12058,20 +11997,15 @@
 	            this._reflect = reflect || global$1.Reflect;
 	        }
 	        ReflectionCapabilities.prototype.isReflectionEnabled = function () { return true; };
-	        ReflectionCapabilities.prototype.factory = function (t) {
-	            var prototype = t.prototype;
-	            return function () {
-	                var args = [];
-	                for (var _i = 0; _i < arguments.length; _i++) {
-	                    args[_i - 0] = arguments[_i];
-	                }
-	                var instance = Object.create(prototype);
-	                t.apply(instance, args);
-	                return instance;
-	            };
-	        };
+	        ReflectionCapabilities.prototype.factory = function (t) { return function () {
+	            var args = [];
+	            for (var _i = 0; _i < arguments.length; _i++) {
+	                args[_i - 0] = arguments[_i];
+	            }
+	            return new (t.bind.apply(t, [void 0].concat(args)))();
+	        }; };
 	        /** @internal */
-	        ReflectionCapabilities.prototype._zipTypesAndAnnotations = function (paramTypes /** TODO #9100 */, paramAnnotations /** TODO #9100 */) {
+	        ReflectionCapabilities.prototype._zipTypesAndAnnotations = function (paramTypes, paramAnnotations) {
 	            var result;
 	            if (typeof paramTypes === 'undefined') {
 	                result = new Array(paramAnnotations.length);
@@ -12092,71 +12026,69 @@
 	                else {
 	                    result[i] = [];
 	                }
-	                if (isPresent(paramAnnotations) && isPresent(paramAnnotations[i])) {
+	                if (paramAnnotations && isPresent(paramAnnotations[i])) {
 	                    result[i] = result[i].concat(paramAnnotations[i]);
 	                }
 	            }
 	            return result;
 	        };
-	        ReflectionCapabilities.prototype.parameters = function (typeOrFunc) {
+	        ReflectionCapabilities.prototype.parameters = function (type) {
 	            // Prefer the direct API.
-	            if (isPresent(typeOrFunc.parameters)) {
-	                return typeOrFunc.parameters;
+	            if (type.parameters) {
+	                return type.parameters;
 	            }
 	            // API of tsickle for lowering decorators to properties on the class.
-	            if (isPresent(typeOrFunc.ctorParameters)) {
-	                var ctorParameters = typeOrFunc.ctorParameters;
-	                var paramTypes_1 = ctorParameters.map(function (ctorParam /** TODO #9100 */) { return ctorParam && ctorParam.type; });
-	                var paramAnnotations_1 = ctorParameters.map(function (ctorParam /** TODO #9100 */) {
+	            if (type.ctorParameters) {
+	                var ctorParameters = type.ctorParameters;
+	                var paramTypes = ctorParameters.map(function (ctorParam) { return ctorParam && ctorParam.type; });
+	                var paramAnnotations = ctorParameters.map(function (ctorParam) {
 	                    return ctorParam && convertTsickleDecoratorIntoMetadata(ctorParam.decorators);
 	                });
-	                return this._zipTypesAndAnnotations(paramTypes_1, paramAnnotations_1);
+	                return this._zipTypesAndAnnotations(paramTypes, paramAnnotations);
 	            }
 	            // API for metadata created by invoking the decorators.
 	            if (isPresent(this._reflect) && isPresent(this._reflect.getMetadata)) {
-	                var paramAnnotations = this._reflect.getMetadata('parameters', typeOrFunc);
-	                var paramTypes = this._reflect.getMetadata('design:paramtypes', typeOrFunc);
-	                if (isPresent(paramTypes) || isPresent(paramAnnotations)) {
+	                var paramAnnotations = this._reflect.getMetadata('parameters', type);
+	                var paramTypes = this._reflect.getMetadata('design:paramtypes', type);
+	                if (paramTypes || paramAnnotations) {
 	                    return this._zipTypesAndAnnotations(paramTypes, paramAnnotations);
 	                }
 	            }
 	            // The array has to be filled with `undefined` because holes would be skipped by `some`
-	            var parameters = new Array(typeOrFunc.length);
-	            parameters.fill(undefined);
-	            return parameters;
+	            return new Array(type.length).fill(undefined);
 	        };
 	        ReflectionCapabilities.prototype.annotations = function (typeOrFunc) {
 	            // Prefer the direct API.
-	            if (isPresent(typeOrFunc.annotations)) {
+	            if (typeOrFunc.annotations) {
 	                var annotations = typeOrFunc.annotations;
-	                if (isFunction(annotations) && annotations.annotations) {
+	                if (typeof annotations === 'function' && annotations.annotations) {
 	                    annotations = annotations.annotations;
 	                }
 	                return annotations;
 	            }
 	            // API of tsickle for lowering decorators to properties on the class.
-	            if (isPresent(typeOrFunc.decorators)) {
+	            if (typeOrFunc.decorators) {
 	                return convertTsickleDecoratorIntoMetadata(typeOrFunc.decorators);
 	            }
 	            // API for metadata created by invoking the decorators.
-	            if (isPresent(this._reflect) && isPresent(this._reflect.getMetadata)) {
+	            if (this._reflect && this._reflect.getMetadata) {
 	                var annotations = this._reflect.getMetadata('annotations', typeOrFunc);
-	                if (isPresent(annotations))
+	                if (annotations)
 	                    return annotations;
 	            }
 	            return [];
 	        };
 	        ReflectionCapabilities.prototype.propMetadata = function (typeOrFunc) {
 	            // Prefer the direct API.
-	            if (isPresent(typeOrFunc.propMetadata)) {
+	            if (typeOrFunc.propMetadata) {
 	                var propMetadata = typeOrFunc.propMetadata;
-	                if (isFunction(propMetadata) && propMetadata.propMetadata) {
+	                if (typeof propMetadata === 'function' && propMetadata.propMetadata) {
 	                    propMetadata = propMetadata.propMetadata;
 	                }
 	                return propMetadata;
 	            }
 	            // API of tsickle for lowering decorators to properties on the class.
-	            if (isPresent(typeOrFunc.propDecorators)) {
+	            if (typeOrFunc.propDecorators) {
 	                var propDecorators_1 = typeOrFunc.propDecorators;
 	                var propMetadata_1 = {};
 	                Object.keys(propDecorators_1).forEach(function (prop) {
@@ -12165,22 +12097,15 @@
 	                return propMetadata_1;
 	            }
 	            // API for metadata created by invoking the decorators.
-	            if (isPresent(this._reflect) && isPresent(this._reflect.getMetadata)) {
+	            if (this._reflect && this._reflect.getMetadata) {
 	                var propMetadata = this._reflect.getMetadata('propMetadata', typeOrFunc);
-	                if (isPresent(propMetadata))
+	                if (propMetadata)
 	                    return propMetadata;
 	            }
 	            return {};
 	        };
-	        // Note: JavaScript does not support to query for interfaces during runtime.
-	        // However, we can't throw here as the reflector will always call this method
-	        // when asked for a lifecycle interface as this is what we check in Dart.
-	        ReflectionCapabilities.prototype.interfaces = function (type) { return []; };
-	        ReflectionCapabilities.prototype.hasLifecycleHook = function (type, lcInterface, lcProperty) {
-	            if (!(type instanceof Type))
-	                return false;
-	            var proto = type.prototype;
-	            return !!proto[lcProperty];
+	        ReflectionCapabilities.prototype.hasLifecycleHook = function (type, lcProperty) {
+	            return type instanceof Type && lcProperty in type.prototype;
 	        };
 	        ReflectionCapabilities.prototype.getter = function (name) { return new Function('o', 'return o.' + name + ';'); };
 	        ReflectionCapabilities.prototype.setter = function (name) {
@@ -12253,133 +12178,24 @@
 	        function Reflector(reflectionCapabilities) {
 	            _super.call(this);
 	            this.reflectionCapabilities = reflectionCapabilities;
-	            /** @internal */
-	            this._injectableInfo = new Map();
-	            /** @internal */
-	            this._getters = new Map();
-	            /** @internal */
-	            this._setters = new Map();
-	            /** @internal */
-	            this._methods = new Map();
-	            /** @internal */
-	            this._usedKeys = null;
 	        }
 	        Reflector.prototype.updateCapabilities = function (caps) { this.reflectionCapabilities = caps; };
-	        Reflector.prototype.isReflectionEnabled = function () { return this.reflectionCapabilities.isReflectionEnabled(); };
-	        /**
-	         * Causes `this` reflector to track keys used to access
-	         * {@link ReflectionInfo} objects.
-	         */
-	        Reflector.prototype.trackUsage = function () { this._usedKeys = new Set(); };
-	        /**
-	         * Lists types for which reflection information was not requested since
-	         * {@link #trackUsage} was called. This list could later be audited as
-	         * potential dead code.
-	         */
-	        Reflector.prototype.listUnusedKeys = function () {
-	            var _this = this;
-	            if (this._usedKeys == null) {
-	                throw new Error('Usage tracking is disabled');
-	            }
-	            var allTypes = MapWrapper.keys(this._injectableInfo);
-	            return allTypes.filter(function (key) { return !_this._usedKeys.has(key); });
-	        };
-	        Reflector.prototype.registerFunction = function (func, funcInfo) {
-	            this._injectableInfo.set(func, funcInfo);
-	        };
-	        Reflector.prototype.registerType = function (type, typeInfo) {
-	            this._injectableInfo.set(type, typeInfo);
-	        };
-	        Reflector.prototype.registerGetters = function (getters) { _mergeMaps(this._getters, getters); };
-	        Reflector.prototype.registerSetters = function (setters) { _mergeMaps(this._setters, setters); };
-	        Reflector.prototype.registerMethods = function (methods) { _mergeMaps(this._methods, methods); };
-	        Reflector.prototype.factory = function (type) {
-	            if (this._containsReflectionInfo(type)) {
-	                var res = this._getReflectionInfo(type).factory;
-	                return isPresent(res) ? res : null;
-	            }
-	            else {
-	                return this.reflectionCapabilities.factory(type);
-	            }
-	        };
+	        Reflector.prototype.factory = function (type) { return this.reflectionCapabilities.factory(type); };
 	        Reflector.prototype.parameters = function (typeOrFunc) {
-	            if (this._injectableInfo.has(typeOrFunc)) {
-	                var res = this._getReflectionInfo(typeOrFunc).parameters;
-	                return isPresent(res) ? res : [];
-	            }
-	            else {
-	                return this.reflectionCapabilities.parameters(typeOrFunc);
-	            }
+	            return this.reflectionCapabilities.parameters(typeOrFunc);
 	        };
 	        Reflector.prototype.annotations = function (typeOrFunc) {
-	            if (this._injectableInfo.has(typeOrFunc)) {
-	                var res = this._getReflectionInfo(typeOrFunc).annotations;
-	                return isPresent(res) ? res : [];
-	            }
-	            else {
-	                return this.reflectionCapabilities.annotations(typeOrFunc);
-	            }
+	            return this.reflectionCapabilities.annotations(typeOrFunc);
 	        };
 	        Reflector.prototype.propMetadata = function (typeOrFunc) {
-	            if (this._injectableInfo.has(typeOrFunc)) {
-	                var res = this._getReflectionInfo(typeOrFunc).propMetadata;
-	                return isPresent(res) ? res : {};
-	            }
-	            else {
-	                return this.reflectionCapabilities.propMetadata(typeOrFunc);
-	            }
+	            return this.reflectionCapabilities.propMetadata(typeOrFunc);
 	        };
-	        Reflector.prototype.interfaces = function (type) {
-	            if (this._injectableInfo.has(type)) {
-	                var res = this._getReflectionInfo(type).interfaces;
-	                return isPresent(res) ? res : [];
-	            }
-	            else {
-	                return this.reflectionCapabilities.interfaces(type);
-	            }
+	        Reflector.prototype.hasLifecycleHook = function (type, lcProperty) {
+	            return this.reflectionCapabilities.hasLifecycleHook(type, lcProperty);
 	        };
-	        Reflector.prototype.hasLifecycleHook = function (type, lcInterface, lcProperty) {
-	            var interfaces = this.interfaces(type);
-	            if (interfaces.indexOf(lcInterface) !== -1) {
-	                return true;
-	            }
-	            else {
-	                return this.reflectionCapabilities.hasLifecycleHook(type, lcInterface, lcProperty);
-	            }
-	        };
-	        Reflector.prototype.getter = function (name) {
-	            if (this._getters.has(name)) {
-	                return this._getters.get(name);
-	            }
-	            else {
-	                return this.reflectionCapabilities.getter(name);
-	            }
-	        };
-	        Reflector.prototype.setter = function (name) {
-	            if (this._setters.has(name)) {
-	                return this._setters.get(name);
-	            }
-	            else {
-	                return this.reflectionCapabilities.setter(name);
-	            }
-	        };
-	        Reflector.prototype.method = function (name) {
-	            if (this._methods.has(name)) {
-	                return this._methods.get(name);
-	            }
-	            else {
-	                return this.reflectionCapabilities.method(name);
-	            }
-	        };
-	        /** @internal */
-	        Reflector.prototype._getReflectionInfo = function (typeOrFunc) {
-	            if (isPresent(this._usedKeys)) {
-	                this._usedKeys.add(typeOrFunc);
-	            }
-	            return this._injectableInfo.get(typeOrFunc);
-	        };
-	        /** @internal */
-	        Reflector.prototype._containsReflectionInfo = function (typeOrFunc) { return this._injectableInfo.has(typeOrFunc); };
+	        Reflector.prototype.getter = function (name) { return this.reflectionCapabilities.getter(name); };
+	        Reflector.prototype.setter = function (name) { return this.reflectionCapabilities.setter(name); };
+	        Reflector.prototype.method = function (name) { return this.reflectionCapabilities.method(name); };
 	        Reflector.prototype.importUri = function (type) { return this.reflectionCapabilities.importUri(type); };
 	        Reflector.prototype.resolveIdentifier = function (name, moduleUrl, runtime) {
 	            return this.reflectionCapabilities.resolveIdentifier(name, moduleUrl, runtime);
@@ -12389,9 +12205,6 @@
 	        };
 	        return Reflector;
 	    }(ReflectorReader));
-	    function _mergeMaps(target, config) {
-	        Object.keys(config).forEach(function (k) { target.set(k, config[k]); });
-	    }
 
 	    /**
 	     * The {@link Reflector} used internally in Angular to access metadata
@@ -12566,7 +12379,7 @@
 	        var depProps = [];
 	        var token = null;
 	        var optional = false;
-	        if (!isArray(metadata)) {
+	        if (!Array.isArray(metadata)) {
 	            if (metadata instanceof Inject) {
 	                return _createDependency(metadata.token, optional, null, null, depProps);
 	            }
@@ -13592,7 +13405,7 @@
 	        deps: [],
 	    };
 	    function _randomChar() {
-	        return StringWrapper.fromCharCode(97 + Math.floor(Math.random() * 25));
+	        return String.fromCharCode(97 + Math.floor(Math.random() * 25));
 	    }
 	    /**
 	     * A function that will be executed when a platform is initialized.
@@ -13764,7 +13577,7 @@
 	            // Keeps track of records where custom track by is the same, but item identity has changed
 	            this._identityChangesHead = null;
 	            this._identityChangesTail = null;
-	            this._trackByFn = isPresent(this._trackByFn) ? this._trackByFn : trackByIdentity;
+	            this._trackByFn = this._trackByFn || trackByIdentity;
 	        }
 	        Object.defineProperty(DefaultIterableDiffer.prototype, "collection", {
 	            get: function () { return this._collection; },
@@ -13884,20 +13697,20 @@
 	            var index;
 	            var item;
 	            var itemTrackBy;
-	            if (isArray(collection)) {
+	            if (Array.isArray(collection)) {
 	                var list = collection;
 	                this._length = collection.length;
-	                for (index = 0; index < this._length; index++) {
-	                    item = list[index];
-	                    itemTrackBy = this._trackByFn(index, item);
+	                for (var index_1 = 0; index_1 < this._length; index_1++) {
+	                    item = list[index_1];
+	                    itemTrackBy = this._trackByFn(index_1, item);
 	                    if (record === null || !looseIdentical(record.trackById, itemTrackBy)) {
-	                        record = this._mismatch(record, item, itemTrackBy, index);
+	                        record = this._mismatch(record, item, itemTrackBy, index_1);
 	                        mayBeDirty = true;
 	                    }
 	                    else {
 	                        if (mayBeDirty) {
 	                            // TODO(misko): can we limit this to duplicates only?
-	                            record = this._verifyReinsertion(record, item, itemTrackBy, index);
+	                            record = this._verifyReinsertion(record, item, itemTrackBy, index_1);
 	                        }
 	                        if (!looseIdentical(record.item, item))
 	                            this._addIdentityChange(record, item);
@@ -14383,10 +14196,9 @@
 	            this.map = new Map();
 	        }
 	        _DuplicateMap.prototype.put = function (record) {
-	            // todo(vicb) handle corner cases
-	            var key = getMapKey(record.trackById);
+	            var key = record.trackById;
 	            var duplicates = this.map.get(key);
-	            if (!isPresent(duplicates)) {
+	            if (!duplicates) {
 	                duplicates = new _DuplicateItemRecordList();
 	                this.map.set(key, duplicates);
 	            }
@@ -14401,7 +14213,7 @@
 	         */
 	        _DuplicateMap.prototype.get = function (trackById, afterIndex) {
 	            if (afterIndex === void 0) { afterIndex = null; }
-	            var key = getMapKey(trackById);
+	            var key = trackById;
 	            var recordList = this.map.get(key);
 	            return recordList ? recordList.get(trackById, afterIndex) : null;
 	        };
@@ -14411,9 +14223,7 @@
 	         * The list of duplicates also is removed from the map if it gets empty.
 	         */
 	        _DuplicateMap.prototype.remove = function (record) {
-	            var key = getMapKey(record.trackById);
-	            // todo(vicb)
-	            // assert(this.map.containsKey(key));
+	            var key = record.trackById;
 	            var recordList = this.map.get(key);
 	            // Remove the list of duplicates when it gets empty
 	            if (recordList.remove(record)) {
@@ -15308,7 +15118,7 @@
 	            if (injector === void 0) { injector = null; }
 	            if (projectableNodes === void 0) { projectableNodes = null; }
 	            var s = this._createComponentInContainerScope();
-	            var contextInjector = isPresent(injector) ? injector : this._element.parentInjector;
+	            var contextInjector = injector || this._element.parentInjector;
 	            var componentRef = componentFactory.create(contextInjector, projectableNodes);
 	            this.insert(componentRef.hostView, index);
 	            return wtfLeave(s, componentRef);
@@ -15878,6 +15688,54 @@
 	            return result;
 	        };
 	    }
+	    function setBindingDebugInfoForChanges(renderer, el, changes) {
+	        Object.keys(changes).forEach(function (propName) {
+	            setBindingDebugInfo(renderer, el, propName, changes[propName].currentValue);
+	        });
+	    }
+	    function setBindingDebugInfo(renderer, el, propName, value) {
+	        try {
+	            renderer.setBindingDebugInfo(el, "ng-reflect-" + camelCaseToDashCase(propName), value ? value.toString() : null);
+	        }
+	        catch (e) {
+	            renderer.setBindingDebugInfo(el, "ng-reflect-" + camelCaseToDashCase(propName), '[ERROR] Exception while trying to serialize the value');
+	        }
+	    }
+	    var CAMEL_CASE_REGEXP = /([A-Z])/g;
+	    function camelCaseToDashCase(input) {
+	        return input.replace(CAMEL_CASE_REGEXP, function () {
+	            var m = [];
+	            for (var _i = 0; _i < arguments.length; _i++) {
+	                m[_i - 0] = arguments[_i];
+	            }
+	            return '-' + m[1].toLowerCase();
+	        });
+	    }
+
+
+	    var view_utils = Object.freeze({
+	        ViewUtils: ViewUtils,
+	        flattenNestedViewRenderNodes: flattenNestedViewRenderNodes,
+	        ensureSlotCount: ensureSlotCount,
+	        MAX_INTERPOLATION_VALUES: MAX_INTERPOLATION_VALUES,
+	        interpolate: interpolate,
+	        checkBinding: checkBinding,
+	        castByValue: castByValue,
+	        EMPTY_ARRAY: EMPTY_ARRAY,
+	        EMPTY_MAP: EMPTY_MAP,
+	        pureProxy1: pureProxy1,
+	        pureProxy2: pureProxy2,
+	        pureProxy3: pureProxy3,
+	        pureProxy4: pureProxy4,
+	        pureProxy5: pureProxy5,
+	        pureProxy6: pureProxy6,
+	        pureProxy7: pureProxy7,
+	        pureProxy8: pureProxy8,
+	        pureProxy9: pureProxy9,
+	        pureProxy10: pureProxy10,
+	        setBindingDebugInfoForChanges: setBindingDebugInfoForChanges,
+	        setBindingDebugInfo: setBindingDebugInfo
+	    });
 
 	    /**
 	     * @license
@@ -16169,9 +16027,9 @@
 	            var errorFn = function (err) { return null; };
 	            var completeFn = function () { return null; };
 	            if (generatorOrNext && typeof generatorOrNext === 'object') {
-	                schedulerFn = this.__isAsync ? function (value /** TODO #9100 */) {
+	                schedulerFn = this.__isAsync ? function (value) {
 	                    setTimeout(function () { return generatorOrNext.next(value); });
-	                } : function (value /** TODO #9100 */) { generatorOrNext.next(value); };
+	                } : function (value) { generatorOrNext.next(value); };
 	                if (generatorOrNext.error) {
 	                    errorFn = this.__isAsync ? function (err) { setTimeout(function () { return generatorOrNext.error(err); }); } :
 	                        function (err) { generatorOrNext.error(err); };
@@ -16182,9 +16040,8 @@
 	                }
 	            }
 	            else {
-	                schedulerFn = this.__isAsync ? function (value /** TODO #9100 */) {
-	                    setTimeout(function () { return generatorOrNext(value); });
-	                } : function (value /** TODO #9100 */) { generatorOrNext(value); };
+	                schedulerFn = this.__isAsync ? function (value) { setTimeout(function () { return generatorOrNext(value); }); } :
+	                    function (value) { generatorOrNext(value); };
 	                if (error) {
 	                    errorFn =
 	                        this.__isAsync ? function (err) { setTimeout(function () { return error(err); }); } : function (err) { error(err); };
@@ -16200,99 +16057,21 @@
 	    }(rxjs_Subject.Subject));
 
 	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    var NgZoneImpl = (function () {
-	        function NgZoneImpl(_a) {
-	            var _this = this;
-	            var trace = _a.trace, onEnter = _a.onEnter, onLeave = _a.onLeave, setMicrotask = _a.setMicrotask, setMacrotask = _a.setMacrotask, onError = _a.onError;
-	            this.onEnter = onEnter;
-	            this.onLeave = onLeave;
-	            this.setMicrotask = setMicrotask;
-	            this.setMacrotask = setMacrotask;
-	            this.onError = onError;
-	            if (typeof Zone == 'undefined') {
-	                throw new Error('Angular requires Zone.js prolyfill.');
-	            }
-	            Zone.assertZonePatched();
-	            this.outer = this.inner = Zone.current;
-	            if (Zone['wtfZoneSpec']) {
-	                this.inner = this.inner.fork(Zone['wtfZoneSpec']);
-	            }
-	            if (trace && Zone['longStackTraceZoneSpec']) {
-	                this.inner = this.inner.fork(Zone['longStackTraceZoneSpec']);
-	            }
-	            this.inner = this.inner.fork({
-	                name: 'angular',
-	                properties: { 'isAngularZone': true },
-	                onInvokeTask: function (delegate, current, target, task, applyThis, applyArgs) {
-	                    try {
-	                        _this.onEnter();
-	                        return delegate.invokeTask(target, task, applyThis, applyArgs);
-	                    }
-	                    finally {
-	                        _this.onLeave();
-	                    }
-	                },
-	                onInvoke: function (delegate, current, target, callback, applyThis, applyArgs, source) {
-	                    try {
-	                        _this.onEnter();
-	                        return delegate.invoke(target, callback, applyThis, applyArgs, source);
-	                    }
-	                    finally {
-	                        _this.onLeave();
-	                    }
-	                },
-	                onHasTask: function (delegate, current, target, hasTaskState) {
-	                    delegate.hasTask(target, hasTaskState);
-	                    if (current === target) {
-	                        // We are only interested in hasTask events which originate from our zone
-	                        // (A child hasTask event is not interesting to us)
-	                        if (hasTaskState.change == 'microTask') {
-	                            _this.setMicrotask(hasTaskState.microTask);
-	                        }
-	                        else if (hasTaskState.change == 'macroTask') {
-	                            _this.setMacrotask(hasTaskState.macroTask);
-	                        }
-	                    }
-	                },
-	                onHandleError: function (delegate, current, target, error) {
-	                    delegate.handleError(target, error);
-	                    _this.onError(error);
-	                    return false;
-	                }
-	            });
-	        }
-	        NgZoneImpl.isInAngularZone = function () { return Zone.current.get('isAngularZone') === true; };
-	        NgZoneImpl.prototype.runInner = function (fn) { return this.inner.run(fn); };
-	        ;
-	        NgZoneImpl.prototype.runInnerGuarded = function (fn) { return this.inner.runGuarded(fn); };
-	        ;
-	        NgZoneImpl.prototype.runOuter = function (fn) { return this.outer.run(fn); };
-	        ;
-	        return NgZoneImpl;
-	    }());
-
-	    /**
 	     * An injectable service for executing work inside or outside of the Angular zone.
 	     *
 	     * The most common use of this service is to optimize performance when starting a work consisting of
 	     * one or more asynchronous tasks that don't require UI updates or error handling to be handled by
-	     * Angular. Such tasks can be kicked off via {@link #runOutsideAngular} and if needed, these tasks
-	     * can reenter the Angular zone via {@link #run}.
+	     * Angular. Such tasks can be kicked off via {@link runOutsideAngular} and if needed, these tasks
+	     * can reenter the Angular zone via {@link run}.
 	     *
 	     * <!-- TODO: add/fix links to:
 	     *   - docs explaining zones and the use of zones in Angular and change-detection
 	     *   - link to runOutsideAngular/run (throughout this file!)
 	     *   -->
 	     *
-	     * ### Example ([live demo](http://plnkr.co/edit/lY9m8HLy7z06vDoUaSN2?p=preview))
+	     * ### Example
 	     * ```
-	     * import {Component, View, NgZone} from '@angular/core';
+	     * import {Component, NgZone} from '@angular/core';
 	     * import {NgIf} from '@angular/common';
 	     *
 	     * @Component({
@@ -16333,7 +16112,6 @@
 	     *     }}));
 	     *   }
 	     *
-	     *
 	     *   _increaseProgress(doneCallback: () => void) {
 	     *     this.progress += 1;
 	     *     console.log(`Current progress: ${this.progress}%`);
@@ -16350,81 +16128,70 @@
 	     */
 	    var NgZone = (function () {
 	        function NgZone(_a) {
-	            var _this = this;
 	            var _b = _a.enableLongStackTrace, enableLongStackTrace = _b === void 0 ? false : _b;
 	            this._hasPendingMicrotasks = false;
 	            this._hasPendingMacrotasks = false;
-	            /** @internal */
 	            this._isStable = true;
-	            /** @internal */
 	            this._nesting = 0;
-	            /** @internal */
 	            this._onUnstable = new EventEmitter(false);
-	            /** @internal */
 	            this._onMicrotaskEmpty = new EventEmitter(false);
-	            /** @internal */
 	            this._onStable = new EventEmitter(false);
-	            /** @internal */
 	            this._onErrorEvents = new EventEmitter(false);
-	            this._zoneImpl = new NgZoneImpl({
-	                trace: enableLongStackTrace,
-	                onEnter: function () {
-	                    // console.log('ZONE.enter', this._nesting, this._isStable);
-	                    _this._nesting++;
-	                    if (_this._isStable) {
-	                        _this._isStable = false;
-	                        _this._onUnstable.emit(null);
-	                    }
-	                },
-	                onLeave: function () {
-	                    _this._nesting--;
-	                    // console.log('ZONE.leave', this._nesting, this._isStable);
-	                    _this._checkStable();
-	                },
-	                setMicrotask: function (hasMicrotasks) {
-	                    _this._hasPendingMicrotasks = hasMicrotasks;
-	                    _this._checkStable();
-	                },
-	                setMacrotask: function (hasMacrotasks) { _this._hasPendingMacrotasks = hasMacrotasks; },
-	                onError: function (error) { return _this._onErrorEvents.emit(error); }
-	            });
+	            if (typeof Zone == 'undefined') {
+	                throw new Error('Angular requires Zone.js prolyfill.');
+	            }
+	            Zone.assertZonePatched();
+	            this.outer = this.inner = Zone.current;
+	            if (Zone['wtfZoneSpec']) {
+	                this.inner = this.inner.fork(Zone['wtfZoneSpec']);
+	            }
+	            if (enableLongStackTrace && Zone['longStackTraceZoneSpec']) {
+	                this.inner = this.inner.fork(Zone['longStackTraceZoneSpec']);
+	            }
+	            this.forkInnerZoneWithAngularBehavior();
 	        }
-	        NgZone.isInAngularZone = function () { return NgZoneImpl.isInAngularZone(); };
+	        NgZone.isInAngularZone = function () { return Zone.current.get('isAngularZone') === true; };
 	        NgZone.assertInAngularZone = function () {
-	            if (!NgZoneImpl.isInAngularZone()) {
+	            if (!NgZone.isInAngularZone()) {
 	                throw new Error('Expected to be in Angular Zone, but it is not!');
 	            }
 	        };
 	        NgZone.assertNotInAngularZone = function () {
-	            if (NgZoneImpl.isInAngularZone()) {
+	            if (NgZone.isInAngularZone()) {
 	                throw new Error('Expected to not be in Angular Zone, but it is!');
 	            }
 	        };
-	        NgZone.prototype._checkStable = function () {
-	            var _this = this;
-	            if (this._nesting == 0) {
-	                if (!this._hasPendingMicrotasks && !this._isStable) {
-	                    try {
-	                        // console.log('ZONE.microtaskEmpty');
-	                        this._nesting++;
-	                        this._onMicrotaskEmpty.emit(null);
-	                    }
-	                    finally {
-	                        this._nesting--;
-	                        if (!this._hasPendingMicrotasks) {
-	                            try {
-	                                // console.log('ZONE.stable', this._nesting, this._isStable);
-	                                this.runOutsideAngular(function () { return _this._onStable.emit(null); });
-	                            }
-	                            finally {
-	                                this._isStable = true;
-	                            }
-	                        }
-	                    }
-	                }
-	            }
-	        };
-	        ;
+	        /**
+	         * Executes the `fn` function synchronously within the Angular zone and returns value returned by
+	         * the function.
+	         *
+	         * Running functions via `run` allows you to reenter Angular zone from a task that was executed
+	         * outside of the Angular zone (typically started via {@link runOutsideAngular}).
+	         *
+	         * Any future tasks or microtasks scheduled from within this function will continue executing from
+	         * within the Angular zone.
+	         *
+	         * If a synchronous error happens it will be rethrown and not reported via `onError`.
+	         */
+	        NgZone.prototype.run = function (fn) { return this.inner.run(fn); };
+	        /**
+	         * Same as `run`, except that synchronous errors are caught and forwarded via `onError` and not
+	         * rethrown.
+	         */
+	        NgZone.prototype.runGuarded = function (fn) { return this.inner.runGuarded(fn); };
+	        /**
+	         * Executes the `fn` function synchronously in Angular's parent zone and returns value returned by
+	         * the function.
+	         *
+	         * Running functions via `runOutsideAngular` allows you to escape Angular's zone and do work that
+	         * doesn't trigger Angular change-detection or is subject to Angular's error handling.
+	         *
+	         * Any future tasks or microtasks scheduled from within this function will continue executing from
+	         * outside of the Angular zone.
+	         *
+	         * Use {@link run} to reenter the Angular zone and do work that updates the application model.
+	         */
+	        NgZone.prototype.runOutsideAngular = function (fn) { return this.outer.run(fn); };
 	        Object.defineProperty(NgZone.prototype, "onUnstable", {
 	            /**
 	             * Notifies when code enters Angular Zone. This gets fired first on VM Turn.
@@ -16463,59 +16230,102 @@
 	        });
 	        Object.defineProperty(NgZone.prototype, "isStable", {
 	            /**
-	             * Whether there are no outstanding microtasks or microtasks.
+	             * Whether there are no outstanding microtasks or macrotasks.
 	             */
 	            get: function () { return this._isStable; },
 	            enumerable: true,
 	            configurable: true
 	        });
 	        Object.defineProperty(NgZone.prototype, "hasPendingMicrotasks", {
-	            /**
-	             * Whether there are any outstanding microtasks.
-	             */
 	            get: function () { return this._hasPendingMicrotasks; },
 	            enumerable: true,
 	            configurable: true
 	        });
 	        Object.defineProperty(NgZone.prototype, "hasPendingMacrotasks", {
-	            /**
-	             * Whether there are any outstanding microtasks.
-	             */
 	            get: function () { return this._hasPendingMacrotasks; },
 	            enumerable: true,
 	            configurable: true
 	        });
-	        /**
-	         * Executes the `fn` function synchronously within the Angular zone and returns value returned by
-	         * the function.
-	         *
-	         * Running functions via `run` allows you to reenter Angular zone from a task that was executed
-	         * outside of the Angular zone (typically started via {@link #runOutsideAngular}).
-	         *
-	         * Any future tasks or microtasks scheduled from within this function will continue executing from
-	         * within the Angular zone.
-	         *
-	         * If a synchronous error happens it will be rethrown and not reported via `onError`.
-	         */
-	        NgZone.prototype.run = function (fn) { return this._zoneImpl.runInner(fn); };
-	        /**
-	         * Same as #run, except that synchronous errors are caught and forwarded
-	         * via `onError` and not rethrown.
-	         */
-	        NgZone.prototype.runGuarded = function (fn) { return this._zoneImpl.runInnerGuarded(fn); };
-	        /**
-	         * Executes the `fn` function synchronously in Angular's parent zone and returns value returned by
-	         * the function.
-	         *
-	         * Running functions via `runOutsideAngular` allows you to escape Angular's zone and do work that
-	         * doesn't trigger Angular change-detection or is subject to Angular's error handling.
-	         *
-	         * Any future tasks or microtasks scheduled from within this function will continue executing from
-	         * outside of the Angular zone.
-	         *
-	         * Use {@link #run} to reenter the Angular zone and do work that updates the application model.
-	         */
-	        NgZone.prototype.runOutsideAngular = function (fn) { return this._zoneImpl.runOuter(fn); };
+	        NgZone.prototype.checkStable = function () {
+	            var _this = this;
+	            if (this._nesting == 0 && !this._hasPendingMicrotasks && !this._isStable) {
+	                try {
+	                    this._nesting++;
+	                    this._onMicrotaskEmpty.emit(null);
+	                }
+	                finally {
+	                    this._nesting--;
+	                    if (!this._hasPendingMicrotasks) {
+	                        try {
+	                            this.runOutsideAngular(function () { return _this._onStable.emit(null); });
+	                        }
+	                        finally {
+	                            this._isStable = true;
+	                        }
+	                    }
+	                }
+	            }
+	        };
+	        NgZone.prototype.forkInnerZoneWithAngularBehavior = function () {
+	            var _this = this;
+	            this.inner = this.inner.fork({
+	                name: 'angular',
+	                properties: { 'isAngularZone': true },
+	                onInvokeTask: function (delegate, current, target, task, applyThis, applyArgs) {
+	                    try {
+	                        _this.onEnter();
+	                        return delegate.invokeTask(target, task, applyThis, applyArgs);
+	                    }
+	                    finally {
+	                        _this.onLeave();
+	                    }
+	                },
+	                onInvoke: function (delegate, current, target, callback, applyThis, applyArgs, source) {
+	                    try {
+	                        _this.onEnter();
+	                        return delegate.invoke(target, callback, applyThis, applyArgs, source);
+	                    }
+	                    finally {
+	                        _this.onLeave();
+	                    }
+	                },
+	                onHasTask: function (delegate, current, target, hasTaskState) {
+	                    delegate.hasTask(target, hasTaskState);
+	                    if (current === target) {
+	                        // We are only interested in hasTask events which originate from our zone
+	                        // (A child hasTask event is not interesting to us)
+	                        if (hasTaskState.change == 'microTask') {
+	                            _this.setHasMicrotask(hasTaskState.microTask);
+	                        }
+	                        else if (hasTaskState.change == 'macroTask') {
+	                            _this.setHasMacrotask(hasTaskState.macroTask);
+	                        }
+	                    }
+	                },
+	                onHandleError: function (delegate, current, target, error) {
+	                    delegate.handleError(target, error);
+	                    _this.triggerError(error);
+	                    return false;
+	                }
+	            });
+	        };
+	        NgZone.prototype.onEnter = function () {
+	            this._nesting++;
+	            if (this._isStable) {
+	                this._isStable = false;
+	                this._onUnstable.emit(null);
+	            }
+	        };
+	        NgZone.prototype.onLeave = function () {
+	            this._nesting--;
+	            this.checkStable();
+	        };
+	        NgZone.prototype.setHasMicrotask = function (hasMicrotasks) {
+	            this._hasPendingMicrotasks = hasMicrotasks;
+	            this.checkStable();
+	        };
+	        NgZone.prototype.setHasMacrotask = function (hasMacrotasks) { this._hasPendingMacrotasks = hasMacrotasks; };
+	        NgZone.prototype.triggerError = function (error) { this._onErrorEvents.emit(error); };
 	        return NgZone;
 	    }());
 
@@ -17527,7 +17337,7 @@
 	     */
 	    var _queuedAnimations = [];
 	    /** @internal */
-	    function queueAnimation(player) {
+	    function queueAnimationGlobally(player) {
 	        _queuedAnimations.push(player);
 	    }
 	    /** @internal */
@@ -17951,8 +17761,6 @@
 	    var DEFAULT_STATE = '*';
 	    var EMPTY_STATE = 'void';
 
-	    var Math$1 = global$1.Math;
-
 	    var AnimationGroupPlayer = (function () {
 	        function AnimationGroupPlayer(_players) {
 	            var _this = this;
@@ -18021,7 +17829,7 @@
 	            var min = 0;
 	            this._players.forEach(function (player) {
 	                var p = player.getPosition();
-	                min = Math$1.min(p, min);
+	                min = Math.min(p, min);
 	            });
 	            return min;
 	        };
@@ -18547,11 +18355,11 @@
 	    function style(tokens) {
 	        var input;
 	        var offset = null;
-	        if (isString(tokens)) {
+	        if (typeof tokens === 'string') {
 	            input = [tokens];
 	        }
 	        else {
-	            if (isArray(tokens)) {
+	            if (Array.isArray(tokens)) {
 	                input = tokens;
 	            }
 	            else {
@@ -18757,6 +18565,22 @@
 	     * ])
 	     * ```
 	     *
+	     * ### Transition Aliases (`:enter` and `:leave`)
+	     *
+	     * Given that enter (insertion) and leave (removal) animations are so common,
+	     * the `transition` function accepts both `:enter` and `:leave` values which
+	     * are aliases for the `void => *` and `* => void` state changes.
+	     *
+	     * ```
+	     * transition(":enter", [
+	     *   style({ opacity: 0 }),
+	     *   animate(500, style({ opacity: 1 }))
+	     * ])
+	     * transition(":leave", [
+	     *   animate(500, style({ opacity: 0 }))
+	     * ])
+	     * ```
+	     *
 	     * ### Example ([live demo](http://plnkr.co/edit/Kez8XGWBxWue7qP7nNvF?p=preview))
 	     *
 	     * {@example core/animation/ts/dsl/animation_example.ts region='Component'}
@@ -18764,8 +18588,7 @@
 	     * @experimental Animation support is experimental.
 	     */
 	    function transition(stateChangeExpr, steps) {
-	        var animationData = isArray(steps) ? new AnimationSequenceMetadata(steps) :
-	            steps;
+	        var animationData = Array.isArray(steps) ? new AnimationSequenceMetadata(steps) : steps;
 	        return new AnimationStateTransitionMetadata(stateChangeExpr, animationData);
 	    }
 	    /**
@@ -18931,6 +18754,81 @@
 	            this.styles = styles;
 	        }
 	        return AnimationStyles;
+	    }());
+
+	    /**
+	     * @license
+	     * Copyright Google Inc. All Rights Reserved.
+	     *
+	     * Use of this source code is governed by an MIT-style license that can be
+	     * found in the LICENSE file at https://angular.io/license
+	     */
+	    /**
+	     * An instance of this class is returned as an event parameter when an animation
+	     * callback is captured for an animation either during the start or done phase.
+	     *
+	     * ```typescript
+	     * @Component({
+	     *   host: {
+	     *     '[@myAnimationTrigger]': 'someExpression',
+	     *     '(@myAnimationTrigger.start)': 'captureStartEvent($event)',
+	     *     '(@myAnimationTrigger.done)': 'captureDoneEvent($event)',
+	     *   },
+	     *   animations: [
+	     *     trigger("myAnimationTrigger", [
+	     *        // ...
+	     *     ])
+	     *   ]
+	     * })
+	     * class MyComponent {
+	     *   someExpression: any = false;
+	     *   captureStartEvent(event: AnimationTransitionEvent) {
+	     *     // the toState, fromState and totalTime data is accessible from the event variable
+	     *   }
+	     *
+	     *   captureDoneEvent(event: AnimationTransitionEvent) {
+	     *     // the toState, fromState and totalTime data is accessible from the event variable
+	     *   }
+	     * }
+	     * ```
+	     *
+	     * @experimental Animation support is experimental.
+	     */
+	    var AnimationTransitionEvent = (function () {
+	        function AnimationTransitionEvent(_a) {
+	            var fromState = _a.fromState, toState = _a.toState, totalTime = _a.totalTime, phaseName = _a.phaseName;
+	            this.fromState = fromState;
+	            this.toState = toState;
+	            this.totalTime = totalTime;
+	            this.phaseName = phaseName;
+	        }
+	        return AnimationTransitionEvent;
+	    }());
+
+	    var AnimationTransition = (function () {
+	        function AnimationTransition(_player, _fromState, _toState, _totalTime) {
+	            this._player = _player;
+	            this._fromState = _fromState;
+	            this._toState = _toState;
+	            this._totalTime = _totalTime;
+	        }
+	        AnimationTransition.prototype._createEvent = function (phaseName) {
+	            return new AnimationTransitionEvent({
+	                fromState: this._fromState,
+	                toState: this._toState,
+	                totalTime: this._totalTime,
+	                phaseName: phaseName
+	            });
+	        };
+	        AnimationTransition.prototype.onStart = function (callback) {
+	            var event = this._createEvent('start');
+	            this._player.onStart(function () { return callback(event); });
+	        };
+	        AnimationTransition.prototype.onDone = function (callback) {
+	            var event = this._createEvent('done');
+	            this._player.onDone(function () { return callback(event); });
+	        };
+	        return AnimationTransition;
 	    }());
 
 	    var DebugDomRootRenderer = (function () {
@@ -19167,64 +19065,11 @@
 	        return DebugContext;
 	    }());
 
-	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    /**
-	     * An instance of this class is returned as an event parameter when an animation
-	     * callback is captured for an animation either during the start or done phase.
-	     *
-	     * ```typescript
-	     * @Component({
-	     *   host: {
-	     *     '[@myAnimationTrigger]': 'someExpression',
-	     *     '(@myAnimationTrigger.start)': 'captureStartEvent($event)',
-	     *     '(@myAnimationTrigger.done)': 'captureDoneEvent($event)',
-	     *   },
-	     *   animations: [
-	     *     trigger("myAnimationTrigger", [
-	     *        // ...
-	     *     ])
-	     *   ]
-	     * })
-	     * class MyComponent {
-	     *   someExpression: any = false;
-	     *   captureStartEvent(event: AnimationTransitionEvent) {
-	     *     // the toState, fromState and totalTime data is accessible from the event variable
-	     *   }
-	     *
-	     *   captureDoneEvent(event: AnimationTransitionEvent) {
-	     *     // the toState, fromState and totalTime data is accessible from the event variable
-	     *   }
-	     * }
-	     * ```
-	     *
-	     * @experimental Animation support is experimental.
-	     */
-	    var AnimationTransitionEvent = (function () {
-	        function AnimationTransitionEvent(_a) {
-	            var fromState = _a.fromState, toState = _a.toState, totalTime = _a.totalTime;
-	            this.fromState = fromState;
-	            this.toState = toState;
-	            this.totalTime = totalTime;
-	        }
-	        return AnimationTransitionEvent;
-	    }());
-
 	    var ViewAnimationMap = (function () {
 	        function ViewAnimationMap() {
 	            this._map = new Map();
 	            this._allPlayers = [];
 	        }
-	        Object.defineProperty(ViewAnimationMap.prototype, "length", {
-	            get: function () { return this.getAllPlayers().length; },
-	            enumerable: true,
-	            configurable: true
-	        });
 	        ViewAnimationMap.prototype.find = function (element, animationName) {
 	            var playersByAnimation = this._map.get(element);
 	            if (isPresent(playersByAnimation)) {
@@ -19262,6 +19107,40 @@
 	            }
 	        };
 	        return ViewAnimationMap;
+	    }());
+
+	    var AnimationViewContext = (function () {
+	        function AnimationViewContext() {
+	            this._players = new ViewAnimationMap();
+	        }
+	        AnimationViewContext.prototype.onAllActiveAnimationsDone = function (callback) {
+	            var activeAnimationPlayers = this._players.getAllPlayers();
+	            // we check for the length to avoid having GroupAnimationPlayer
+	            // issue an unnecessary microtask when zero players are passed in
+	            if (activeAnimationPlayers.length) {
+	                new AnimationGroupPlayer(activeAnimationPlayers).onDone(function () { return callback(); });
+	            }
+	            else {
+	                callback();
+	            }
+	        };
+	        AnimationViewContext.prototype.queueAnimation = function (element, animationName, player) {
+	            queueAnimationGlobally(player);
+	            this._players.set(element, animationName, player);
+	        };
+	        AnimationViewContext.prototype.cancelActiveAnimation = function (element, animationName, removeAllAnimations) {
+	            if (removeAllAnimations === void 0) { removeAllAnimations = false; }
+	            if (removeAllAnimations) {
+	                this._players.findAllPlayersByElement(element).forEach(function (player) { return player.destroy(); });
+	            }
+	            else {
+	                var player = this._players.find(element, animationName);
+	                if (player) {
+	                    player.destroy();
+	                }
+	            }
+	        };
+	        return AnimationViewContext;
 	    }());
 
 	    /**
@@ -19328,8 +19207,6 @@
 	            this.viewChildren = [];
 	            this.viewContainerElement = null;
 	            this.numberOfChecks = 0;
-	            this.animationPlayers = new ViewAnimationMap();
-	            this._animationListeners = new Map();
 	            this.ref = new ViewRef_(this);
 	            if (type === ViewType.COMPONENT || type === ViewType.HOST) {
 	                this.renderer = viewUtils.renderComponent(componentType);
@@ -19338,56 +19215,21 @@
 	                this.renderer = declarationAppElement.parentView.renderer;
 	            }
 	        }
+	        Object.defineProperty(AppView.prototype, "animationContext", {
+	            get: function () {
+	                if (!this._animationContext) {
+	                    this._animationContext = new AnimationViewContext();
+	                }
+	                return this._animationContext;
+	            },
+	            enumerable: true,
+	            configurable: true
+	        });
 	        Object.defineProperty(AppView.prototype, "destroyed", {
 	            get: function () { return this.cdMode === ChangeDetectorStatus.Destroyed; },
 	            enumerable: true,
 	            configurable: true
 	        });
-	        AppView.prototype.cancelActiveAnimation = function (element, animationName, removeAllAnimations) {
-	            if (removeAllAnimations === void 0) { removeAllAnimations = false; }
-	            if (removeAllAnimations) {
-	                this.animationPlayers.findAllPlayersByElement(element).forEach(function (player) { return player.destroy(); });
-	            }
-	            else {
-	                var player = this.animationPlayers.find(element, animationName);
-	                if (isPresent(player)) {
-	                    player.destroy();
-	                }
-	            }
-	        };
-	        AppView.prototype.queueAnimation = function (element, animationName, player, totalTime, fromState, toState) {
-	            var _this = this;
-	            queueAnimation(player);
-	            var event = new AnimationTransitionEvent({ 'fromState': fromState, 'toState': toState, 'totalTime': totalTime });
-	            this.animationPlayers.set(element, animationName, player);
-	            player.onDone(function () {
-	                // TODO: make this into a datastructure for done|start
-	                _this.triggerAnimationOutput(element, animationName, 'done', event);
-	                _this.animationPlayers.remove(element, animationName);
-	            });
-	            player.onStart(function () { _this.triggerAnimationOutput(element, animationName, 'start', event); });
-	        };
-	        AppView.prototype.triggerAnimationOutput = function (element, animationName, phase, event) {
-	            var listeners = this._animationListeners.get(element);
-	            if (isPresent(listeners) && listeners.length) {
-	                for (var i = 0; i < listeners.length; i++) {
-	                    var listener = listeners[i];
-	                    // we check for both the name in addition to the phase in the event
-	                    // that there may be more than one @trigger on the same element
-	                    if (listener.eventName === animationName && listener.eventPhase === phase) {
-	                        listener.handler(event);
-	                        break;
-	                    }
-	                }
-	            }
-	        };
-	        AppView.prototype.registerAnimationOutput = function (element, eventName, eventPhase, eventHandler) {
-	            var animations = this._animationListeners.get(element);
-	            if (!isPresent(animations)) {
-	                this._animationListeners.set(element, animations = []);
-	            }
-	            animations.push(new _AnimationOutputHandler(eventName, eventPhase, eventHandler));
-	        };
 	        AppView.prototype.create = function (context, givenProjectableNodes, rootSelectorOrNode) {
 	            this.context = context;
 	            var projectableNodes;
@@ -19487,12 +19329,11 @@
 	            }
 	            this.destroyInternal();
 	            this.dirtyParentQueriesInternal();
-	            if (this.animationPlayers.length == 0) {
-	                this.renderer.destroyView(hostElement, this.allNodes);
+	            if (this._animationContext) {
+	                this._animationContext.onAllActiveAnimationsDone(function () { return _this.renderer.destroyView(hostElement, _this.allNodes); });
 	            }
 	            else {
-	                var player = new AnimationGroupPlayer(this.animationPlayers.getAllPlayers());
-	                player.onDone(function () { _this.renderer.destroyView(hostElement, _this.allNodes); });
+	                this.renderer.destroyView(hostElement, this.allNodes);
 	            }
 	        };
 	        /**
@@ -19506,12 +19347,11 @@
 	        AppView.prototype.detach = function () {
 	            var _this = this;
 	            this.detachInternal();
-	            if (this.animationPlayers.length == 0) {
-	                this.renderer.detachView(this.flatRootNodes);
+	            if (this._animationContext) {
+	                this._animationContext.onAllActiveAnimationsDone(function () { return _this.renderer.detachView(_this.flatRootNodes); });
 	            }
 	            else {
-	                var player = new AnimationGroupPlayer(this.animationPlayers.getAllPlayers());
-	                player.onDone(function () { _this.renderer.detachView(_this.flatRootNodes); });
+	                this.renderer.detachView(this.flatRootNodes);
 	            }
 	        };
 	        Object.defineProperty(AppView.prototype, "changeDetectorRef", {
@@ -19715,14 +19555,6 @@
 	        }
 	        return lastNode;
 	    }
-	    var _AnimationOutputHandler = (function () {
-	        function _AnimationOutputHandler(eventName, eventPhase, handler) {
-	            this.eventName = eventName;
-	            this.eventPhase = eventPhase;
-	            this.handler = handler;
-	        }
-	        return _AnimationOutputHandler;
-	    }());
 
 	    var __core_private__ = {
 	        isDefaultChangeDetectionStrategy: isDefaultChangeDetectionStrategy,
@@ -19738,11 +19570,7 @@
 	        NgModuleInjector: NgModuleInjector,
 	        registerModuleFactory: registerModuleFactory,
 	        ViewType: ViewType,
-	        MAX_INTERPOLATION_VALUES: MAX_INTERPOLATION_VALUES,
-	        checkBinding: checkBinding,
-	        flattenNestedViewRenderNodes: flattenNestedViewRenderNodes,
-	        interpolate: interpolate,
-	        ViewUtils: ViewUtils,
+	        view_utils: view_utils,
 	        ViewMetadata: ViewMetadata,
 	        DebugContext: DebugContext,
 	        StaticNodeDebugInfo: StaticNodeDebugInfo,
@@ -19754,19 +19582,6 @@
 	        ReflectionCapabilities: ReflectionCapabilities,
 	        makeDecorator: makeDecorator,
 	        DebugDomRootRenderer: DebugDomRootRenderer,
-	        EMPTY_ARRAY: EMPTY_ARRAY,
-	        EMPTY_MAP: EMPTY_MAP,
-	        pureProxy1: pureProxy1,
-	        pureProxy2: pureProxy2,
-	        pureProxy3: pureProxy3,
-	        pureProxy4: pureProxy4,
-	        pureProxy5: pureProxy5,
-	        pureProxy6: pureProxy6,
-	        pureProxy7: pureProxy7,
-	        pureProxy8: pureProxy8,
-	        pureProxy9: pureProxy9,
-	        pureProxy10: pureProxy10,
-	        castByValue: castByValue,
 	        Console: Console,
 	        reflector: reflector,
 	        Reflector: Reflector,
@@ -19787,7 +19602,8 @@
 	        EMPTY_STATE: EMPTY_STATE,
 	        FILL_STYLE_FLAG: FILL_STYLE_FLAG,
 	        ComponentStillLoadingError: ComponentStillLoadingError,
-	        isPromise: isPromise
+	        isPromise: isPromise,
+	        AnimationTransition: AnimationTransition
 	    };
 
 	    exports.createPlatform = createPlatform;
@@ -20916,7 +20732,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.0.2
+	 * @license Angular v2.1.1
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -20927,80 +20743,6 @@
 	}(this, function (exports,_angular_compiler,_angular_core,_angular_platformBrowser) { 'use strict';
 
 	    var INTERNAL_BROWSER_PLATFORM_PROVIDERS = _angular_platformBrowser.__platform_browser_private__.INTERNAL_BROWSER_PLATFORM_PROVIDERS;
-
-	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    var globalScope;
-	    if (typeof window === 'undefined') {
-	        if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
-	            // TODO: Replace any with WorkerGlobalScope from lib.webworker.d.ts #3492
-	            globalScope = self;
-	        }
-	        else {
-	            globalScope = global;
-	        }
-	    }
-	    else {
-	        globalScope = window;
-	    }
-	    // Need to declare a new variable for global here since TypeScript
-	    // exports the original value of the symbol.
-	    var global$1 = globalScope;
-	    // TODO: remove calls to assert in production environment
-	    // Note: Can't just export this and import in in other files
-	    // as `assert` is a reserved keyword in Dart
-	    global$1.assert = function assert(condition) {
-	        // TODO: to be fixed properly via #2830, noop for now
-	    };
-	    function isPresent(obj) {
-	        return obj !== undefined && obj !== null;
-	    }
-	    var NumberWrapper = (function () {
-	        function NumberWrapper() {
-	        }
-	        NumberWrapper.toFixed = function (n, fractionDigits) { return n.toFixed(fractionDigits); };
-	        NumberWrapper.equal = function (a, b) { return a === b; };
-	        NumberWrapper.parseIntAutoRadix = function (text) {
-	            var result = parseInt(text);
-	            if (isNaN(result)) {
-	                throw new Error('Invalid integer literal when parsing ' + text);
-	            }
-	            return result;
-	        };
-	        NumberWrapper.parseInt = function (text, radix) {
-	            if (radix == 10) {
-	                if (/^(\-|\+)?[0-9]+$/.test(text)) {
-	                    return parseInt(text, radix);
-	                }
-	            }
-	            else if (radix == 16) {
-	                if (/^(\-|\+)?[0-9ABCDEFabcdef]+$/.test(text)) {
-	                    return parseInt(text, radix);
-	                }
-	            }
-	            else {
-	                var result = parseInt(text, radix);
-	                if (!isNaN(result)) {
-	                    return result;
-	                }
-	            }
-	            throw new Error('Invalid integer literal when parsing ' + text + ' in base ' + radix);
-	        };
-	        Object.defineProperty(NumberWrapper, "NaN", {
-	            get: function () { return NaN; },
-	            enumerable: true,
-	            configurable: true
-	        });
-	        NumberWrapper.isNumeric = function (value) { return !isNaN(value - parseFloat(value)); };
-	        NumberWrapper.isNaN = function (value) { return isNaN(value); };
-	        NumberWrapper.isInteger = function (value) { return Number.isInteger(value); };
-	        return NumberWrapper;
-	    }());
 
 	    var __extends = (this && this.__extends) || function (d, b) {
 	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -21026,7 +20768,7 @@
 	                // responseText is the old-school way of retrieving response (supported by IE8 & 9)
 	                // response/responseType properties were introduced in ResourceLoader Level2 spec (supported
 	                // by IE10)
-	                var response = isPresent(xhr.response) ? xhr.response : xhr.responseText;
+	                var response = xhr.response || xhr.responseText;
 	                // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)
 	                var status = xhr.status === 1223 ? 204 : xhr.status;
 	                // fix status code when it is 0 (0 status is undocumented).
@@ -21070,6 +20812,36 @@
 	     * Use of this source code is governed by an MIT-style license that can be
 	     * found in the LICENSE file at https://angular.io/license
 	     */
+	    var globalScope;
+	    if (typeof window === 'undefined') {
+	        if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
+	            // TODO: Replace any with WorkerGlobalScope from lib.webworker.d.ts #3492
+	            globalScope = self;
+	        }
+	        else {
+	            globalScope = global;
+	        }
+	    }
+	    else {
+	        globalScope = window;
+	    }
+	    // Need to declare a new variable for global here since TypeScript
+	    // exports the original value of the symbol.
+	    var _global = globalScope;
+	    // TODO: remove calls to assert in production environment
+	    // Note: Can't just export this and import in in other files
+	    // as `assert` is a reserved keyword in Dart
+	    _global.assert = function assert(condition) {
+	        // TODO: to be fixed properly via #2830, noop for now
+	    };
+
+	    /**
+	     * @license
+	     * Copyright Google Inc. All Rights Reserved.
+	     *
+	     * Use of this source code is governed by an MIT-style license that can be
+	     * found in the LICENSE file at https://angular.io/license
+	     */
 	    var __extends$1 = (this && this.__extends) || function (d, b) {
 	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	        function __() { this.constructor = d; }
@@ -21086,7 +20858,7 @@
 	        __extends$1(CachedResourceLoader, _super);
 	        function CachedResourceLoader() {
 	            _super.call(this);
-	            this._cache = global$1.$templateCache;
+	            this._cache = _global.$templateCache;
 	            if (this._cache == null) {
 	                throw new Error('CachedResourceLoader: Template cache was not found in $templateCache.');
 	            }
@@ -21112,7 +20884,7 @@
 	     */
 	    var RESOURCE_CACHE_PROVIDER = [{ provide: _angular_compiler.ResourceLoader, useClass: CachedResourceLoader }];
 	    /**
-	     * @experimental API related to bootstrapping are still under review.
+	     * @stable
 	     */
 	    var platformBrowserDynamic = _angular_core.createPlatformFactory(_angular_compiler.platformCoreDynamic, 'browserDynamic', INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS);
 
@@ -21128,8 +20900,8 @@
 /* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.0.2
+	/**
+	 * @license Angular v2.1.1
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -21146,208 +20918,6 @@
 	   * Use of this source code is governed by an MIT-style license that can be
 	   * found in the LICENSE file at https://angular.io/license
 	   */
-	  var globalScope;
-	  if (typeof window === 'undefined') {
-	      if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
-	          // TODO: Replace any with WorkerGlobalScope from lib.webworker.d.ts #3492
-	          globalScope = self;
-	      }
-	      else {
-	          globalScope = global;
-	      }
-	  }
-	  else {
-	      globalScope = window;
-	  }
-	  // Need to declare a new variable for global here since TypeScript
-	  // exports the original value of the symbol.
-	  var global$1 = globalScope;
-	  // TODO: remove calls to assert in production environment
-	  // Note: Can't just export this and import in in other files
-	  // as `assert` is a reserved keyword in Dart
-	  global$1.assert = function assert(condition) {
-	      // TODO: to be fixed properly via #2830, noop for now
-	  };
-	  function isPresent(obj) {
-	      return obj !== undefined && obj !== null;
-	  }
-	  function isBlank(obj) {
-	      return obj === undefined || obj === null;
-	  }
-	  function isString(obj) {
-	      return typeof obj === 'string';
-	  }
-	  function isStringMap(obj) {
-	      return typeof obj === 'object' && obj !== null;
-	  }
-	  var STRING_MAP_PROTO = Object.getPrototypeOf({});
-	  function isStrictStringMap(obj) {
-	      return isStringMap(obj) && Object.getPrototypeOf(obj) === STRING_MAP_PROTO;
-	  }
-	  function isArray(obj) {
-	      return Array.isArray(obj);
-	  }
-	  function stringify(token) {
-	      if (typeof token === 'string') {
-	          return token;
-	      }
-	      if (token === undefined || token === null) {
-	          return '' + token;
-	      }
-	      if (token.overriddenName) {
-	          return token.overriddenName;
-	      }
-	      if (token.name) {
-	          return token.name;
-	      }
-	      var res = token.toString();
-	      var newLineIndex = res.indexOf('\n');
-	      return newLineIndex === -1 ? res : res.substring(0, newLineIndex);
-	  }
-	  var StringWrapper = (function () {
-	      function StringWrapper() {
-	      }
-	      StringWrapper.fromCharCode = function (code) { return String.fromCharCode(code); };
-	      StringWrapper.charCodeAt = function (s, index) { return s.charCodeAt(index); };
-	      StringWrapper.split = function (s, regExp) { return s.split(regExp); };
-	      StringWrapper.equals = function (s, s2) { return s === s2; };
-	      StringWrapper.stripLeft = function (s, charVal) {
-	          if (s && s.length) {
-	              var pos = 0;
-	              for (var i = 0; i < s.length; i++) {
-	                  if (s[i] != charVal)
-	                      break;
-	                  pos++;
-	              }
-	              s = s.substring(pos);
-	          }
-	          return s;
-	      };
-	      StringWrapper.stripRight = function (s, charVal) {
-	          if (s && s.length) {
-	              var pos = s.length;
-	              for (var i = s.length - 1; i >= 0; i--) {
-	                  if (s[i] != charVal)
-	                      break;
-	                  pos--;
-	              }
-	              s = s.substring(0, pos);
-	          }
-	          return s;
-	      };
-	      StringWrapper.replace = function (s, from, replace) {
-	          return s.replace(from, replace);
-	      };
-	      StringWrapper.replaceAll = function (s, from, replace) {
-	          return s.replace(from, replace);
-	      };
-	      StringWrapper.slice = function (s, from, to) {
-	          if (from === void 0) { from = 0; }
-	          if (to === void 0) { to = null; }
-	          return s.slice(from, to === null ? undefined : to);
-	      };
-	      StringWrapper.replaceAllMapped = function (s, from, cb) {
-	          return s.replace(from, function () {
-	              var matches = [];
-	              for (var _i = 0; _i < arguments.length; _i++) {
-	                  matches[_i - 0] = arguments[_i];
-	              }
-	              // Remove offset & string from the result array
-	              matches.splice(-2, 2);
-	              // The callback receives match, p1, ..., pn
-	              return cb(matches);
-	          });
-	      };
-	      StringWrapper.contains = function (s, substr) { return s.indexOf(substr) != -1; };
-	      StringWrapper.compare = function (a, b) {
-	          if (a < b) {
-	              return -1;
-	          }
-	          else if (a > b) {
-	              return 1;
-	          }
-	          else {
-	              return 0;
-	          }
-	      };
-	      return StringWrapper;
-	  }());
-	  var StringJoiner = (function () {
-	      function StringJoiner(parts) {
-	          if (parts === void 0) { parts = []; }
-	          this.parts = parts;
-	      }
-	      StringJoiner.prototype.add = function (part) { this.parts.push(part); };
-	      StringJoiner.prototype.toString = function () { return this.parts.join(''); };
-	      return StringJoiner;
-	  }());
-	  var NumberWrapper = (function () {
-	      function NumberWrapper() {
-	      }
-	      NumberWrapper.toFixed = function (n, fractionDigits) { return n.toFixed(fractionDigits); };
-	      NumberWrapper.equal = function (a, b) { return a === b; };
-	      NumberWrapper.parseIntAutoRadix = function (text) {
-	          var result = parseInt(text);
-	          if (isNaN(result)) {
-	              throw new Error('Invalid integer literal when parsing ' + text);
-	          }
-	          return result;
-	      };
-	      NumberWrapper.parseInt = function (text, radix) {
-	          if (radix == 10) {
-	              if (/^(\-|\+)?[0-9]+$/.test(text)) {
-	                  return parseInt(text, radix);
-	              }
-	          }
-	          else if (radix == 16) {
-	              if (/^(\-|\+)?[0-9ABCDEFabcdef]+$/.test(text)) {
-	                  return parseInt(text, radix);
-	              }
-	          }
-	          else {
-	              var result = parseInt(text, radix);
-	              if (!isNaN(result)) {
-	                  return result;
-	              }
-	          }
-	          throw new Error('Invalid integer literal when parsing ' + text + ' in base ' + radix);
-	      };
-	      Object.defineProperty(NumberWrapper, "NaN", {
-	          get: function () { return NaN; },
-	          enumerable: true,
-	          configurable: true
-	      });
-	      NumberWrapper.isNumeric = function (value) { return !isNaN(value - parseFloat(value)); };
-	      NumberWrapper.isNaN = function (value) { return isNaN(value); };
-	      NumberWrapper.isInteger = function (value) { return Number.isInteger(value); };
-	      return NumberWrapper;
-	  }());
-	  function normalizeBlank(obj) {
-	      return isBlank(obj) ? null : obj;
-	  }
-	  function normalizeBool(obj) {
-	      return isBlank(obj) ? false : obj;
-	  }
-	  function isJsObject(o) {
-	      return o !== null && (typeof o === 'function' || typeof o === 'object');
-	  }
-	  function evalExpression(sourceUrl, expr, declarations, vars) {
-	      var fnBody = declarations + "\nreturn " + expr + "\n//# sourceURL=" + sourceUrl;
-	      var fnArgNames = [];
-	      var fnArgValues = [];
-	      for (var argName in vars) {
-	          fnArgNames.push(argName);
-	          fnArgValues.push(vars[argName]);
-	      }
-	      return new (Function.bind.apply(Function, [void 0].concat(fnArgNames.concat(fnBody))))().apply(void 0, fnArgValues);
-	  }
-	  function isPrimitive(obj) {
-	      return !isJsObject(obj);
-	  }
-	  function escapeRegExp(s) {
-	      return s.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
-	  }
-
 	  /**
 	   * A segment of text within the template.
 	   */
@@ -21426,7 +20996,7 @@
 	      };
 	      Object.defineProperty(BoundEventAst.prototype, "fullName", {
 	          get: function () {
-	              if (isPresent(this.target)) {
+	              if (this.target) {
 	                  return this.target + ":" + this.name;
 	              }
 	              else {
@@ -21475,7 +21045,7 @@
 	   * An element declaration in a template.
 	   */
 	  var ElementAst = (function () {
-	      function ElementAst(name, attrs, inputs, outputs, references, directives, providers, hasViewContainer, children, ngContentIndex, sourceSpan) {
+	      function ElementAst(name, attrs, inputs, outputs, references, directives, providers, hasViewContainer, children, ngContentIndex, sourceSpan, endSourceSpan) {
 	          this.name = name;
 	          this.attrs = attrs;
 	          this.inputs = inputs;
@@ -21487,6 +21057,7 @@
 	          this.children = children;
 	          this.ngContentIndex = ngContentIndex;
 	          this.sourceSpan = sourceSpan;
+	          this.endSourceSpan = endSourceSpan;
 	      }
 	      ElementAst.prototype.visit = function (visitor, context) {
 	          return visitor.visitElement(this, context);
@@ -21618,50 +21189,93 @@
 	  function templateVisitAll(visitor, asts, context) {
 	      if (context === void 0) { context = null; }
 	      var result = [];
+	      var visit = visitor.visit ?
+	          function (ast) { return visitor.visit(ast, context) || ast.visit(visitor, context); } :
+	          function (ast) { return ast.visit(visitor, context); };
 	      asts.forEach(function (ast) {
-	          var astResult = ast.visit(visitor, context);
-	          if (isPresent(astResult)) {
+	          var astResult = visit(ast);
+	          if (astResult) {
 	              result.push(astResult);
 	          }
 	      });
 	      return result;
 	  }
 
-	  // Safari and Internet Explorer do not support the iterable parameter to the
-	  // Map constructor.  We work around that by manually adding the items.
-	  var createMapFromPairs = (function () {
-	      try {
-	          if (new Map([[1, 2]]).size === 1) {
-	              return function createMapFromPairs(pairs) { return new Map(pairs); };
-	          }
+	  function isPresent(obj) {
+	      return obj !== undefined && obj !== null;
+	  }
+	  function isBlank(obj) {
+	      return obj === undefined || obj === null;
+	  }
+	  var STRING_MAP_PROTO = Object.getPrototypeOf({});
+	  function isStrictStringMap(obj) {
+	      return typeof obj === 'object' && obj !== null && Object.getPrototypeOf(obj) === STRING_MAP_PROTO;
+	  }
+	  function stringify(token) {
+	      if (typeof token === 'string') {
+	          return token;
 	      }
-	      catch (e) {
+	      if (token === undefined || token === null) {
+	          return '' + token;
 	      }
-	      return function createMapAndPopulateFromPairs(pairs) {
-	          var map = new Map();
-	          for (var i = 0; i < pairs.length; i++) {
-	              var pair = pairs[i];
-	              map.set(pair[0], pair[1]);
+	      if (token.overriddenName) {
+	          return token.overriddenName;
+	      }
+	      if (token.name) {
+	          return token.name;
+	      }
+	      var res = token.toString();
+	      var newLineIndex = res.indexOf('\n');
+	      return newLineIndex === -1 ? res : res.substring(0, newLineIndex);
+	  }
+	  var NumberWrapper = (function () {
+	      function NumberWrapper() {
+	      }
+	      NumberWrapper.parseIntAutoRadix = function (text) {
+	          var result = parseInt(text);
+	          if (isNaN(result)) {
+	              throw new Error('Invalid integer literal when parsing ' + text);
 	          }
-	          return map;
+	          return result;
 	      };
-	  })();
-	  var _clearValues = (function () {
-	      if ((new Map()).keys().next) {
-	          return function _clearValues(m) {
-	              var keyIterator = m.keys();
-	              var k;
-	              while (!((k = keyIterator.next()).done)) {
-	                  m.set(k.value, null);
+	      NumberWrapper.parseInt = function (text, radix) {
+	          if (radix == 10) {
+	              if (/^(\-|\+)?[0-9]+$/.test(text)) {
+	                  return parseInt(text, radix);
 	              }
-	          };
-	      }
-	      else {
-	          return function _clearValuesWithForeEach(m) {
-	              m.forEach(function (v, k) { m.set(k, null); });
-	          };
-	      }
-	  })();
+	          }
+	          else if (radix == 16) {
+	              if (/^(\-|\+)?[0-9ABCDEFabcdef]+$/.test(text)) {
+	                  return parseInt(text, radix);
+	              }
+	          }
+	          else {
+	              var result = parseInt(text, radix);
+	              if (!isNaN(result)) {
+	                  return result;
+	              }
+	          }
+	          throw new Error('Invalid integer literal when parsing ' + text + ' in base ' + radix);
+	      };
+	      NumberWrapper.isNumeric = function (value) { return !isNaN(value - parseFloat(value)); };
+	      return NumberWrapper;
+	  }());
+	  function normalizeBlank(obj) {
+	      return isBlank(obj) ? null : obj;
+	  }
+	  function normalizeBool(obj) {
+	      return isBlank(obj) ? false : obj;
+	  }
+	  function isJsObject(o) {
+	      return o !== null && (typeof o === 'function' || typeof o === 'object');
+	  }
+	  function isPrimitive(obj) {
+	      return !isJsObject(obj);
+	  }
+	  function escapeRegExp(s) {
+	      return s.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+	  }
+
 	  // Safari doesn't implement MapIterator.next(), which is used is Traceur's polyfill of Array.from
 	  // TODO(mlaval): remove the work around once we have a working polyfill of Array.from
 	  var _arrayFromMap = (function () {
@@ -21693,13 +21307,6 @@
 	          }
 	          return result;
 	      };
-	      MapWrapper.toStringMap = function (m) {
-	          var r = {};
-	          m.forEach(function (v, k) { return r[k] = v; });
-	          return r;
-	      };
-	      MapWrapper.createFromPairs = function (pairs) { return createMapFromPairs(pairs); };
-	      MapWrapper.iterable = function (m) { return m; };
 	      MapWrapper.keys = function (m) { return _arrayFromMap(m, false); };
 	      MapWrapper.values = function (m) { return _arrayFromMap(m, true); };
 	      return MapWrapper;
@@ -21858,7 +21465,7 @@
 	      if (isPresent(source)) {
 	          for (var i = 0; i < source.length; i++) {
 	              var item = source[i];
-	              if (isArray(item)) {
+	              if (Array.isArray(item)) {
 	                  _flattenArray(item, target);
 	              }
 	              else {
@@ -22779,7 +22386,7 @@
 	      function ReadVarExpr(name, type) {
 	          if (type === void 0) { type = null; }
 	          _super.call(this, type);
-	          if (isString(name)) {
+	          if (typeof name === 'string') {
 	              this.name = name;
 	              this.builtin = null;
 	          }
@@ -22798,7 +22405,7 @@
 	      __extends$2(WriteVarExpr, _super);
 	      function WriteVarExpr(name, value, type) {
 	          if (type === void 0) { type = null; }
-	          _super.call(this, isPresent(type) ? type : value.type);
+	          _super.call(this, type || value.type);
 	          this.name = name;
 	          this.value = value;
 	      }
@@ -22816,7 +22423,7 @@
 	      __extends$2(WriteKeyExpr, _super);
 	      function WriteKeyExpr(receiver, index, value, type) {
 	          if (type === void 0) { type = null; }
-	          _super.call(this, isPresent(type) ? type : value.type);
+	          _super.call(this, type || value.type);
 	          this.receiver = receiver;
 	          this.index = index;
 	          this.value = value;
@@ -22830,7 +22437,7 @@
 	      __extends$2(WritePropExpr, _super);
 	      function WritePropExpr(receiver, name, value, type) {
 	          if (type === void 0) { type = null; }
-	          _super.call(this, isPresent(type) ? type : value.type);
+	          _super.call(this, type || value.type);
 	          this.receiver = receiver;
 	          this.name = name;
 	          this.value = value;
@@ -22853,7 +22460,7 @@
 	          _super.call(this, type);
 	          this.receiver = receiver;
 	          this.args = args;
-	          if (isString(method)) {
+	          if (typeof method === 'string') {
 	              this.name = method;
 	              this.builtin = null;
 	          }
@@ -22923,7 +22530,7 @@
 	      function ConditionalExpr(condition, trueCase, falseCase, type) {
 	          if (falseCase === void 0) { falseCase = null; }
 	          if (type === void 0) { type = null; }
-	          _super.call(this, isPresent(type) ? type : trueCase.type);
+	          _super.call(this, type || trueCase.type);
 	          this.condition = condition;
 	          this.falseCase = falseCase;
 	          this.trueCase = trueCase;
@@ -22984,7 +22591,7 @@
 	      __extends$2(BinaryOperatorExpr, _super);
 	      function BinaryOperatorExpr(operator, lhs, rhs, type) {
 	          if (type === void 0) { type = null; }
-	          _super.call(this, isPresent(type) ? type : lhs.type);
+	          _super.call(this, type || lhs.type);
 	          this.operator = operator;
 	          this.rhs = rhs;
 	          this.lhs = lhs;
@@ -23084,7 +22691,7 @@
 	          _super.call(this, modifiers);
 	          this.name = name;
 	          this.value = value;
-	          this.type = isPresent(type) ? type : value.type;
+	          this.type = type || value.type;
 	      }
 	      DeclareVarStmt.prototype.visitStatement = function (visitor, context) {
 	          return visitor.visitDeclareVarStmt(this, context);
@@ -23253,7 +22860,7 @@
 	          return new WritePropExpr(expr.receiver.visitExpression(this, context), expr.name, expr.value.visitExpression(this, context));
 	      };
 	      ExpressionTransformer.prototype.visitInvokeMethodExpr = function (ast, context) {
-	          var method = isPresent(ast.builtin) ? ast.builtin : ast.name;
+	          var method = ast.builtin || ast.name;
 	          return new InvokeMethodExpr(ast.receiver.visitExpression(this, context), method, this.visitAllExpressions(ast.args, context), ast.type);
 	      };
 	      ExpressionTransformer.prototype.visitInvokeFunctionExpr = function (ast, context) {
@@ -23291,7 +22898,8 @@
 	      };
 	      ExpressionTransformer.prototype.visitLiteralMapExpr = function (ast, context) {
 	          var _this = this;
-	          return new LiteralMapExpr(ast.entries.map(function (entry) { return [entry[0], entry[1].visitExpression(_this, context)]; }));
+	          var entries = ast.entries.map(function (entry) { return [entry[0], entry[1].visitExpression(_this, context),]; });
+	          return new LiteralMapExpr(entries);
 	      };
 	      ExpressionTransformer.prototype.visitAllExpressions = function (exprs, context) {
 	          var _this = this;
@@ -23517,10 +23125,6 @@
 	  }
 
 	  var MODULE_SUFFIX = '';
-	  var CAMEL_CASE_REGEXP = /([A-Z])/g;
-	  function camelCaseToDashCase(input) {
-	      return StringWrapper.replaceAllMapped(input, CAMEL_CASE_REGEXP, function (m) { return '-' + m[1].toLowerCase(); });
-	  }
 	  function splitAtColon(input, defaultValues) {
 	      return _splitAt(input, ':', defaultValues);
 	  }
@@ -23534,21 +23138,19 @@
 	      return [input.slice(0, characterIndex).trim(), input.slice(characterIndex + 1).trim()];
 	  }
 	  function sanitizeIdentifier(name) {
-	      return StringWrapper.replaceAll(name, /\W/g, '_');
+	      return name.replace(/\W/g, '_');
 	  }
 	  function visitValue(value, visitor, context) {
-	      if (isArray(value)) {
+	      if (Array.isArray(value)) {
 	          return visitor.visitArray(value, context);
 	      }
-	      else if (isStrictStringMap(value)) {
+	      if (isStrictStringMap(value)) {
 	          return visitor.visitStringMap(value, context);
 	      }
-	      else if (isBlank(value) || isPrimitive(value)) {
+	      if (isBlank(value) || isPrimitive(value)) {
 	          return visitor.visitPrimitive(value, context);
 	      }
-	      else {
-	          return visitor.visitOther(value, context);
-	      }
+	      return visitor.visitOther(value, context);
 	  }
 	  var ValueTransformer = (function () {
 	      function ValueTransformer() {
@@ -23855,7 +23457,7 @@
 	          this.styleUrls = _normalizeArray(styleUrls);
 	          this.externalStylesheets = _normalizeArray(externalStylesheets);
 	          this.animations = isPresent(animations) ? ListWrapper.flatten(animations) : [];
-	          this.ngContentSelectors = isPresent(ngContentSelectors) ? ngContentSelectors : [];
+	          this.ngContentSelectors = ngContentSelectors || [];
 	          if (isPresent(interpolation) && interpolation.length != 2) {
 	              throw new Error("'interpolation' should have a start and an end symbol.");
 	          }
@@ -24046,10 +23648,10 @@
 	      return MapWrapper.values(map);
 	  }
 	  function _normalizeArray(obj) {
-	      return isPresent(obj) ? obj : [];
+	      return obj || [];
 	  }
 	  function isStaticSymbol(value) {
-	      return isStringMap(value) && isPresent(value['name']) && isPresent(value['filePath']);
+	      return typeof value === 'object' && value !== null && value['name'] && value['filePath'];
 	  }
 	  var ProviderMeta = (function () {
 	      function ProviderMeta(token, _a) {
@@ -24564,11 +24166,11 @@
 	      if (!_angular_core.isDevMode() || isBlank(value)) {
 	          return;
 	      }
-	      if (!isArray(value)) {
+	      if (!Array.isArray(value)) {
 	          throw new Error("Expected '" + identifier + "' to be an array of strings.");
 	      }
 	      for (var i = 0; i < value.length; i += 1) {
-	          if (!isString(value[i])) {
+	          if (typeof value[i] !== 'string') {
 	              throw new Error("Expected '" + identifier + "' to be an array of strings.");
 	          }
 	      }
@@ -24581,7 +24183,7 @@
 	      /^\/\//,
 	  ];
 	  function assertInterpolationSymbols(identifier, value) {
-	      if (isPresent(value) && !(isArray(value) && value.length == 2)) {
+	      if (isPresent(value) && !(Array.isArray(value) && value.length == 2)) {
 	          throw new Error("Expected '" + identifier + "' to be an array, [start, end].");
 	      }
 	      else if (_angular_core.isDevMode() && !isBlank(value)) {
@@ -24613,7 +24215,7 @@
 	  }());
 	  var DEFAULT_INTERPOLATION_CONFIG = new InterpolationConfig('{{', '}}');
 
-	  var TokenType;
+	  exports.TokenType;
 	  (function (TokenType) {
 	      TokenType[TokenType["Character"] = 0] = "Character";
 	      TokenType[TokenType["Identifier"] = 1] = "Identifier";
@@ -24622,7 +24224,7 @@
 	      TokenType[TokenType["Operator"] = 4] = "Operator";
 	      TokenType[TokenType["Number"] = 5] = "Number";
 	      TokenType[TokenType["Error"] = 6] = "Error";
-	  })(TokenType || (TokenType = {}));
+	  })(exports.TokenType || (exports.TokenType = {}));
 	  var KEYWORDS = ['var', 'let', 'null', 'undefined', 'true', 'false', 'if', 'else', 'this'];
 	  var Lexer = (function () {
 	      function Lexer() {
@@ -24652,35 +24254,35 @@
 	          this.strValue = strValue;
 	      }
 	      Token.prototype.isCharacter = function (code) {
-	          return this.type == TokenType.Character && this.numValue == code;
+	          return this.type == exports.TokenType.Character && this.numValue == code;
 	      };
-	      Token.prototype.isNumber = function () { return this.type == TokenType.Number; };
-	      Token.prototype.isString = function () { return this.type == TokenType.String; };
+	      Token.prototype.isNumber = function () { return this.type == exports.TokenType.Number; };
+	      Token.prototype.isString = function () { return this.type == exports.TokenType.String; };
 	      Token.prototype.isOperator = function (operater) {
-	          return this.type == TokenType.Operator && this.strValue == operater;
+	          return this.type == exports.TokenType.Operator && this.strValue == operater;
 	      };
-	      Token.prototype.isIdentifier = function () { return this.type == TokenType.Identifier; };
-	      Token.prototype.isKeyword = function () { return this.type == TokenType.Keyword; };
-	      Token.prototype.isKeywordLet = function () { return this.type == TokenType.Keyword && this.strValue == 'let'; };
-	      Token.prototype.isKeywordNull = function () { return this.type == TokenType.Keyword && this.strValue == 'null'; };
+	      Token.prototype.isIdentifier = function () { return this.type == exports.TokenType.Identifier; };
+	      Token.prototype.isKeyword = function () { return this.type == exports.TokenType.Keyword; };
+	      Token.prototype.isKeywordLet = function () { return this.type == exports.TokenType.Keyword && this.strValue == 'let'; };
+	      Token.prototype.isKeywordNull = function () { return this.type == exports.TokenType.Keyword && this.strValue == 'null'; };
 	      Token.prototype.isKeywordUndefined = function () {
-	          return this.type == TokenType.Keyword && this.strValue == 'undefined';
+	          return this.type == exports.TokenType.Keyword && this.strValue == 'undefined';
 	      };
-	      Token.prototype.isKeywordTrue = function () { return this.type == TokenType.Keyword && this.strValue == 'true'; };
-	      Token.prototype.isKeywordFalse = function () { return this.type == TokenType.Keyword && this.strValue == 'false'; };
-	      Token.prototype.isKeywordThis = function () { return this.type == TokenType.Keyword && this.strValue == 'this'; };
-	      Token.prototype.isError = function () { return this.type == TokenType.Error; };
-	      Token.prototype.toNumber = function () { return this.type == TokenType.Number ? this.numValue : -1; };
+	      Token.prototype.isKeywordTrue = function () { return this.type == exports.TokenType.Keyword && this.strValue == 'true'; };
+	      Token.prototype.isKeywordFalse = function () { return this.type == exports.TokenType.Keyword && this.strValue == 'false'; };
+	      Token.prototype.isKeywordThis = function () { return this.type == exports.TokenType.Keyword && this.strValue == 'this'; };
+	      Token.prototype.isError = function () { return this.type == exports.TokenType.Error; };
+	      Token.prototype.toNumber = function () { return this.type == exports.TokenType.Number ? this.numValue : -1; };
 	      Token.prototype.toString = function () {
 	          switch (this.type) {
-	              case TokenType.Character:
-	              case TokenType.Identifier:
-	              case TokenType.Keyword:
-	              case TokenType.Operator:
-	              case TokenType.String:
-	              case TokenType.Error:
+	              case exports.TokenType.Character:
+	              case exports.TokenType.Identifier:
+	              case exports.TokenType.Keyword:
+	              case exports.TokenType.Operator:
+	              case exports.TokenType.String:
+	              case exports.TokenType.Error:
 	                  return this.strValue;
-	              case TokenType.Number:
+	              case exports.TokenType.Number:
 	                  return this.numValue.toString();
 	              default:
 	                  return null;
@@ -24689,27 +24291,27 @@
 	      return Token;
 	  }());
 	  function newCharacterToken(index, code) {
-	      return new Token(index, TokenType.Character, code, StringWrapper.fromCharCode(code));
+	      return new Token(index, exports.TokenType.Character, code, String.fromCharCode(code));
 	  }
 	  function newIdentifierToken(index, text) {
-	      return new Token(index, TokenType.Identifier, 0, text);
+	      return new Token(index, exports.TokenType.Identifier, 0, text);
 	  }
 	  function newKeywordToken(index, text) {
-	      return new Token(index, TokenType.Keyword, 0, text);
+	      return new Token(index, exports.TokenType.Keyword, 0, text);
 	  }
 	  function newOperatorToken(index, text) {
-	      return new Token(index, TokenType.Operator, 0, text);
+	      return new Token(index, exports.TokenType.Operator, 0, text);
 	  }
 	  function newStringToken(index, text) {
-	      return new Token(index, TokenType.String, 0, text);
+	      return new Token(index, exports.TokenType.String, 0, text);
 	  }
 	  function newNumberToken(index, n) {
-	      return new Token(index, TokenType.Number, n, '');
+	      return new Token(index, exports.TokenType.Number, n, '');
 	  }
 	  function newErrorToken(index, message) {
-	      return new Token(index, TokenType.Error, 0, message);
+	      return new Token(index, exports.TokenType.Error, 0, message);
 	  }
-	  var EOF = new Token(-1, TokenType.Character, 0, '');
+	  var EOF = new Token(-1, exports.TokenType.Character, 0, '');
 	  var _Scanner = (function () {
 	      function _Scanner(input) {
 	          this.input = input;
@@ -24719,8 +24321,7 @@
 	          this.advance();
 	      }
 	      _Scanner.prototype.advance = function () {
-	          this.peek =
-	              ++this.index >= this.length ? $EOF : StringWrapper.charCodeAt(this.input, this.index);
+	          this.peek = ++this.index >= this.length ? $EOF : this.input.charCodeAt(this.index);
 	      };
 	      _Scanner.prototype.scanToken = function () {
 	          var input = this.input, length = this.length, peek = this.peek, index = this.index;
@@ -24731,7 +24332,7 @@
 	                  break;
 	              }
 	              else {
-	                  peek = StringWrapper.charCodeAt(input, index);
+	                  peek = input.charCodeAt(index);
 	              }
 	          }
 	          this.peek = peek;
@@ -24770,15 +24371,15 @@
 	              case $SLASH:
 	              case $PERCENT:
 	              case $CARET:
-	                  return this.scanOperator(start, StringWrapper.fromCharCode(peek));
+	                  return this.scanOperator(start, String.fromCharCode(peek));
 	              case $QUESTION:
 	                  return this.scanComplexOperator(start, '?', $PERIOD, '.');
 	              case $LT:
 	              case $GT:
-	                  return this.scanComplexOperator(start, StringWrapper.fromCharCode(peek), $EQ, '=');
+	                  return this.scanComplexOperator(start, String.fromCharCode(peek), $EQ, '=');
 	              case $BANG:
 	              case $EQ:
-	                  return this.scanComplexOperator(start, StringWrapper.fromCharCode(peek), $EQ, '=', $EQ, '=');
+	                  return this.scanComplexOperator(start, String.fromCharCode(peek), $EQ, '=', $EQ, '=');
 	              case $AMPERSAND:
 	                  return this.scanComplexOperator(start, '&', $AMPERSAND, '&');
 	              case $BAR:
@@ -24789,7 +24390,7 @@
 	                  return this.scanToken();
 	          }
 	          this.advance();
-	          return this.error("Unexpected character [" + StringWrapper.fromCharCode(peek) + "]", 0);
+	          return this.error("Unexpected character [" + String.fromCharCode(peek) + "]", 0);
 	      };
 	      _Scanner.prototype.scanCharacter = function (start, code) {
 	          this.advance();
@@ -24862,16 +24463,14 @@
 	          var start = this.index;
 	          var quote = this.peek;
 	          this.advance(); // Skip initial quote.
-	          var buffer;
+	          var buffer = '';
 	          var marker = this.index;
 	          var input = this.input;
 	          while (this.peek != quote) {
 	              if (this.peek == $BACKSLASH) {
-	                  if (buffer == null)
-	                      buffer = new StringJoiner();
-	                  buffer.add(input.substring(marker, this.index));
+	                  buffer += input.substring(marker, this.index);
 	                  this.advance();
-	                  var unescapedCode;
+	                  var unescapedCode = void 0;
 	                  if (this.peek == $u) {
 	                      // 4 character hex code for unicode character.
 	                      var hex = input.substring(this.index + 1, this.index + 5);
@@ -24889,7 +24488,7 @@
 	                      unescapedCode = unescape(this.peek);
 	                      this.advance();
 	                  }
-	                  buffer.add(StringWrapper.fromCharCode(unescapedCode));
+	                  buffer += String.fromCharCode(unescapedCode);
 	                  marker = this.index;
 	              }
 	              else if (this.peek == $EOF) {
@@ -24901,13 +24500,7 @@
 	          }
 	          var last = input.substring(marker, this.index);
 	          this.advance(); // Skip terminating quote.
-	          // Compute the unescaped string value.
-	          var unescaped = last;
-	          if (buffer != null) {
-	              buffer.add(last);
-	              unescaped = buffer.toString();
-	          }
-	          return newStringToken(start, unescaped);
+	          return newStringToken(start, buffer + last);
 	      };
 	      _Scanner.prototype.error = function (message, offset) {
 	          var position = this.index + offset;
@@ -24964,9 +24557,10 @@
 	  }
 
 	  var SplitInterpolation = (function () {
-	      function SplitInterpolation(strings, expressions) {
+	      function SplitInterpolation(strings, expressions, offsets) {
 	          this.strings = strings;
 	          this.expressions = expressions;
+	          this.offsets = offsets;
 	      }
 	      return SplitInterpolation;
 	  }());
@@ -24990,8 +24584,10 @@
 	      Parser.prototype.parseAction = function (input, location, interpolationConfig) {
 	          if (interpolationConfig === void 0) { interpolationConfig = DEFAULT_INTERPOLATION_CONFIG; }
 	          this._checkNoInterpolation(input, location, interpolationConfig);
+	          var sourceToLex = this._stripComments(input);
 	          var tokens = this._lexer.tokenize(this._stripComments(input));
-	          var ast = new _ParseAST(input, location, tokens, true, this.errors).parseChain();
+	          var ast = new _ParseAST(input, location, tokens, sourceToLex.length, true, this.errors, input.length - sourceToLex.length)
+	              .parseChain();
 	          return new ASTWithSource(ast, input, location, this.errors);
 	      };
 	      Parser.prototype.parseBinding = function (input, location, interpolationConfig) {
@@ -25018,8 +24614,10 @@
 	              return quote;
 	          }
 	          this._checkNoInterpolation(input, location, interpolationConfig);
-	          var tokens = this._lexer.tokenize(this._stripComments(input));
-	          return new _ParseAST(input, location, tokens, false, this.errors).parseChain();
+	          var sourceToLex = this._stripComments(input);
+	          var tokens = this._lexer.tokenize(sourceToLex);
+	          return new _ParseAST(input, location, tokens, sourceToLex.length, false, this.errors, input.length - sourceToLex.length)
+	              .parseChain();
 	      };
 	      Parser.prototype._parseQuote = function (input, location) {
 	          if (isBlank(input))
@@ -25035,7 +24633,8 @@
 	      };
 	      Parser.prototype.parseTemplateBindings = function (input, location) {
 	          var tokens = this._lexer.tokenize(input);
-	          return new _ParseAST(input, location, tokens, false, this.errors).parseTemplateBindings();
+	          return new _ParseAST(input, location, tokens, input.length, false, this.errors, 0)
+	              .parseTemplateBindings();
 	      };
 	      Parser.prototype.parseInterpolation = function (input, location, interpolationConfig) {
 	          if (interpolationConfig === void 0) { interpolationConfig = DEFAULT_INTERPOLATION_CONFIG; }
@@ -25044,8 +24643,11 @@
 	              return null;
 	          var expressions = [];
 	          for (var i = 0; i < split.expressions.length; ++i) {
+	              var expressionText = split.expressions[i];
+	              var sourceToLex = this._stripComments(expressionText);
 	              var tokens = this._lexer.tokenize(this._stripComments(split.expressions[i]));
-	              var ast = new _ParseAST(input, location, tokens, false, this.errors).parseChain();
+	              var ast = new _ParseAST(input, location, tokens, sourceToLex.length, false, this.errors, split.offsets[i] + (expressionText.length - sourceToLex.length))
+	                  .parseChain();
 	              expressions.push(ast);
 	          }
 	          return new ASTWithSource(new Interpolation(new ParseSpan(0, isBlank(input) ? 0 : input.length), split.strings, expressions), input, location, this.errors);
@@ -25053,26 +24655,32 @@
 	      Parser.prototype.splitInterpolation = function (input, location, interpolationConfig) {
 	          if (interpolationConfig === void 0) { interpolationConfig = DEFAULT_INTERPOLATION_CONFIG; }
 	          var regexp = _createInterpolateRegExp(interpolationConfig);
-	          var parts = StringWrapper.split(input, regexp);
+	          var parts = input.split(regexp);
 	          if (parts.length <= 1) {
 	              return null;
 	          }
 	          var strings = [];
 	          var expressions = [];
+	          var offsets = [];
+	          var offset = 0;
 	          for (var i = 0; i < parts.length; i++) {
 	              var part = parts[i];
 	              if (i % 2 === 0) {
 	                  // fixed string
 	                  strings.push(part);
+	                  offset += part.length;
 	              }
 	              else if (part.trim().length > 0) {
+	                  offset += interpolationConfig.start.length;
 	                  expressions.push(part);
+	                  offsets.push(offset);
+	                  offset += part.length + interpolationConfig.end.length;
 	              }
 	              else {
 	                  this._reportError('Blank expressions are not allowed in interpolated strings', input, "at column " + this._findInterpolationErrorColumn(parts, i, interpolationConfig) + " in", location);
 	              }
 	          }
-	          return new SplitInterpolation(strings, expressions);
+	          return new SplitInterpolation(strings, expressions, offsets);
 	      };
 	      Parser.prototype.wrapLiteralPrimitive = function (input, location) {
 	          return new ASTWithSource(new LiteralPrimitive(new ParseSpan(0, isBlank(input) ? 0 : input.length), input), input, location, this.errors);
@@ -25084,8 +24692,8 @@
 	      Parser.prototype._commentStart = function (input) {
 	          var outerQuote = null;
 	          for (var i = 0; i < input.length - 1; i++) {
-	              var char = StringWrapper.charCodeAt(input, i);
-	              var nextChar = StringWrapper.charCodeAt(input, i + 1);
+	              var char = input.charCodeAt(i);
+	              var nextChar = input.charCodeAt(i + 1);
 	              if (char === $SLASH && nextChar == $SLASH && isBlank(outerQuote))
 	                  return i;
 	              if (outerQuote === char) {
@@ -25099,7 +24707,7 @@
 	      };
 	      Parser.prototype._checkNoInterpolation = function (input, location, interpolationConfig) {
 	          var regexp = _createInterpolateRegExp(interpolationConfig);
-	          var parts = StringWrapper.split(input, regexp);
+	          var parts = input.split(regexp);
 	          if (parts.length > 1) {
 	              this._reportError("Got interpolation (" + interpolationConfig.start + interpolationConfig.end + ") where expression was expected", input, "at column " + this._findInterpolationErrorColumn(parts, 1, interpolationConfig) + " in", location);
 	          }
@@ -25123,12 +24731,14 @@
 	      return Parser;
 	  }());
 	  var _ParseAST = (function () {
-	      function _ParseAST(input, location, tokens, parseAction, errors) {
+	      function _ParseAST(input, location, tokens, inputLength, parseAction, errors, offset) {
 	          this.input = input;
 	          this.location = location;
 	          this.tokens = tokens;
+	          this.inputLength = inputLength;
 	          this.parseAction = parseAction;
 	          this.errors = errors;
+	          this.offset = offset;
 	          this.rparensExpected = 0;
 	          this.rbracketsExpected = 0;
 	          this.rbracesExpected = 0;
@@ -25145,7 +24755,8 @@
 	      });
 	      Object.defineProperty(_ParseAST.prototype, "inputIndex", {
 	          get: function () {
-	              return (this.index < this.tokens.length) ? this.next.index : this.input.length;
+	              return (this.index < this.tokens.length) ? this.next.index + this.offset :
+	                  this.inputLength + this.offset;
 	          },
 	          enumerable: true,
 	          configurable: true
@@ -25165,7 +24776,7 @@
 	      _ParseAST.prototype.expectCharacter = function (code) {
 	          if (this.optionalCharacter(code))
 	              return;
-	          this.error("Missing expected " + StringWrapper.fromCharCode(code));
+	          this.error("Missing expected " + String.fromCharCode(code));
 	      };
 	      _ParseAST.prototype.optionalOperator = function (op) {
 	          if (this.next.isOperator(op)) {
@@ -25234,7 +24845,7 @@
 	                  while (this.optionalCharacter($COLON)) {
 	                      args.push(this.parseExpression());
 	                  }
-	                  result = new BindingPipe(this.span(result.span.start), result, name, args);
+	                  result = new BindingPipe(this.span(result.span.start - this.offset), result, name, args);
 	              } while (this.optionalOperator('|'));
 	          }
 	          return result;
@@ -25282,7 +24893,7 @@
 	      _ParseAST.prototype.parseEquality = function () {
 	          // '==','!=','===','!=='
 	          var result = this.parseRelational();
-	          while (this.next.type == TokenType.Operator) {
+	          while (this.next.type == exports.TokenType.Operator) {
 	              var operator = this.next.strValue;
 	              switch (operator) {
 	                  case '==':
@@ -25301,7 +24912,7 @@
 	      _ParseAST.prototype.parseRelational = function () {
 	          // '<', '>', '<=', '>='
 	          var result = this.parseAdditive();
-	          while (this.next.type == TokenType.Operator) {
+	          while (this.next.type == exports.TokenType.Operator) {
 	              var operator = this.next.strValue;
 	              switch (operator) {
 	                  case '<':
@@ -25320,7 +24931,7 @@
 	      _ParseAST.prototype.parseAdditive = function () {
 	          // '+', '-'
 	          var result = this.parseMultiplicative();
-	          while (this.next.type == TokenType.Operator) {
+	          while (this.next.type == exports.TokenType.Operator) {
 	              var operator = this.next.strValue;
 	              switch (operator) {
 	                  case '+':
@@ -25337,7 +24948,7 @@
 	      _ParseAST.prototype.parseMultiplicative = function () {
 	          // '*', '%', '/'
 	          var result = this.parsePrefix();
-	          while (this.next.type == TokenType.Operator) {
+	          while (this.next.type == exports.TokenType.Operator) {
 	              var operator = this.next.strValue;
 	              switch (operator) {
 	                  case '*':
@@ -25353,7 +24964,7 @@
 	          return result;
 	      };
 	      _ParseAST.prototype.parsePrefix = function () {
-	          if (this.next.type == TokenType.Operator) {
+	          if (this.next.type == exports.TokenType.Operator) {
 	              var start = this.inputIndex;
 	              var operator = this.next.strValue;
 	              var result = void 0;
@@ -25704,14 +25315,14 @@
 	      };
 	      return ParseSourceSpan;
 	  }());
-	  var ParseErrorLevel;
+	  exports.ParseErrorLevel;
 	  (function (ParseErrorLevel) {
 	      ParseErrorLevel[ParseErrorLevel["WARNING"] = 0] = "WARNING";
 	      ParseErrorLevel[ParseErrorLevel["FATAL"] = 1] = "FATAL";
-	  })(ParseErrorLevel || (ParseErrorLevel = {}));
+	  })(exports.ParseErrorLevel || (exports.ParseErrorLevel = {}));
 	  var ParseError = (function () {
 	      function ParseError(span, msg, level) {
-	          if (level === void 0) { level = ParseErrorLevel.FATAL; }
+	          if (level === void 0) { level = exports.ParseErrorLevel.FATAL; }
 	          this.span = span;
 	          this.msg = msg;
 	          this.level = level;
@@ -25798,10 +25409,11 @@
 	      return ExpansionCase;
 	  }());
 	  var Attribute$1 = (function () {
-	      function Attribute(name, value, sourceSpan) {
+	      function Attribute(name, value, sourceSpan, valueSpan) {
 	          this.name = name;
 	          this.value = value;
 	          this.sourceSpan = sourceSpan;
+	          this.valueSpan = valueSpan;
 	      }
 	      Attribute.prototype.visit = function (visitor, context) { return visitor.visitAttribute(this, context); };
 	      return Attribute;
@@ -25829,8 +25441,11 @@
 	  function visitAll(visitor, nodes, context) {
 	      if (context === void 0) { context = null; }
 	      var result = [];
+	      var visit = visitor.visit ?
+	          function (ast) { return visitor.visit(ast, context) || ast.visit(visitor, context); } :
+	          function (ast) { return ast.visit(visitor, context); };
 	      nodes.forEach(function (ast) {
-	          var astResult = ast.visit(visitor, context);
+	          var astResult = visit(ast);
 	          if (astResult) {
 	              result.push(astResult);
 	          }
@@ -26780,12 +26395,14 @@
 	          var fullName = mergeNsAndName(attrName.parts[0], attrName.parts[1]);
 	          var end = attrName.sourceSpan.end;
 	          var value = '';
+	          var valueSpan;
 	          if (this._peek.type === TokenType$1.ATTR_VALUE) {
 	              var valueToken = this._advance();
 	              value = valueToken.parts[0];
 	              end = valueToken.sourceSpan.end;
+	              valueSpan = valueToken.sourceSpan;
 	          }
-	          return new Attribute$1(fullName, value, new ParseSourceSpan(attrName.sourceSpan.start, end));
+	          return new Attribute$1(fullName, value, new ParseSourceSpan(attrName.sourceSpan.start, end), valueSpan);
 	      };
 	      _TreeBuilder.prototype._getParentElement = function () {
 	          return this._elementStack.length > 0 ? ListWrapper.last(this._elementStack) : null;
@@ -28470,30 +28087,13 @@
 	  var NgModuleInjector = _angular_core.__core_private__.NgModuleInjector;
 	  var registerModuleFactory = _angular_core.__core_private__.registerModuleFactory;
 	  var ViewType = _angular_core.__core_private__.ViewType;
-	  var MAX_INTERPOLATION_VALUES = _angular_core.__core_private__.MAX_INTERPOLATION_VALUES;
-	  var checkBinding = _angular_core.__core_private__.checkBinding;
-	  var flattenNestedViewRenderNodes = _angular_core.__core_private__.flattenNestedViewRenderNodes;
-	  var interpolate = _angular_core.__core_private__.interpolate;
-	  var ViewUtils = _angular_core.__core_private__.ViewUtils;
+	  var view_utils = _angular_core.__core_private__.view_utils;
 	  var DebugContext = _angular_core.__core_private__.DebugContext;
 	  var StaticNodeDebugInfo = _angular_core.__core_private__.StaticNodeDebugInfo;
 	  var devModeEqual = _angular_core.__core_private__.devModeEqual;
 	  var UNINITIALIZED = _angular_core.__core_private__.UNINITIALIZED;
 	  var ValueUnwrapper = _angular_core.__core_private__.ValueUnwrapper;
 	  var TemplateRef_ = _angular_core.__core_private__.TemplateRef_;
-	  var EMPTY_ARRAY = _angular_core.__core_private__.EMPTY_ARRAY;
-	  var EMPTY_MAP = _angular_core.__core_private__.EMPTY_MAP;
-	  var pureProxy1 = _angular_core.__core_private__.pureProxy1;
-	  var pureProxy2 = _angular_core.__core_private__.pureProxy2;
-	  var pureProxy3 = _angular_core.__core_private__.pureProxy3;
-	  var pureProxy4 = _angular_core.__core_private__.pureProxy4;
-	  var pureProxy5 = _angular_core.__core_private__.pureProxy5;
-	  var pureProxy6 = _angular_core.__core_private__.pureProxy6;
-	  var pureProxy7 = _angular_core.__core_private__.pureProxy7;
-	  var pureProxy8 = _angular_core.__core_private__.pureProxy8;
-	  var pureProxy9 = _angular_core.__core_private__.pureProxy9;
-	  var pureProxy10 = _angular_core.__core_private__.pureProxy10;
-	  var castByValue = _angular_core.__core_private__.castByValue;
 	  var Console = _angular_core.__core_private__.Console;
 	  var reflector = _angular_core.__core_private__.reflector;
 	  var Reflector = _angular_core.__core_private__.Reflector;
@@ -28513,6 +28113,7 @@
 	  var collectAndResolveStyles = _angular_core.__core_private__.collectAndResolveStyles;
 	  var renderStyles = _angular_core.__core_private__.renderStyles;
 	  var ComponentStillLoadingError = _angular_core.__core_private__.ComponentStillLoadingError;
+	  var AnimationTransition = _angular_core.__core_private__.AnimationTransition;
 
 	  var APP_VIEW_MODULE_URL = assetUrl('core', 'linker/view');
 	  var VIEW_UTILS_MODULE_URL = assetUrl('core', 'linker/view_utils');
@@ -28529,7 +28130,7 @@
 	      Identifiers.ViewUtils = {
 	          name: 'ViewUtils',
 	          moduleUrl: assetUrl('core', 'linker/view_utils'),
-	          runtime: ViewUtils
+	          runtime: view_utils.ViewUtils
 	      };
 	      Identifiers.AppView = { name: 'AppView', moduleUrl: APP_VIEW_MODULE_URL, runtime: AppView };
 	      Identifiers.DebugAppView = {
@@ -28653,42 +28254,46 @@
 	      Identifiers.checkBinding = {
 	          name: 'checkBinding',
 	          moduleUrl: VIEW_UTILS_MODULE_URL,
-	          runtime: checkBinding
+	          runtime: view_utils.checkBinding
 	      };
 	      Identifiers.flattenNestedViewRenderNodes = {
 	          name: 'flattenNestedViewRenderNodes',
 	          moduleUrl: VIEW_UTILS_MODULE_URL,
-	          runtime: flattenNestedViewRenderNodes
+	          runtime: view_utils.flattenNestedViewRenderNodes
 	      };
 	      Identifiers.devModeEqual = { name: 'devModeEqual', moduleUrl: CD_MODULE_URL, runtime: devModeEqual };
 	      Identifiers.interpolate = {
 	          name: 'interpolate',
 	          moduleUrl: VIEW_UTILS_MODULE_URL,
-	          runtime: interpolate
+	          runtime: view_utils.interpolate
 	      };
 	      Identifiers.castByValue = {
 	          name: 'castByValue',
 	          moduleUrl: VIEW_UTILS_MODULE_URL,
-	          runtime: castByValue
+	          runtime: view_utils.castByValue
 	      };
 	      Identifiers.EMPTY_ARRAY = {
 	          name: 'EMPTY_ARRAY',
 	          moduleUrl: VIEW_UTILS_MODULE_URL,
-	          runtime: EMPTY_ARRAY
+	          runtime: view_utils.EMPTY_ARRAY
 	      };
-	      Identifiers.EMPTY_MAP = { name: 'EMPTY_MAP', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: EMPTY_MAP };
+	      Identifiers.EMPTY_MAP = {
+	          name: 'EMPTY_MAP',
+	          moduleUrl: VIEW_UTILS_MODULE_URL,
+	          runtime: view_utils.EMPTY_MAP
+	      };
 	      Identifiers.pureProxies = [
 	          null,
-	          { name: 'pureProxy1', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: pureProxy1 },
-	          { name: 'pureProxy2', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: pureProxy2 },
-	          { name: 'pureProxy3', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: pureProxy3 },
-	          { name: 'pureProxy4', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: pureProxy4 },
-	          { name: 'pureProxy5', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: pureProxy5 },
-	          { name: 'pureProxy6', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: pureProxy6 },
-	          { name: 'pureProxy7', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: pureProxy7 },
-	          { name: 'pureProxy8', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: pureProxy8 },
-	          { name: 'pureProxy9', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: pureProxy9 },
-	          { name: 'pureProxy10', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: pureProxy10 },
+	          { name: 'pureProxy1', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: view_utils.pureProxy1 },
+	          { name: 'pureProxy2', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: view_utils.pureProxy2 },
+	          { name: 'pureProxy3', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: view_utils.pureProxy3 },
+	          { name: 'pureProxy4', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: view_utils.pureProxy4 },
+	          { name: 'pureProxy5', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: view_utils.pureProxy5 },
+	          { name: 'pureProxy6', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: view_utils.pureProxy6 },
+	          { name: 'pureProxy7', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: view_utils.pureProxy7 },
+	          { name: 'pureProxy8', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: view_utils.pureProxy8 },
+	          { name: 'pureProxy9', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: view_utils.pureProxy9 },
+	          { name: 'pureProxy10', moduleUrl: VIEW_UTILS_MODULE_URL, runtime: view_utils.pureProxy10 },
 	      ];
 	      Identifiers.SecurityContext = {
 	          name: 'SecurityContext',
@@ -28754,6 +28359,21 @@
 	          name: 'TRANSLATIONS_FORMAT',
 	          moduleUrl: assetUrl('core', 'i18n/tokens'),
 	          runtime: _angular_core.TRANSLATIONS_FORMAT
+	      };
+	      Identifiers.setBindingDebugInfo = {
+	          name: 'setBindingDebugInfo',
+	          moduleUrl: VIEW_UTILS_MODULE_URL,
+	          runtime: view_utils.setBindingDebugInfo
+	      };
+	      Identifiers.setBindingDebugInfoForChanges = {
+	          name: 'setBindingDebugInfoForChanges',
+	          moduleUrl: VIEW_UTILS_MODULE_URL,
+	          runtime: view_utils.setBindingDebugInfoForChanges
+	      };
+	      Identifiers.AnimationTransition = {
+	          name: 'AnimationTransition',
+	          moduleUrl: assetUrl('core', 'animation/animation_transition'),
+	          runtime: AnimationTransition
 	      };
 	      return Identifiers;
 	  }());
@@ -29009,7 +28629,7 @@
 	      });
 	      ProviderElementContext.prototype._addQueryReadsTo = function (token, queryReadTokens) {
 	          this._getQueriesFor(token).forEach(function (query) {
-	              var queryReadToken = isPresent(query.read) ? query.read : token;
+	              var queryReadToken = query.read || token;
 	              if (isBlank(queryReadTokens.get(queryReadToken.reference))) {
 	                  queryReadTokens.set(queryReadToken.reference, true);
 	              }
@@ -29071,12 +28691,12 @@
 	                  }
 	              }
 	              else if (isPresent(provider.useFactory)) {
-	                  var deps = isPresent(provider.deps) ? provider.deps : provider.useFactory.diDeps;
+	                  var deps = provider.deps || provider.useFactory.diDeps;
 	                  transformedDeps =
 	                      deps.map(function (dep) { return _this._getDependency(resolvedProvider.providerType, dep, eager); });
 	              }
 	              else if (isPresent(provider.useClass)) {
-	                  var deps = isPresent(provider.deps) ? provider.deps : provider.useClass.diDeps;
+	                  var deps = provider.deps || provider.useClass.diDeps;
 	                  transformedDeps =
 	                      deps.map(function (dep) { return _this._getDependency(resolvedProvider.providerType, dep, eager); });
 	              }
@@ -29226,12 +28846,12 @@
 	                  }
 	              }
 	              else if (isPresent(provider.useFactory)) {
-	                  var deps = isPresent(provider.deps) ? provider.deps : provider.useFactory.diDeps;
+	                  var deps = provider.deps || provider.useFactory.diDeps;
 	                  transformedDeps =
 	                      deps.map(function (dep) { return _this._getDependency(dep, eager, resolvedProvider.sourceSpan); });
 	              }
 	              else if (isPresent(provider.useClass)) {
-	                  var deps = isPresent(provider.deps) ? provider.deps : provider.useClass.diDeps;
+	                  var deps = provider.deps || provider.useClass.diDeps;
 	                  transformedDeps =
 	                      deps.map(function (dep) { return _this._getDependency(dep, eager, resolvedProvider.sourceSpan); });
 	              }
@@ -29296,7 +28916,7 @@
 	      }
 	      if (isPresent(providers)) {
 	          providers.forEach(function (provider) {
-	              if (isArray(provider)) {
+	              if (Array.isArray(provider)) {
 	                  _normalizeProviders(provider, sourceSpan, targetErrors, targetProviders);
 	              }
 	              else {
@@ -29422,8 +29042,12 @@
 	   */
 	  function extractStyleUrls(resolver, baseUrl, cssText) {
 	      var foundUrls = [];
-	      var modifiedCssText = StringWrapper.replaceAllMapped(cssText, _cssImportRe, function (m) {
-	          var url = isPresent(m[1]) ? m[1] : m[2];
+	      var modifiedCssText = cssText.replace(_cssImportRe, function () {
+	          var m = [];
+	          for (var _i = 0; _i < arguments.length; _i++) {
+	              m[_i - 0] = arguments[_i];
+	          }
+	          var url = m[1] || m[2];
 	          if (!isStyleUrlResolvable(url)) {
 	              // Do not attempt to resolve non-package absolute URLs with URI scheme
 	              return m[0];
@@ -29589,8 +29213,8 @@
 	      }
 	      TemplateParser.prototype.parse = function (component, template, directives, pipes, schemas, templateUrl) {
 	          var result = this.tryParse(component, template, directives, pipes, schemas, templateUrl);
-	          var warnings = result.errors.filter(function (error) { return error.level === ParseErrorLevel.WARNING; });
-	          var errors = result.errors.filter(function (error) { return error.level === ParseErrorLevel.FATAL; });
+	          var warnings = result.errors.filter(function (error) { return error.level === exports.ParseErrorLevel.WARNING; });
+	          var errors = result.errors.filter(function (error) { return error.level === exports.ParseErrorLevel.FATAL; });
 	          if (warnings.length > 0) {
 	              this._console.warn("Template parse warnings:\n" + warnings.join('\n'));
 	          }
@@ -29601,19 +29225,11 @@
 	          return result.templateAst;
 	      };
 	      TemplateParser.prototype.tryParse = function (component, template, directives, pipes, schemas, templateUrl) {
-	          var interpolationConfig;
-	          if (component.template) {
-	              interpolationConfig = InterpolationConfig.fromArray(component.template.interpolation);
-	          }
-	          var htmlAstWithErrors = this._htmlParser.parse(template, templateUrl, true, interpolationConfig);
-	          var errors = htmlAstWithErrors.errors;
+	          return this.tryParseHtml(this.expandHtml(this._htmlParser.parse(template, templateUrl, true, this.getInterpolationConfig(component))), component, template, directives, pipes, schemas, templateUrl);
+	      };
+	      TemplateParser.prototype.tryParseHtml = function (htmlAstWithErrors, component, template, directives, pipes, schemas, templateUrl) {
 	          var result;
-	          if (errors.length == 0) {
-	              // Transform ICU messages to angular directives
-	              var expandedHtmlAst = expandNodes(htmlAstWithErrors.rootNodes);
-	              errors.push.apply(errors, expandedHtmlAst.errors);
-	              htmlAstWithErrors = new ParseTreeResult(expandedHtmlAst.nodes, errors);
-	          }
+	          var errors = htmlAstWithErrors.errors;
 	          if (htmlAstWithErrors.rootNodes.length > 0) {
 	              var uniqDirectives = removeIdentifierDuplicates(directives);
 	              var uniqPipes = removeIdentifierDuplicates(pipes);
@@ -29634,6 +29250,22 @@
 	          }
 	          return new TemplateParseResult(result, errors);
 	      };
+	      TemplateParser.prototype.expandHtml = function (htmlAstWithErrors, forced) {
+	          if (forced === void 0) { forced = false; }
+	          var errors = htmlAstWithErrors.errors;
+	          if (errors.length == 0 || forced) {
+	              // Transform ICU messages to angular directives
+	              var expandedHtmlAst = expandNodes(htmlAstWithErrors.rootNodes);
+	              errors.push.apply(errors, expandedHtmlAst.errors);
+	              htmlAstWithErrors = new ParseTreeResult(expandedHtmlAst.nodes, errors);
+	          }
+	          return htmlAstWithErrors;
+	      };
+	      TemplateParser.prototype.getInterpolationConfig = function (component) {
+	          if (component.template) {
+	              return InterpolationConfig.fromArray(component.template.interpolation);
+	          }
+	      };
 	      /** @internal */
 	      TemplateParser.prototype._assertNoReferenceDuplicationOnTemplate = function (result, errors) {
 	          var existingReferences = [];
@@ -29644,7 +29276,7 @@
 	                  existingReferences.push(name);
 	              }
 	              else {
-	                  var error = new TemplateParseError("Reference \"#" + name + "\" is defined several times", reference.sourceSpan, ParseErrorLevel.FATAL);
+	                  var error = new TemplateParseError("Reference \"#" + name + "\" is defined several times", reference.sourceSpan, exports.ParseErrorLevel.FATAL);
 	                  errors.push(error);
 	              }
 	          }); });
@@ -29689,7 +29321,7 @@
 	          pipes.forEach(function (pipe) { return _this.pipesByName.set(pipe.name, pipe); });
 	      }
 	      TemplateParseVisitor.prototype._reportError = function (message, sourceSpan, level) {
-	          if (level === void 0) { level = ParseErrorLevel.FATAL; }
+	          if (level === void 0) { level = exports.ParseErrorLevel.FATAL; }
 	          this.errors.push(new TemplateParseError(message, sourceSpan, level));
 	      };
 	      TemplateParseVisitor.prototype._reportParserErrors = function (errors, sourceSpan) {
@@ -29706,8 +29338,8 @@
 	                  this._reportParserErrors(ast.errors, sourceSpan);
 	              this._checkPipes(ast, sourceSpan);
 	              if (isPresent(ast) &&
-	                  ast.ast.expressions.length > MAX_INTERPOLATION_VALUES) {
-	                  throw new Error("Only support at most " + MAX_INTERPOLATION_VALUES + " interpolation values!");
+	                  ast.ast.expressions.length > view_utils.MAX_INTERPOLATION_VALUES) {
+	                  throw new Error("Only support at most " + view_utils.MAX_INTERPOLATION_VALUES + " interpolation values!");
 	              }
 	              return ast;
 	          }
@@ -29760,7 +29392,7 @@
 	                      _this._checkPipes(binding.expression, sourceSpan);
 	                  }
 	              });
-	              bindingsResult.warnings.forEach(function (warning) { _this._reportError(warning, sourceSpan, ParseErrorLevel.WARNING); });
+	              bindingsResult.warnings.forEach(function (warning) { _this._reportError(warning, sourceSpan, exports.ParseErrorLevel.WARNING); });
 	              return bindingsResult.templateBindings;
 	          }
 	          catch (e) {
@@ -29858,8 +29490,8 @@
 	          var ngContentIndex = parent.findNgContentIndex(projectionSelector);
 	          var parsedElement;
 	          if (preparsedElement.type === PreparsedElementType.NG_CONTENT) {
-	              if (isPresent(element.children) && element.children.length > 0) {
-	                  this._reportError("<ng-content> element cannot have content. <ng-content> must be immediately followed by </ng-content>", element.sourceSpan);
+	              if (element.children && !element.children.every(_isEmptyTextNode)) {
+	                  this._reportError("<ng-content> element cannot have content.", element.sourceSpan);
 	              }
 	              parsedElement = new NgContentAst(this.ngContentCount++, hasInlineTemplates ? null : ngContentIndex, element.sourceSpan);
 	          }
@@ -29872,7 +29504,7 @@
 	              this._assertElementExists(matchElement, element);
 	              this._assertOnlyOneComponent(directiveAsts, element.sourceSpan);
 	              var ngContentIndex_1 = hasInlineTemplates ? null : parent.findNgContentIndex(projectionSelector);
-	              parsedElement = new ElementAst(nodeName, attrs, elementProps, events, references, providerContext.transformedDirectiveAsts, providerContext.transformProviders, providerContext.transformedHasViewContainer, children, hasInlineTemplates ? null : ngContentIndex_1, element.sourceSpan);
+	              parsedElement = new ElementAst(nodeName, attrs, elementProps, events, references, providerContext.transformedDirectiveAsts, providerContext.transformProviders, providerContext.transformedHasViewContainer, children, hasInlineTemplates ? null : ngContentIndex_1, element.sourceSpan, element.endSourceSpan);
 	              this._findComponentDirectives(directiveAsts)
 	                  .forEach(function (componentDirectiveAst) { return _this._validateElementAnimationInputOutputs(componentDirectiveAst.hostProperties, componentDirectiveAst.hostEvents, componentDirectiveAst.directive.template); });
 	              var componentTemplate = providerContext.viewContext.component.template;
@@ -29972,7 +29604,7 @@
 	              else if (bindParts[KW_AT_IDX]) {
 	                  if (_isAnimationLabel(name) && isPresent(value) && value.length > 0) {
 	                      this._reportError("Assigning animation triggers via @prop=\"exp\" attributes with an expression is invalid." +
-	                          " Use property bindings (e.g. [@prop]=\"exp\") or use an attribute without a value (e.g. @prop) instead.", srcSpan, ParseErrorLevel.FATAL);
+	                          " Use property bindings (e.g. [@prop]=\"exp\") or use an attribute without a value (e.g. @prop) instead.", srcSpan, exports.ParseErrorLevel.FATAL);
 	                  }
 	                  this._parseAnimation(bindParts[IDENT_KW_IDX], value, srcSpan, targetMatchableAttrs, targetAnimationProps);
 	              }
@@ -30155,7 +29787,7 @@
 	          if (hostProps) {
 	              Object.keys(hostProps).forEach(function (propName) {
 	                  var expression = hostProps[propName];
-	                  if (isString(expression)) {
+	                  if (typeof expression === 'string') {
 	                      var exprAst = _this._parseBinding(expression, sourceSpan);
 	                      targetPropertyAsts.push(_this._createElementPropertyAst(elementName, propName, exprAst, sourceSpan));
 	                  }
@@ -30170,7 +29802,7 @@
 	          if (hostListeners) {
 	              Object.keys(hostListeners).forEach(function (propName) {
 	                  var expression = hostListeners[propName];
-	                  if (isString(expression)) {
+	                  if (typeof expression === 'string') {
 	                      _this._parseEventOrAnimationEvent(propName, expression, sourceSpan, [], targetEventAsts);
 	                  }
 	                  else {
@@ -30288,7 +29920,7 @@
 	          var report = isAttr ? this._schemaRegistry.validateAttribute(propName) :
 	              this._schemaRegistry.validateProperty(propName);
 	          if (report.error) {
-	              this._reportError(report.msg, sourceSpan, ParseErrorLevel.FATAL);
+	              this._reportError(report.msg, sourceSpan, exports.ParseErrorLevel.FATAL);
 	          }
 	      };
 	      TemplateParseVisitor.prototype._findComponentDirectives = function (directives) {
@@ -30366,7 +29998,7 @@
 	          var selector = createElementCssSelector(ast.name, attrNameAndValues);
 	          var ngContentIndex = parent.findNgContentIndex(selector);
 	          var children = visitAll(this, ast.children, EMPTY_ELEMENT_CONTEXT);
-	          return new ElementAst(ast.name, visitAll(this, ast.attrs), [], [], [], [], [], false, children, ngContentIndex, ast.sourceSpan);
+	          return new ElementAst(ast.name, visitAll(this, ast.attrs), [], [], [], [], [], false, children, ngContentIndex, ast.sourceSpan, ast.endSourceSpan);
 	      };
 	      NonBindableVisitor.prototype.visitComment = function (comment, context) { return null; };
 	      NonBindableVisitor.prototype.visitAttribute = function (attribute, context) {
@@ -30470,6 +30102,9 @@
 	  }(RecursiveAstVisitor));
 	  function _isAnimationLabel(name) {
 	      return name[0] == '@';
+	  }
+	  function _isEmptyTextNode(node) {
+	      return node instanceof Text && node.value.trim().length == 0;
 	  }
 
 	  function unimplemented$1() {
@@ -30717,6 +30352,7 @@
 	  var _ANIMATION_FACTORY_ELEMENT_VAR = variable('element');
 	  var _ANIMATION_DEFAULT_STATE_VAR = variable('defaultStateStyles');
 	  var _ANIMATION_FACTORY_VIEW_VAR = variable('view');
+	  var _ANIMATION_FACTORY_VIEW_CONTEXT = _ANIMATION_FACTORY_VIEW_VAR.prop('animationContext');
 	  var _ANIMATION_FACTORY_RENDERER_VAR = _ANIMATION_FACTORY_VIEW_VAR.prop('renderer');
 	  var _ANIMATION_CURRENT_STATE_VAR = variable('currentState');
 	  var _ANIMATION_NEXT_STATE_VAR = variable('nextState');
@@ -30725,7 +30361,7 @@
 	  var _ANIMATION_START_STATE_STYLES_VAR = variable('startStateStyles');
 	  var _ANIMATION_END_STATE_STYLES_VAR = variable('endStateStyles');
 	  var _ANIMATION_COLLECTED_STYLES = variable('collectedStyles');
-	  var EMPTY_MAP$1 = literalMap([]);
+	  var EMPTY_MAP = literalMap([]);
 	  var _AnimationBuilder = (function () {
 	      function _AnimationBuilder(animationName, factoryName) {
 	          this.animationName = animationName;
@@ -30740,7 +30376,8 @@
 	              context.isExpectingFirstStyleStep = false;
 	          }
 	          ast.styles.forEach(function (entry) {
-	              stylesArr.push(literalMap(Object.keys(entry).map(function (key) { return [key, literal(entry[key])]; })));
+	              var entries = Object.keys(entry).map(function (key) { return [key, literal(entry[key])]; });
+	              stylesArr.push(literalMap(entries));
 	          });
 	          return importExpr(resolveIdentifier(Identifiers.AnimationStyles)).instantiate([
 	              importExpr(resolveIdentifier(Identifiers.collectAndResolveStyles)).callFn([
@@ -30833,13 +30470,13 @@
 	          // this should always be defined even if the user overrides it
 	          context.stateMap.registerState(DEFAULT_STATE, {});
 	          var statements = [];
-	          statements.push(_ANIMATION_FACTORY_VIEW_VAR
+	          statements.push(_ANIMATION_FACTORY_VIEW_CONTEXT
 	              .callMethod('cancelActiveAnimation', [
 	              _ANIMATION_FACTORY_ELEMENT_VAR, literal(this.animationName),
 	              _ANIMATION_NEXT_STATE_VAR.equals(literal(EMPTY_ANIMATION_STATE))
 	          ])
 	              .toStmt());
-	          statements.push(_ANIMATION_COLLECTED_STYLES.set(EMPTY_MAP$1).toDeclStmt());
+	          statements.push(_ANIMATION_COLLECTED_STYLES.set(EMPTY_MAP).toDeclStmt());
 	          statements.push(_ANIMATION_PLAYER_VAR.set(NULL_EXPR).toDeclStmt());
 	          statements.push(_ANIMATION_TIME_VAR.set(literal(0)).toDeclStmt());
 	          statements.push(_ANIMATION_DEFAULT_STATE_VAR.set(this._statesMapVar.key(literal(DEFAULT_STATE)))
@@ -30881,19 +30518,22 @@
 	                  ])
 	                      .toStmt()])])
 	              .toStmt());
-	          statements.push(_ANIMATION_FACTORY_VIEW_VAR
+	          statements.push(_ANIMATION_FACTORY_VIEW_CONTEXT
 	              .callMethod('queueAnimation', [
 	              _ANIMATION_FACTORY_ELEMENT_VAR, literal(this.animationName),
-	              _ANIMATION_PLAYER_VAR, _ANIMATION_TIME_VAR,
-	              _ANIMATION_CURRENT_STATE_VAR, _ANIMATION_NEXT_STATE_VAR
+	              _ANIMATION_PLAYER_VAR
 	          ])
 	              .toStmt());
+	          statements.push(new ReturnStatement(importExpr(resolveIdentifier(Identifiers.AnimationTransition)).instantiate([
+	              _ANIMATION_PLAYER_VAR, _ANIMATION_CURRENT_STATE_VAR, _ANIMATION_NEXT_STATE_VAR,
+	              _ANIMATION_TIME_VAR
+	          ])));
 	          return fn([
 	              new FnParam(_ANIMATION_FACTORY_VIEW_VAR.name, importType(resolveIdentifier(Identifiers.AppView), [DYNAMIC_TYPE])),
 	              new FnParam(_ANIMATION_FACTORY_ELEMENT_VAR.name, DYNAMIC_TYPE),
 	              new FnParam(_ANIMATION_CURRENT_STATE_VAR.name, DYNAMIC_TYPE),
 	              new FnParam(_ANIMATION_NEXT_STATE_VAR.name, DYNAMIC_TYPE)
-	          ], statements);
+	          ], statements, importType(resolveIdentifier(Identifiers.AnimationTransition)));
 	      };
 	      _AnimationBuilder.prototype.build = function (ast) {
 	          var context = new _AnimationBuilderContext();
@@ -30902,7 +30542,7 @@
 	          var lookupMap = [];
 	          Object.keys(context.stateMap.states).forEach(function (stateName) {
 	              var value = context.stateMap.states[stateName];
-	              var variableValue = EMPTY_MAP$1;
+	              var variableValue = EMPTY_MAP;
 	              if (isPresent(value)) {
 	                  var styleMap_1 = [];
 	                  Object.keys(value).forEach(function (key) { styleMap_1.push([key, literal(value[key])]); });
@@ -30967,8 +30607,6 @@
 	  function _getStylesArray(obj) {
 	      return obj.styles.styles;
 	  }
-
-	  var Math$1 = global$1.Math;
 
 	  var StylesCollectionEntry = (function () {
 	      function StylesCollectionEntry(time, value) {
@@ -31108,7 +30746,7 @@
 	      var styleValues = [];
 	      stateMetadata.styles.styles.forEach(function (stylesEntry) {
 	          // TODO (matsko): change this when we get CSS class integration support
-	          if (isStringMap(stylesEntry)) {
+	          if (typeof stylesEntry === 'object' && stylesEntry !== null) {
 	              styleValues.push(stylesEntry);
 	          }
 	          else {
@@ -31123,11 +30761,7 @@
 	      var styles = new StylesCollection();
 	      var transitionExprs = [];
 	      var transitionStates = transitionStateMetadata.stateChangeExpr.split(/\s*,\s*/);
-	      transitionStates.forEach(function (expr) {
-	          _parseAnimationTransitionExpr(expr, errors).forEach(function (transExpr) {
-	              transitionExprs.push(transExpr);
-	          });
-	      });
+	      transitionStates.forEach(function (expr) { transitionExprs.push.apply(transitionExprs, _parseAnimationTransitionExpr(expr, errors)); });
 	      var entry = _normalizeAnimationEntry(transitionStateMetadata.steps);
 	      var animation = _normalizeStyleSteps(entry, stateStyles, errors);
 	      var animationAst = _parseTransitionAnimation(animation, 0, styles, stateStyles, errors);
@@ -31139,8 +30773,22 @@
 	          new AnimationSequenceAst([animationAst]);
 	      return new AnimationStateTransitionAst(transitionExprs, stepsAst);
 	  }
+	  function _parseAnimationAlias(alias, errors) {
+	      switch (alias) {
+	          case ':enter':
+	              return 'void => *';
+	          case ':leave':
+	              return '* => void';
+	          default:
+	              errors.push(new AnimationParseError("the transition alias value \"" + alias + "\" is not supported"));
+	              return '* => *';
+	      }
+	  }
 	  function _parseAnimationTransitionExpr(eventStr, errors) {
 	      var expressions = [];
+	      if (eventStr[0] == ':') {
+	          eventStr = _parseAnimationAlias(eventStr, errors);
+	      }
 	      var match = eventStr.match(/^(\*|[-\w]+)\s*(<?[=-]>)\s*(\*|[-\w]+)$/);
 	      if (!isPresent(match) || match.length < 4) {
 	          errors.push(new AnimationParseError("the provided " + eventStr + " is not of a supported format"));
@@ -31157,13 +30805,12 @@
 	      return expressions;
 	  }
 	  function _normalizeAnimationEntry(entry) {
-	      return isArray(entry) ? new CompileAnimationSequenceMetadata(entry) :
-	          entry;
+	      return Array.isArray(entry) ? new CompileAnimationSequenceMetadata(entry) : entry;
 	  }
 	  function _normalizeStyleMetadata(entry, stateStyles, errors) {
 	      var normalizedStyles = [];
 	      entry.styles.forEach(function (styleEntry) {
-	          if (isString(styleEntry)) {
+	          if (typeof styleEntry === 'string') {
 	              ListWrapper.addAll(normalizedStyles, _resolveStylesFromState(styleEntry, stateStyles, errors));
 	          }
 	          else {
@@ -31179,10 +30826,10 @@
 	          new CompileAnimationSequenceMetadata(steps);
 	  }
 	  function _mergeAnimationStyles(stylesList, newItem) {
-	      if (isStringMap(newItem) && stylesList.length > 0) {
+	      if (typeof newItem === 'object' && newItem !== null && stylesList.length > 0) {
 	          var lastIndex = stylesList.length - 1;
 	          var lastItem = stylesList[lastIndex];
-	          if (isStringMap(lastItem)) {
+	          if (typeof lastItem === 'object' && lastItem !== null) {
 	              stylesList[lastIndex] = StringMapWrapper.merge(lastItem, newItem);
 	              return;
 	          }
@@ -31260,7 +30907,7 @@
 	          }
 	          else {
 	              value.styles.forEach(function (stylesEntry) {
-	                  if (isStringMap(stylesEntry)) {
+	                  if (typeof stylesEntry === 'object' && stylesEntry !== null) {
 	                      styles.push(stylesEntry);
 	                  }
 	              });
@@ -31313,7 +30960,6 @@
 	      if (doSortKeyframes) {
 	          ListWrapper.sort(rawKeyframes, function (a, b) { return a[0] <= b[0] ? -1 : 1; });
 	      }
-	      var i;
 	      var firstKeyframe = rawKeyframes[0];
 	      if (firstKeyframe[0] != _INITIAL_KEYFRAME) {
 	          ListWrapper.insert(rawKeyframes, 0, firstKeyframe = [_INITIAL_KEYFRAME, {}]);
@@ -31326,7 +30972,7 @@
 	          limit++;
 	      }
 	      var lastKeyframeStyles = lastKeyframe[1];
-	      for (i = 1; i <= limit; i++) {
+	      for (var i = 1; i <= limit; i++) {
 	          var entry = rawKeyframes[i];
 	          var styles = entry[1];
 	          Object.keys(styles).forEach(function (prop) {
@@ -31335,7 +30981,7 @@
 	              }
 	          });
 	      }
-	      var _loop_1 = function() {
+	      var _loop_1 = function(i) {
 	          var entry = rawKeyframes[i];
 	          var styles = entry[1];
 	          Object.keys(styles).forEach(function (prop) {
@@ -31344,8 +30990,8 @@
 	              }
 	          });
 	      };
-	      for (i = limit - 1; i >= 0; i--) {
-	          _loop_1();
+	      for (var i = limit - 1; i >= 0; i--) {
+	          _loop_1(i);
 	      }
 	      return rawKeyframes.map(function (entry) { return new AnimationKeyframeAst(entry[0], new AnimationStylesAst([entry[1]])); });
 	  }
@@ -31385,7 +31031,7 @@
 	              var astDuration = innerAst.playTime;
 	              currentTime += astDuration;
 	              playTime += astDuration;
-	              maxDuration = Math$1.max(astDuration, maxDuration);
+	              maxDuration = Math.max(astDuration, maxDuration);
 	              steps.push(innerAst);
 	          });
 	          if (isPresent(previousStyles)) {
@@ -31450,7 +31096,7 @@
 	      var duration;
 	      var delay = 0;
 	      var easing = null;
-	      if (isString(exp)) {
+	      if (typeof exp === 'string') {
 	          var matches = exp.match(regex);
 	          if (matches === null) {
 	              errors.push(new AnimationParseError("The provided timing value \"" + exp + "\" is invalid."));
@@ -31461,7 +31107,7 @@
 	          if (durationUnit == 's') {
 	              durationMatch *= _ONE_SECOND;
 	          }
-	          duration = Math$1.floor(durationMatch);
+	          duration = Math.floor(durationMatch);
 	          var delayMatch = matches[3];
 	          var delayUnit = matches[4];
 	          if (isPresent(delayMatch)) {
@@ -31469,7 +31115,7 @@
 	              if (isPresent(delayUnit) && delayUnit == 's') {
 	                  delayVal *= _ONE_SECOND;
 	              }
-	              delay = Math$1.floor(delayVal);
+	              delay = Math.floor(delayVal);
 	          }
 	          var easingVal = matches[5];
 	          if (!isBlank(easingVal)) {
@@ -31509,6 +31155,148 @@
 	          });
 	      });
 	      return new AnimationKeyframeAst(_INITIAL_KEYFRAME, new AnimationStylesAst([values]));
+	  }
+
+	  var DirectiveWrapperCompileResult = (function () {
+	      function DirectiveWrapperCompileResult(statements, dirWrapperClassVar) {
+	          this.statements = statements;
+	          this.dirWrapperClassVar = dirWrapperClassVar;
+	      }
+	      return DirectiveWrapperCompileResult;
+	  }());
+	  var CONTEXT_FIELD_NAME = 'context';
+	  var CHANGES_FIELD_NAME = 'changes';
+	  var CHANGED_FIELD_NAME = 'changed';
+	  var CURR_VALUE_VAR = variable('currValue');
+	  var THROW_ON_CHANGE_VAR = variable('throwOnChange');
+	  var FORCE_UPDATE_VAR = variable('forceUpdate');
+	  var VIEW_VAR = variable('view');
+	  var RENDER_EL_VAR = variable('el');
+	  var RESET_CHANGES_STMT = THIS_EXPR.prop(CHANGES_FIELD_NAME).set(literalMap([])).toStmt();
+	  /**
+	   * We generate directive wrappers to prevent code bloat when a directive is used.
+	   * A directive wrapper encapsulates
+	   * the dirty checking for `@Input`, the handling of `@HostListener` / `@HostBinding`
+	   * and calling the lifecyclehooks `ngOnInit`, `ngOnChanges`, `ngDoCheck`.
+	   *
+	   * So far, only `@Input` and the lifecycle hooks have been implemented.
+	   */
+	  var DirectiveWrapperCompiler = (function () {
+	      function DirectiveWrapperCompiler(compilerConfig) {
+	          this.compilerConfig = compilerConfig;
+	      }
+	      DirectiveWrapperCompiler.dirWrapperClassName = function (id) { return "Wrapper_" + id.name; };
+	      DirectiveWrapperCompiler.prototype.compile = function (dirMeta) {
+	          var dirDepParamNames = [];
+	          for (var i = 0; i < dirMeta.type.diDeps.length; i++) {
+	              dirDepParamNames.push("p" + i);
+	          }
+	          var dirLifecycleHooks = dirMeta.type.lifecycleHooks;
+	          var lifecycleHooks = {
+	              genChanges: dirLifecycleHooks.indexOf(LifecycleHooks.OnChanges) !== -1 ||
+	                  this.compilerConfig.logBindingUpdate,
+	              ngOnChanges: dirLifecycleHooks.indexOf(LifecycleHooks.OnChanges) !== -1,
+	              ngOnInit: dirLifecycleHooks.indexOf(LifecycleHooks.OnInit) !== -1,
+	              ngDoCheck: dirLifecycleHooks.indexOf(LifecycleHooks.DoCheck) !== -1
+	          };
+	          var fields = [
+	              new ClassField(CONTEXT_FIELD_NAME, importType(dirMeta.type)),
+	              new ClassField(CHANGED_FIELD_NAME, BOOL_TYPE),
+	          ];
+	          var ctorStmts = [THIS_EXPR.prop(CHANGED_FIELD_NAME).set(literal(false)).toStmt()];
+	          if (lifecycleHooks.genChanges) {
+	              fields.push(new ClassField(CHANGES_FIELD_NAME, new MapType(DYNAMIC_TYPE)));
+	              ctorStmts.push(RESET_CHANGES_STMT);
+	          }
+	          var methods = [];
+	          Object.keys(dirMeta.inputs).forEach(function (inputFieldName, idx) {
+	              var fieldName = "_" + inputFieldName;
+	              // private is fine here as no child view will reference the cached value...
+	              fields.push(new ClassField(fieldName, null, [StmtModifier.Private]));
+	              ctorStmts.push(THIS_EXPR.prop(fieldName)
+	                  .set(importExpr(resolveIdentifier(Identifiers.UNINITIALIZED)))
+	                  .toStmt());
+	              methods.push(checkInputMethod(inputFieldName, THIS_EXPR.prop(fieldName), lifecycleHooks));
+	          });
+	          methods.push(detectChangesInternalMethod(lifecycleHooks, this.compilerConfig.genDebugInfo));
+	          ctorStmts.push(THIS_EXPR.prop(CONTEXT_FIELD_NAME)
+	              .set(importExpr(dirMeta.type)
+	              .instantiate(dirDepParamNames.map(function (paramName) { return variable(paramName); })))
+	              .toStmt());
+	          var ctor = new ClassMethod(null, dirDepParamNames.map(function (paramName) { return new FnParam(paramName, DYNAMIC_TYPE); }), ctorStmts);
+	          var wrapperClassName = DirectiveWrapperCompiler.dirWrapperClassName(dirMeta.type);
+	          var classStmt = new ClassStmt(wrapperClassName, null, fields, [], ctor, methods);
+	          return new DirectiveWrapperCompileResult([classStmt], wrapperClassName);
+	      };
+	      DirectiveWrapperCompiler.decorators = [
+	          { type: _angular_core.Injectable },
+	      ];
+	      /** @nocollapse */
+	      DirectiveWrapperCompiler.ctorParameters = [
+	          { type: CompilerConfig, },
+	      ];
+	      return DirectiveWrapperCompiler;
+	  }());
+	  function detectChangesInternalMethod(lifecycleHooks, logBindingUpdate) {
+	      var changedVar = variable('changed');
+	      var stmts = [
+	          changedVar.set(THIS_EXPR.prop(CHANGED_FIELD_NAME)).toDeclStmt(),
+	          THIS_EXPR.prop(CHANGED_FIELD_NAME).set(literal(false)).toStmt(),
+	      ];
+	      var lifecycleStmts = [];
+	      if (lifecycleHooks.genChanges) {
+	          var onChangesStmts = [];
+	          if (lifecycleHooks.ngOnChanges) {
+	              onChangesStmts.push(THIS_EXPR.prop(CONTEXT_FIELD_NAME)
+	                  .callMethod('ngOnChanges', [THIS_EXPR.prop(CHANGES_FIELD_NAME)])
+	                  .toStmt());
+	          }
+	          if (logBindingUpdate) {
+	              onChangesStmts.push(importExpr(resolveIdentifier(Identifiers.setBindingDebugInfoForChanges))
+	                  .callFn([VIEW_VAR.prop('renderer'), RENDER_EL_VAR, THIS_EXPR.prop(CHANGES_FIELD_NAME)])
+	                  .toStmt());
+	          }
+	          onChangesStmts.push(RESET_CHANGES_STMT);
+	          lifecycleStmts.push(new IfStmt(changedVar, onChangesStmts));
+	      }
+	      if (lifecycleHooks.ngOnInit) {
+	          lifecycleStmts.push(new IfStmt(VIEW_VAR.prop('numberOfChecks').identical(new LiteralExpr(0)), [THIS_EXPR.prop(CONTEXT_FIELD_NAME).callMethod('ngOnInit', []).toStmt()]));
+	      }
+	      if (lifecycleHooks.ngDoCheck) {
+	          lifecycleStmts.push(THIS_EXPR.prop(CONTEXT_FIELD_NAME).callMethod('ngDoCheck', []).toStmt());
+	      }
+	      if (lifecycleStmts.length > 0) {
+	          stmts.push(new IfStmt(not(THROW_ON_CHANGE_VAR), lifecycleStmts));
+	      }
+	      stmts.push(new ReturnStatement(changedVar));
+	      return new ClassMethod('detectChangesInternal', [
+	          new FnParam(VIEW_VAR.name, importType(resolveIdentifier(Identifiers.AppView), [DYNAMIC_TYPE])),
+	          new FnParam(RENDER_EL_VAR.name, DYNAMIC_TYPE),
+	          new FnParam(THROW_ON_CHANGE_VAR.name, BOOL_TYPE),
+	      ], stmts, BOOL_TYPE);
+	  }
+	  function checkInputMethod(input, fieldExpr, lifecycleHooks) {
+	      var onChangeStatements = [
+	          THIS_EXPR.prop(CHANGED_FIELD_NAME).set(literal(true)).toStmt(),
+	          THIS_EXPR.prop(CONTEXT_FIELD_NAME).prop(input).set(CURR_VALUE_VAR).toStmt(),
+	      ];
+	      if (lifecycleHooks.genChanges) {
+	          onChangeStatements.push(THIS_EXPR.prop(CHANGES_FIELD_NAME)
+	              .key(literal(input))
+	              .set(importExpr(resolveIdentifier(Identifiers.SimpleChange))
+	              .instantiate([fieldExpr, CURR_VALUE_VAR]))
+	              .toStmt());
+	      }
+	      onChangeStatements.push(fieldExpr.set(CURR_VALUE_VAR).toStmt());
+	      var methodBody = [
+	          new IfStmt(FORCE_UPDATE_VAR.or(importExpr(resolveIdentifier(Identifiers.checkBinding))
+	              .callFn([THROW_ON_CHANGE_VAR, fieldExpr, CURR_VALUE_VAR])), onChangeStatements),
+	      ];
+	      return new ClassMethod("check_" + input, [
+	          new FnParam(CURR_VALUE_VAR.name, DYNAMIC_TYPE),
+	          new FnParam(THROW_ON_CHANGE_VAR.name, BOOL_TYPE),
+	          new FnParam(FORCE_UPDATE_VAR.name, BOOL_TYPE),
+	      ], methodBody);
 	  }
 
 	  function convertValueToOutputAst(value, type) {
@@ -31584,7 +31372,7 @@
 	      };
 	      CompileMethod.prototype.resetDebugInfoExpr = function (nodeIndex, templateAst) {
 	          var res = this._updateDebugContext(new _DebugState(nodeIndex, templateAst));
-	          return isPresent(res) ? res : NULL_EXPR;
+	          return res || NULL_EXPR;
 	      };
 	      CompileMethod.prototype.resetDebugInfo = function (nodeIndex, templateAst) {
 	          this._newState = new _DebugState(nodeIndex, templateAst);
@@ -31602,6 +31390,18 @@
 	      return CompileMethod;
 	  }());
 
+	  /**
+	   * @license
+	   * Copyright Google Inc. All Rights Reserved.
+	   *
+	   * Use of this source code is governed by an MIT-style license that can be
+	   * found in the LICENSE file at https://angular.io/license
+	   */
+	  var __extends$15 = (this && this.__extends) || function (d, b) {
+	      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	      function __() { this.constructor = d; }
+	      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	  };
 	  function getPropertyInView(property, callingView, definedView) {
 	      if (callingView === definedView) {
 	          return property;
@@ -31616,17 +31416,34 @@
 	          if (currView !== definedView) {
 	              throw new Error("Internal error: Could not calculate a property in a parent view: " + property);
 	          }
-	          if (property instanceof ReadPropExpr) {
-	              var readPropExpr_1 = property;
-	              // Note: Don't cast for members of the AppView base class...
-	              if (definedView.fields.some(function (field) { return field.name == readPropExpr_1.name; }) ||
-	                  definedView.getters.some(function (field) { return field.name == readPropExpr_1.name; })) {
-	                  viewProp = viewProp.cast(definedView.classType);
-	              }
-	          }
-	          return replaceVarInExpression(THIS_EXPR.name, viewProp, property);
+	          return property.visitExpression(new _ReplaceViewTransformer(viewProp, definedView), null);
 	      }
 	  }
+	  var _ReplaceViewTransformer = (function (_super) {
+	      __extends$15(_ReplaceViewTransformer, _super);
+	      function _ReplaceViewTransformer(_viewExpr, _view) {
+	          _super.call(this);
+	          this._viewExpr = _viewExpr;
+	          this._view = _view;
+	      }
+	      _ReplaceViewTransformer.prototype._isThis = function (expr) {
+	          return expr instanceof ReadVarExpr && expr.builtin === BuiltinVar.This;
+	      };
+	      _ReplaceViewTransformer.prototype.visitReadVarExpr = function (ast, context) {
+	          return this._isThis(ast) ? this._viewExpr : ast;
+	      };
+	      _ReplaceViewTransformer.prototype.visitReadPropExpr = function (ast, context) {
+	          if (this._isThis(ast.receiver)) {
+	              // Note: Don't cast for members of the AppView base class...
+	              if (this._view.fields.some(function (field) { return field.name == ast.name; }) ||
+	                  this._view.getters.some(function (field) { return field.name == ast.name; })) {
+	                  return this._viewExpr.cast(this._view.classType).prop(ast.name);
+	              }
+	          }
+	          return _super.prototype.visitReadPropExpr.call(this, ast, context);
+	      };
+	      return _ReplaceViewTransformer;
+	  }(ExpressionTransformer));
 	  function injectFromViewParentInjector(token, optional) {
 	      var args = [createDiTokenExpression(token)];
 	      if (optional) {
@@ -31715,7 +31532,7 @@
 	      CompileQuery.prototype._isStatic = function () {
 	          return !this._values.values.some(function (value) { return value instanceof ViewQueryValues; });
 	      };
-	      CompileQuery.prototype.afterChildren = function (targetStaticMethod /** TODO #9100 */, targetDynamicMethod) {
+	      CompileQuery.prototype.afterChildren = function (targetStaticMethod, targetDynamicMethod) {
 	          var values = createQueryValues(this._values);
 	          var updateStmts = [this.queryList.callMethod('reset', [literalArr(values)]).toStmt()];
 	          if (isPresent(this.ownerDirectiveExpression)) {
@@ -31885,6 +31702,35 @@
 	   * Use of this source code is governed by an MIT-style license that can be
 	   * found in the LICENSE file at https://angular.io/license
 	   */
+	  var ViewFactoryDependency = (function () {
+	      function ViewFactoryDependency(comp, placeholder) {
+	          this.comp = comp;
+	          this.placeholder = placeholder;
+	      }
+	      return ViewFactoryDependency;
+	  }());
+	  var ComponentFactoryDependency = (function () {
+	      function ComponentFactoryDependency(comp, placeholder) {
+	          this.comp = comp;
+	          this.placeholder = placeholder;
+	      }
+	      return ComponentFactoryDependency;
+	  }());
+	  var DirectiveWrapperDependency = (function () {
+	      function DirectiveWrapperDependency(dir, placeholder) {
+	          this.dir = dir;
+	          this.placeholder = placeholder;
+	      }
+	      return DirectiveWrapperDependency;
+	  }());
+
+	  /**
+	   * @license
+	   * Copyright Google Inc. All Rights Reserved.
+	   *
+	   * Use of this source code is governed by an MIT-style license that can be
+	   * found in the LICENSE file at https://angular.io/license
+	   */
 	  var __extends$14 = (this && this.__extends) || function (d, b) {
 	      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	      function __() { this.constructor = d; }
@@ -31904,7 +31750,7 @@
 	  }());
 	  var CompileElement = (function (_super) {
 	      __extends$14(CompileElement, _super);
-	      function CompileElement(parent, view, nodeIndex, renderNode, sourceAst, component, _directives, _resolvedProvidersArray, hasViewContainer, hasEmbeddedView, references) {
+	      function CompileElement(parent, view, nodeIndex, renderNode, sourceAst, component, _directives, _resolvedProvidersArray, hasViewContainer, hasEmbeddedView, references, _targetDependencies) {
 	          var _this = this;
 	          _super.call(this, parent, view, nodeIndex, renderNode, sourceAst);
 	          this.component = component;
@@ -31912,8 +31758,10 @@
 	          this._resolvedProvidersArray = _resolvedProvidersArray;
 	          this.hasViewContainer = hasViewContainer;
 	          this.hasEmbeddedView = hasEmbeddedView;
+	          this._targetDependencies = _targetDependencies;
 	          this._compViewExpr = null;
 	          this.instances = new Map();
+	          this.directiveWrapperInstance = new Map();
 	          this._queryCount = 0;
 	          this._queries = new Map();
 	          this._componentConstructorViewQueryLists = [];
@@ -31929,9 +31777,12 @@
 	          if (this.hasViewContainer || this.hasEmbeddedView || isPresent(this.component)) {
 	              this._createAppElement();
 	          }
+	          if (this.component) {
+	              this._createComponentFactoryResolver();
+	          }
 	      }
 	      CompileElement.createNull = function () {
-	          return new CompileElement(null, null, null, null, null, null, [], [], false, false, []);
+	          return new CompileElement(null, null, null, null, null, null, [], [], false, false, [], []);
 	      };
 	      CompileElement.prototype._createAppElement = function () {
 	          var fieldName = "_appEl_" + this.nodeIndex;
@@ -31947,7 +31798,13 @@
 	          this.appElement = THIS_EXPR.prop(fieldName);
 	          this.instances.set(resolveIdentifierToken(Identifiers.AppElement).reference, this.appElement);
 	      };
-	      CompileElement.prototype.createComponentFactoryResolver = function (entryComponents) {
+	      CompileElement.prototype._createComponentFactoryResolver = function () {
+	          var _this = this;
+	          var entryComponents = this.component.entryComponents.map(function (entryComponent) {
+	              var id = new CompileIdentifierMetadata({ name: entryComponent.name });
+	              _this._targetDependencies.push(new ComponentFactoryDependency(entryComponent, id));
+	              return id;
+	          });
 	          if (!entryComponents || entryComponents.length === 0) {
 	              return;
 	          }
@@ -31996,20 +31853,30 @@
 	          // create all the provider instances, some in the view constructor,
 	          // some as getters. We rely on the fact that they are already sorted topologically.
 	          MapWrapper.values(this._resolvedProviders).forEach(function (resolvedProvider) {
+	              var isDirectiveWrapper = resolvedProvider.providerType === exports.ProviderAstType.Component ||
+	                  resolvedProvider.providerType === exports.ProviderAstType.Directive;
 	              var providerValueExpressions = resolvedProvider.providers.map(function (provider) {
 	                  if (isPresent(provider.useExisting)) {
 	                      return _this._getDependency(resolvedProvider.providerType, new CompileDiDependencyMetadata({ token: provider.useExisting }));
 	                  }
 	                  else if (isPresent(provider.useFactory)) {
-	                      var deps = isPresent(provider.deps) ? provider.deps : provider.useFactory.diDeps;
+	                      var deps = provider.deps || provider.useFactory.diDeps;
 	                      var depsExpr = deps.map(function (dep) { return _this._getDependency(resolvedProvider.providerType, dep); });
 	                      return importExpr(provider.useFactory).callFn(depsExpr);
 	                  }
 	                  else if (isPresent(provider.useClass)) {
-	                      var deps = isPresent(provider.deps) ? provider.deps : provider.useClass.diDeps;
+	                      var deps = provider.deps || provider.useClass.diDeps;
 	                      var depsExpr = deps.map(function (dep) { return _this._getDependency(resolvedProvider.providerType, dep); });
-	                      return importExpr(provider.useClass)
-	                          .instantiate(depsExpr, importType(provider.useClass));
+	                      if (isDirectiveWrapper) {
+	                          var directiveWrapperIdentifier = new CompileIdentifierMetadata({ name: DirectiveWrapperCompiler.dirWrapperClassName(provider.useClass) });
+	                          _this._targetDependencies.push(new DirectiveWrapperDependency(provider.useClass, directiveWrapperIdentifier));
+	                          return importExpr(directiveWrapperIdentifier)
+	                              .instantiate(depsExpr, importType(directiveWrapperIdentifier));
+	                      }
+	                      else {
+	                          return importExpr(provider.useClass)
+	                              .instantiate(depsExpr, importType(provider.useClass));
+	                      }
 	                  }
 	                  else {
 	                      return convertValueToOutputAst(provider.useValue);
@@ -32017,7 +31884,13 @@
 	              });
 	              var propName = "_" + resolvedProvider.token.name + "_" + _this.nodeIndex + "_" + _this.instances.size;
 	              var instance = createProviderProperty(propName, resolvedProvider, providerValueExpressions, resolvedProvider.multiProvider, resolvedProvider.eager, _this);
-	              _this.instances.set(resolvedProvider.token.reference, instance);
+	              if (isDirectiveWrapper) {
+	                  _this.directiveWrapperInstance.set(resolvedProvider.token.reference, instance);
+	                  _this.instances.set(resolvedProvider.token.reference, instance.prop('context'));
+	              }
+	              else {
+	                  _this.instances.set(resolvedProvider.token.reference, instance);
+	              }
 	          });
 	          for (var i = 0; i < this._directives.length; i++) {
 	              var directive = this._directives[i];
@@ -32238,7 +32111,7 @@
 	  var _QueryWithRead = (function () {
 	      function _QueryWithRead(query, match) {
 	          this.query = query;
-	          this.read = isPresent(query.meta.read) ? query.meta.read : match;
+	          this.read = query.meta.read || match;
 	      }
 	      return _QueryWithRead;
 	  }());
@@ -32880,7 +32753,7 @@
 	      return _AstToIrVisitor;
 	  }());
 	  function flattenStatements(arg, output) {
-	      if (isArray(arg)) {
+	      if (Array.isArray(arg)) {
 	          arg.forEach(function (entry) { return flattenStatements(entry, output); });
 	      }
 	      else {
@@ -32898,7 +32771,7 @@
 	          this._actionResultExprs = [];
 	          this._method = new CompileMethod(compileElement.view);
 	          this._methodName =
-	              "_handle_" + santitizeEventName(eventName) + "_" + compileElement.nodeIndex + "_" + listenerIndex;
+	              "_handle_" + sanitizeEventName(eventName) + "_" + compileElement.nodeIndex + "_" + listenerIndex;
 	          this._eventParam = new FnParam(EventHandlerVars.event.name, importType(this.compileElement.view.genConfig.renderTypes.renderEvent));
 	      }
 	      CompileEventListener.getOrCreate = function (compileElement, eventTarget, eventName, eventPhase, targetEventListeners) {
@@ -32915,13 +32788,17 @@
 	          enumerable: true,
 	          configurable: true
 	      });
+	      Object.defineProperty(CompileEventListener.prototype, "isAnimation", {
+	          get: function () { return !!this.eventPhase; },
+	          enumerable: true,
+	          configurable: true
+	      });
 	      CompileEventListener.prototype.addAction = function (hostEvent, directive, directiveInstance) {
 	          if (isPresent(directive) && directive.isComponent) {
 	              this._hasComponentHostListener = true;
 	          }
 	          this._method.resetDebugInfo(this.compileElement.nodeIndex, hostEvent);
-	          var context = isPresent(directiveInstance) ? directiveInstance :
-	              this.compileElement.view.componentContext;
+	          var context = directiveInstance || this.compileElement.view.componentContext;
 	          var actionStmts = convertCdStatementToIr(this.compileElement.view, context, hostEvent.handler, this.compileElement.nodeIndex);
 	          var lastIndex = actionStmts.length - 1;
 	          if (lastIndex >= 0) {
@@ -32965,16 +32842,11 @@
 	          // private is fine here as no child view will reference the event handler...
 	          this.compileElement.view.createMethod.addStmt(disposable.set(listenExpr).toDeclStmt(FUNCTION_TYPE, [StmtModifier.Private]));
 	      };
-	      CompileEventListener.prototype.listenToAnimation = function () {
-	          var outputListener = THIS_EXPR.callMethod('eventHandler', [THIS_EXPR.prop(this._methodName).callMethod(BuiltinMethod.Bind, [THIS_EXPR])]);
-	          // tie the property callback method to the view animations map
-	          var stmt = THIS_EXPR
-	              .callMethod('registerAnimationOutput', [
-	              this.compileElement.renderNode, literal(this.eventName),
-	              literal(this.eventPhase), outputListener
-	          ])
+	      CompileEventListener.prototype.listenToAnimation = function (animationTransitionVar) {
+	          var callbackMethod = this.eventPhase == 'start' ? 'onStart' : 'onDone';
+	          return animationTransitionVar
+	              .callMethod(callbackMethod, [THIS_EXPR.prop(this.methodName).callMethod(BuiltinMethod.Bind, [THIS_EXPR])])
 	              .toStmt();
-	          this.compileElement.view.createMethod.addStmt(stmt);
 	      };
 	      CompileEventListener.prototype.listenToDirective = function (directiveInstance, observablePropName) {
 	          var subscription = variable("subscription_" + this.compileElement.view.subscriptions.length);
@@ -33015,10 +32887,9 @@
 	  }
 	  function bindRenderOutputs(eventListeners) {
 	      eventListeners.forEach(function (listener) {
-	          if (listener.eventPhase) {
-	              listener.listenToAnimation();
-	          }
-	          else {
+	          // the animation listeners are handled within property_binder.ts to
+	          // allow them to be placed next to the animation factory statements
+	          if (!listener.isAnimation) {
 	              listener.listenToRenderer();
 	          }
 	      });
@@ -33032,26 +32903,12 @@
 	      }
 	      return null;
 	  }
-	  function santitizeEventName(name) {
-	      return StringWrapper.replaceAll(name, /[^a-zA-Z_]/g, '_');
+	  function sanitizeEventName(name) {
+	      return name.replace(/[^a-zA-Z_]/g, '_');
 	  }
 
 	  var STATE_IS_NEVER_CHECKED = THIS_EXPR.prop('numberOfChecks').identical(new LiteralExpr(0));
 	  var NOT_THROW_ON_CHANGES = not(DetectChangesVars.throwOnChange);
-	  function bindDirectiveDetectChangesLifecycleCallbacks(directiveAst, directiveInstance, compileElement) {
-	      var view = compileElement.view;
-	      var detectChangesInInputsMethod = view.detectChangesInInputsMethod;
-	      var lifecycleHooks = directiveAst.directive.type.lifecycleHooks;
-	      if (lifecycleHooks.indexOf(LifecycleHooks.OnChanges) !== -1 && directiveAst.inputs.length > 0) {
-	          detectChangesInInputsMethod.addStmt(new IfStmt(DetectChangesVars.changes.notIdentical(NULL_EXPR), [directiveInstance.callMethod('ngOnChanges', [DetectChangesVars.changes]).toStmt()]));
-	      }
-	      if (lifecycleHooks.indexOf(LifecycleHooks.OnInit) !== -1) {
-	          detectChangesInInputsMethod.addStmt(new IfStmt(STATE_IS_NEVER_CHECKED.and(NOT_THROW_ON_CHANGES), [directiveInstance.callMethod('ngOnInit', []).toStmt()]));
-	      }
-	      if (lifecycleHooks.indexOf(LifecycleHooks.DoCheck) !== -1) {
-	          detectChangesInInputsMethod.addStmt(new IfStmt(NOT_THROW_ON_CHANGES, [directiveInstance.callMethod('ngDoCheck', []).toStmt()]));
-	      }
-	  }
 	  function bindDirectiveAfterContentLifecycleCallbacks(directiveMeta, directiveInstance, compileElement) {
 	      var view = compileElement.view;
 	      var lifecycleHooks = directiveMeta.type.lifecycleHooks;
@@ -33096,32 +32953,50 @@
 	  function createCurrValueExpr(exprIndex) {
 	      return variable("currVal_" + exprIndex); // fix syntax highlighting: `
 	  }
-	  function bind(view, currValExpr, fieldExpr, parsedExpression, context, actions, method, bindingIndex) {
+	  var EvalResult = (function () {
+	      function EvalResult(forceUpdate) {
+	          this.forceUpdate = forceUpdate;
+	      }
+	      return EvalResult;
+	  }());
+	  function evalCdAst(view, currValExpr, parsedExpression, context, method, bindingIndex) {
 	      var checkExpression = convertCdExpressionToIr(view, context, parsedExpression, DetectChangesVars.valUnwrapper, bindingIndex);
 	      if (!checkExpression.expression) {
 	          // e.g. an empty expression was given
-	          return;
+	          return null;
 	      }
 	      if (checkExpression.temporaryCount) {
 	          for (var i = 0; i < checkExpression.temporaryCount; i++) {
 	              method.addStmt(temporaryDeclaration(bindingIndex, i));
 	          }
 	      }
-	      // private is fine here as no child view will reference the cached value...
-	      view.fields.push(new ClassField(fieldExpr.name, null, [StmtModifier.Private]));
-	      view.createMethod.addStmt(THIS_EXPR.prop(fieldExpr.name)
-	          .set(importExpr(resolveIdentifier(Identifiers.UNINITIALIZED)))
-	          .toStmt());
 	      if (checkExpression.needsValueUnwrapper) {
 	          var initValueUnwrapperStmt = DetectChangesVars.valUnwrapper.callMethod('reset', []).toStmt();
 	          method.addStmt(initValueUnwrapperStmt);
 	      }
 	      method.addStmt(currValExpr.set(checkExpression.expression).toDeclStmt(null, [StmtModifier.Final]));
+	      if (checkExpression.needsValueUnwrapper) {
+	          return new EvalResult(DetectChangesVars.valUnwrapper.prop('hasWrappedValue'));
+	      }
+	      else {
+	          return new EvalResult(null);
+	      }
+	  }
+	  function bind(view, currValExpr, fieldExpr, parsedExpression, context, actions, method, bindingIndex) {
+	      var evalResult = evalCdAst(view, currValExpr, parsedExpression, context, method, bindingIndex);
+	      if (!evalResult) {
+	          return;
+	      }
+	      // private is fine here as no child view will reference the cached value...
+	      view.fields.push(new ClassField(fieldExpr.name, null, [StmtModifier.Private]));
+	      view.createMethod.addStmt(THIS_EXPR.prop(fieldExpr.name)
+	          .set(importExpr(resolveIdentifier(Identifiers.UNINITIALIZED)))
+	          .toStmt());
 	      var condition = importExpr(resolveIdentifier(Identifiers.checkBinding)).callFn([
 	          DetectChangesVars.throwOnChange, fieldExpr, currValExpr
 	      ]);
-	      if (checkExpression.needsValueUnwrapper) {
-	          condition = DetectChangesVars.valUnwrapper.prop('hasWrappedValue').or(condition);
+	      if (evalResult.forceUpdate) {
+	          condition = evalResult.forceUpdate.or(condition);
 	      }
 	      method.addStmt(new IfStmt(condition, actions.concat([THIS_EXPR.prop(fieldExpr.name).set(currValExpr).toStmt()])));
 	  }
@@ -33135,7 +33010,7 @@
 	              .callMethod('setText', [compileNode.renderNode, currValExpr])
 	              .toStmt()], view.detectChangesRenderPropertiesMethod, bindingIndex);
 	  }
-	  function bindAndWriteToRenderer(boundProps, context, compileElement, isHostProp) {
+	  function bindAndWriteToRenderer(boundProps, context, compileElement, isHostProp, eventListeners) {
 	      var view = compileElement.view;
 	      var renderNode = compileElement.renderNode;
 	      boundProps.forEach(function (boundProp) {
@@ -33144,7 +33019,6 @@
 	          view.detectChangesRenderPropertiesMethod.resetDebugInfo(compileElement.nodeIndex, boundProp);
 	          var fieldExpr = createBindFieldExpr(bindingIndex);
 	          var currValExpr = createCurrValueExpr(bindingIndex);
-	          var renderMethod;
 	          var oldRenderValue = sanitizedValue(boundProp, fieldExpr);
 	          var renderValue = sanitizedValue(boundProp, currValExpr);
 	          var updateStmts = [];
@@ -33181,27 +33055,34 @@
 	                      .toStmt());
 	                  break;
 	              case exports.PropertyBindingType.Animation:
-	                  var animationName = boundProp.name;
-	                  var targetViewExpr = THIS_EXPR;
-	                  if (isHostProp) {
-	                      targetViewExpr = compileElement.appElement.prop('componentView');
-	                  }
 	                  compileMethod = view.animationBindingsMethod;
-	                  var animationFnExpr = targetViewExpr.prop('componentType').prop('animations').key(literal(animationName));
+	                  var detachStmts_1 = [];
+	                  var animationName_1 = boundProp.name;
+	                  var targetViewExpr = isHostProp ? compileElement.appElement.prop('componentView') : THIS_EXPR;
+	                  var animationFnExpr = targetViewExpr.prop('componentType').prop('animations').key(literal(animationName_1));
 	                  // it's important to normalize the void value as `void` explicitly
 	                  // so that the styles data can be obtained from the stringmap
 	                  var emptyStateValue = literal(EMPTY_ANIMATION_STATE);
-	                  // void => ...
-	                  var oldRenderVar = variable('oldRenderVar');
-	                  updateStmts.push(oldRenderVar.set(oldRenderValue).toDeclStmt());
-	                  updateStmts.push(new IfStmt(oldRenderVar.equals(importExpr(resolveIdentifier(Identifiers.UNINITIALIZED))), [oldRenderVar.set(emptyStateValue).toStmt()]));
-	                  // ... => void
-	                  var newRenderVar = variable('newRenderVar');
-	                  updateStmts.push(newRenderVar.set(renderValue).toDeclStmt());
-	                  updateStmts.push(new IfStmt(newRenderVar.equals(importExpr(resolveIdentifier(Identifiers.UNINITIALIZED))), [newRenderVar.set(emptyStateValue).toStmt()]));
-	                  updateStmts.push(animationFnExpr.callFn([THIS_EXPR, renderNode, oldRenderVar, newRenderVar]).toStmt());
-	                  view.detachMethod.addStmt(animationFnExpr.callFn([THIS_EXPR, renderNode, oldRenderValue, emptyStateValue])
-	                      .toStmt());
+	                  var unitializedValue = importExpr(resolveIdentifier(Identifiers.UNINITIALIZED));
+	                  var animationTransitionVar_1 = variable('animationTransition_' + animationName_1);
+	                  updateStmts.push(animationTransitionVar_1
+	                      .set(animationFnExpr.callFn([
+	                      THIS_EXPR, renderNode, oldRenderValue.equals(unitializedValue)
+	                          .conditional(emptyStateValue, oldRenderValue),
+	                      renderValue.equals(unitializedValue).conditional(emptyStateValue, renderValue)
+	                  ]))
+	                      .toDeclStmt());
+	                  detachStmts_1.push(animationTransitionVar_1
+	                      .set(animationFnExpr.callFn([THIS_EXPR, renderNode, oldRenderValue, emptyStateValue]))
+	                      .toDeclStmt());
+	                  eventListeners.forEach(function (listener) {
+	                      if (listener.isAnimation && listener.eventName === animationName_1) {
+	                          var animationStmt = listener.listenToAnimation(animationTransitionVar_1);
+	                          updateStmts.push(animationStmt);
+	                          detachStmts_1.push(animationStmt);
+	                      }
+	                  });
+	                  view.detachMethod.addStmts(detachStmts_1);
 	                  break;
 	          }
 	          bind(view, currValExpr, fieldExpr, boundProp.value, context, updateStmts, compileMethod, view.bindings.length);
@@ -33234,73 +33115,46 @@
 	      var args = [importExpr(resolveIdentifier(Identifiers.SecurityContext)).prop(enumValue), renderValue];
 	      return ctx.callMethod('sanitize', args);
 	  }
-	  function bindRenderInputs(boundProps, compileElement) {
-	      bindAndWriteToRenderer(boundProps, compileElement.view.componentContext, compileElement, false);
+	  function bindRenderInputs(boundProps, compileElement, eventListeners) {
+	      bindAndWriteToRenderer(boundProps, compileElement.view.componentContext, compileElement, false, eventListeners);
 	  }
-	  function bindDirectiveHostProps(directiveAst, directiveInstance, compileElement) {
-	      bindAndWriteToRenderer(directiveAst.hostProperties, directiveInstance, compileElement, true);
+	  function bindDirectiveHostProps(directiveAst, directiveInstance, compileElement, eventListeners) {
+	      bindAndWriteToRenderer(directiveAst.hostProperties, directiveInstance, compileElement, true, eventListeners);
 	  }
-	  function bindDirectiveInputs(directiveAst, directiveInstance, compileElement) {
-	      if (directiveAst.inputs.length === 0) {
-	          return;
-	      }
+	  function bindDirectiveInputs(directiveAst, directiveWrapperInstance, compileElement) {
 	      var view = compileElement.view;
 	      var detectChangesInInputsMethod = view.detectChangesInInputsMethod;
 	      detectChangesInInputsMethod.resetDebugInfo(compileElement.nodeIndex, compileElement.sourceAst);
-	      var lifecycleHooks = directiveAst.directive.type.lifecycleHooks;
-	      var calcChangesMap = lifecycleHooks.indexOf(LifecycleHooks.OnChanges) !== -1;
-	      var isOnPushComp = directiveAst.directive.isComponent &&
-	          !isDefaultChangeDetectionStrategy(directiveAst.directive.changeDetection);
-	      if (calcChangesMap) {
-	          detectChangesInInputsMethod.addStmt(DetectChangesVars.changes.set(NULL_EXPR).toStmt());
-	      }
-	      if (isOnPushComp) {
-	          detectChangesInInputsMethod.addStmt(DetectChangesVars.changed.set(literal(false)).toStmt());
-	      }
 	      directiveAst.inputs.forEach(function (input) {
 	          var bindingIndex = view.bindings.length;
 	          view.bindings.push(new CompileBinding(compileElement, input));
 	          detectChangesInInputsMethod.resetDebugInfo(compileElement.nodeIndex, input);
-	          var fieldExpr = createBindFieldExpr(bindingIndex);
 	          var currValExpr = createCurrValueExpr(bindingIndex);
-	          var statements = [directiveInstance.prop(input.directiveName).set(currValExpr).toStmt()];
-	          if (calcChangesMap) {
-	              statements.push(new IfStmt(DetectChangesVars.changes.identical(NULL_EXPR), [DetectChangesVars.changes
-	                      .set(literalMap([], new MapType(importType(resolveIdentifier(Identifiers.SimpleChange)))))
-	                      .toStmt()]));
-	              statements.push(DetectChangesVars.changes.key(literal(input.directiveName))
-	                  .set(importExpr(resolveIdentifier(Identifiers.SimpleChange))
-	                  .instantiate([fieldExpr, currValExpr]))
-	                  .toStmt());
+	          var evalResult = evalCdAst(view, currValExpr, input.value, view.componentContext, detectChangesInInputsMethod, bindingIndex);
+	          if (!evalResult) {
+	              return;
 	          }
-	          if (isOnPushComp) {
-	              statements.push(DetectChangesVars.changed.set(literal(true)).toStmt());
-	          }
-	          if (view.genConfig.logBindingUpdate) {
-	              statements.push(logBindingUpdateStmt(compileElement.renderNode, input.directiveName, currValExpr));
-	          }
-	          bind(view, currValExpr, fieldExpr, input.value, view.componentContext, statements, detectChangesInInputsMethod, bindingIndex);
+	          detectChangesInInputsMethod.addStmt(directiveWrapperInstance
+	              .callMethod("check_" + input.directiveName, [
+	              currValExpr, DetectChangesVars.throwOnChange,
+	              evalResult.forceUpdate || literal(false)
+	          ])
+	              .toStmt());
 	      });
-	      if (isOnPushComp) {
-	          detectChangesInInputsMethod.addStmt(new IfStmt(DetectChangesVars.changed, [
-	              compileElement.appElement.prop('componentView').callMethod('markAsCheckOnce', []).toStmt()
-	          ]));
-	      }
+	      var isOnPushComp = directiveAst.directive.isComponent &&
+	          !isDefaultChangeDetectionStrategy(directiveAst.directive.changeDetection);
+	      var directiveDetectChangesExpr = directiveWrapperInstance.callMethod('detectChangesInternal', [THIS_EXPR, compileElement.renderNode, DetectChangesVars.throwOnChange]);
+	      var directiveDetectChangesStmt = isOnPushComp ?
+	          new IfStmt(directiveDetectChangesExpr, [compileElement.appElement.prop('componentView')
+	                  .callMethod('markAsCheckOnce', [])
+	                  .toStmt()]) :
+	          directiveDetectChangesExpr.toStmt();
+	      detectChangesInInputsMethod.addStmt(directiveDetectChangesStmt);
 	  }
 	  function logBindingUpdateStmt(renderNode, propName, value) {
-	      var tryStmt = THIS_EXPR.prop('renderer')
-	          .callMethod('setBindingDebugInfo', [
-	          renderNode, literal("ng-reflect-" + camelCaseToDashCase(propName)),
-	          value.isBlank().conditional(NULL_EXPR, value.callMethod('toString', []))
-	      ])
+	      return importExpr(resolveIdentifier(Identifiers.setBindingDebugInfo))
+	          .callFn([THIS_EXPR.prop('renderer'), renderNode, literal(propName), value])
 	          .toStmt();
-	      var catchStmt = THIS_EXPR.prop('renderer')
-	          .callMethod('setBindingDebugInfo', [
-	          renderNode, literal("ng-reflect-" + camelCaseToDashCase(propName)),
-	          literal('[ERROR] Exception while trying to serialize the value')
-	      ])
-	          .toStmt();
-	      return new TryCatchStmt([tryStmt], [catchStmt]);
 	  }
 
 	  function bindView(view, parsedTemplate) {
@@ -33329,13 +33183,13 @@
 	          collectEventListeners(ast.outputs, ast.directives, compileElement).forEach(function (entry) {
 	              eventListeners.push(entry);
 	          });
-	          bindRenderInputs(ast.inputs, compileElement);
+	          bindRenderInputs(ast.inputs, compileElement, eventListeners);
 	          bindRenderOutputs(eventListeners);
 	          ast.directives.forEach(function (directiveAst) {
 	              var directiveInstance = compileElement.instances.get(directiveAst.directive.type.reference);
-	              bindDirectiveInputs(directiveAst, directiveInstance, compileElement);
-	              bindDirectiveDetectChangesLifecycleCallbacks(directiveAst, directiveInstance, compileElement);
-	              bindDirectiveHostProps(directiveAst, directiveInstance, compileElement);
+	              var directiveWrapperInstance = compileElement.directiveWrapperInstance.get(directiveAst.directive.type.reference);
+	              bindDirectiveInputs(directiveAst, directiveWrapperInstance, compileElement);
+	              bindDirectiveHostProps(directiveAst, directiveInstance, compileElement, eventListeners);
 	              bindDirectiveOutputs(directiveAst, directiveInstance, eventListeners);
 	          });
 	          templateVisitAll(this, ast.children, compileElement);
@@ -33357,8 +33211,8 @@
 	          var eventListeners = collectEventListeners(ast.outputs, ast.directives, compileElement);
 	          ast.directives.forEach(function (directiveAst) {
 	              var directiveInstance = compileElement.instances.get(directiveAst.directive.type.reference);
-	              bindDirectiveInputs(directiveAst, directiveInstance, compileElement);
-	              bindDirectiveDetectChangesLifecycleCallbacks(directiveAst, directiveInstance, compileElement);
+	              var directiveWrapperInstance = compileElement.directiveWrapperInstance.get(directiveAst.directive.type.reference);
+	              bindDirectiveInputs(directiveAst, directiveWrapperInstance, compileElement);
 	              bindDirectiveOutputs(directiveAst, directiveInstance, eventListeners);
 	              bindDirectiveAfterContentLifecycleCallbacks(directiveAst.directive, directiveInstance, compileElement);
 	              bindDirectiveAfterViewLifecycleCallbacks(directiveAst.directive, directiveInstance, compileElement);
@@ -33388,20 +33242,6 @@
 	  var NG_CONTAINER_TAG = 'ng-container';
 	  var parentRenderNodeVar = variable('parentRenderNode');
 	  var rootSelectorVar = variable('rootSelector');
-	  var ViewFactoryDependency = (function () {
-	      function ViewFactoryDependency(comp, placeholder) {
-	          this.comp = comp;
-	          this.placeholder = placeholder;
-	      }
-	      return ViewFactoryDependency;
-	  }());
-	  var ComponentFactoryDependency = (function () {
-	      function ComponentFactoryDependency(comp, placeholder) {
-	          this.comp = comp;
-	          this.placeholder = placeholder;
-	      }
-	      return ComponentFactoryDependency;
-	  }());
 	  function buildView(view, template, targetDependencies) {
 	      var builderVisitor = new ViewBuilderVisitor(view, targetDependencies);
 	      templateVisitAll(builderVisitor, template, view.declarationElement.isNull() ? view.declarationElement : view.declarationElement.parent);
@@ -33431,11 +33271,11 @@
 	          if (this._isRootNode(parent)) {
 	              // store appElement as root node only for ViewContainers
 	              if (this.view.viewType !== ViewType.COMPONENT) {
-	                  this.view.rootNodesOrAppElements.push(isPresent(vcAppEl) ? vcAppEl : node.renderNode);
+	                  this.view.rootNodesOrAppElements.push(vcAppEl || node.renderNode);
 	              }
 	          }
 	          else if (isPresent(parent.component) && isPresent(ngContentIndex)) {
-	              parent.addContentNode(ngContentIndex, isPresent(vcAppEl) ? vcAppEl : node.renderNode);
+	              parent.addContentNode(ngContentIndex, vcAppEl || node.renderNode);
 	          }
 	      };
 	      ViewBuilderVisitor.prototype._getParentRenderNode = function (parent) {
@@ -33507,7 +33347,6 @@
 	          return null;
 	      };
 	      ViewBuilderVisitor.prototype.visitElement = function (ast, parent) {
-	          var _this = this;
 	          var nodeIndex = this.view.nodes.length;
 	          var createRenderNodeExpr;
 	          var debugContextExpr = this.view.createMethod.resetDebugInfoExpr(nodeIndex, ast);
@@ -33540,18 +33379,12 @@
 	                      .toStmt());
 	              }
 	          }
-	          var compileElement = new CompileElement(parent, this.view, nodeIndex, renderNode, ast, component, directives, ast.providers, ast.hasViewContainer, false, ast.references);
+	          var compileElement = new CompileElement(parent, this.view, nodeIndex, renderNode, ast, component, directives, ast.providers, ast.hasViewContainer, false, ast.references, this.targetDependencies);
 	          this.view.nodes.push(compileElement);
 	          var compViewExpr = null;
 	          if (isPresent(component)) {
 	              var nestedComponentIdentifier = new CompileIdentifierMetadata({ name: getViewFactoryName(component, 0) });
 	              this.targetDependencies.push(new ViewFactoryDependency(component.type, nestedComponentIdentifier));
-	              var entryComponentIdentifiers = component.entryComponents.map(function (entryComponent) {
-	                  var id = new CompileIdentifierMetadata({ name: entryComponent.name });
-	                  _this.targetDependencies.push(new ComponentFactoryDependency(entryComponent, id));
-	                  return id;
-	              });
-	              compileElement.createComponentFactoryResolver(entryComponentIdentifiers);
 	              compViewExpr = variable("compView_" + nodeIndex); // fix highlighting: `
 	              compileElement.setComponentView(compViewExpr);
 	              this.view.createMethod.addStmt(compViewExpr
@@ -33591,7 +33424,7 @@
 	          var renderNode = THIS_EXPR.prop(fieldName);
 	          var templateVariableBindings = ast.variables.map(function (varAst) { return [varAst.value.length > 0 ? varAst.value : IMPLICIT_TEMPLATE_VAR, varAst.name]; });
 	          var directives = ast.directives.map(function (directiveAst) { return directiveAst.directive; });
-	          var compileElement = new CompileElement(parent, this.view, nodeIndex, renderNode, ast, null, directives, ast.providers, ast.hasViewContainer, true, ast.references);
+	          var compileElement = new CompileElement(parent, this.view, nodeIndex, renderNode, ast, null, directives, ast.providers, ast.hasViewContainer, true, ast.references, this.targetDependencies);
 	          this.view.nodes.push(compileElement);
 	          this.nestedViewCount++;
 	          var embeddedView = new CompileView(this.view.component, this.view.genConfig, this.view.pipeMetas, NULL_EXPR, this.view.animations, this.view.viewIndex + this.nestedViewCount, compileElement, templateVariableBindings);
@@ -33674,7 +33507,7 @@
 	      Object.keys(data).forEach(function (name) { entryArray.push([name, data[name]]); });
 	      // We need to sort to get a defined output order
 	      // for tests and for caching generated artifacts...
-	      ListWrapper.sort(entryArray, function (entry1, entry2) { return StringWrapper.compare(entry1[0], entry2[0]); });
+	      ListWrapper.sort(entryArray);
 	      return entryArray;
 	  }
 	  function createViewTopLevelStmts(view, targetStatements) {
@@ -33766,7 +33599,9 @@
 	      }
 	      if (view.viewIndex === 0) {
 	          var animationsExpr = literalMap(view.animations.map(function (entry) { return [entry.name, entry.fnExp]; }));
-	          initRenderCompTypeStmts = [new IfStmt(renderCompTypeVar.identical(NULL_EXPR), [renderCompTypeVar
+	          initRenderCompTypeStmts = [
+	              new IfStmt(renderCompTypeVar.identical(NULL_EXPR), [
+	                  renderCompTypeVar
 	                      .set(ViewConstructorVars.viewUtils.callMethod('createRenderComponentType', [
 	                      view.genConfig.genDebugInfo ? literal(templateUrlInfo) : literal(''),
 	                      literal(view.component.template.ngContentSelectors.length),
@@ -33774,10 +33609,14 @@
 	                      view.styles,
 	                      animationsExpr,
 	                  ]))
-	                      .toStmt()])];
+	                      .toStmt(),
+	              ]),
+	          ];
 	      }
-	      return fn(viewFactoryArgs, initRenderCompTypeStmts.concat([new ReturnStatement(variable(viewClass.name)
-	              .instantiate(viewClass.constructorMethod.params.map(function (param) { return variable(param.name); })))]), importType(resolveIdentifier(Identifiers.AppView), [getContextType(view)]))
+	      return fn(viewFactoryArgs, initRenderCompTypeStmts.concat([
+	          new ReturnStatement(variable(viewClass.name)
+	              .instantiate(viewClass.constructorMethod.params.map(function (param) { return variable(param.name); }))),
+	      ]), importType(resolveIdentifier(Identifiers.AppView), [getContextType(view)]))
 	          .toDeclStmt(view.viewFactory.name, [StmtModifier.Final]);
 	  }
 	  function generateCreateMethod(view) {
@@ -33885,7 +33724,6 @@
 	  var ViewCompiler = (function () {
 	      function ViewCompiler(_genConfig) {
 	          this._genConfig = _genConfig;
-	          this._animationCompiler = new AnimationCompiler();
 	      }
 	      ViewCompiler.prototype.compileComponent = function (component, template, styles, pipes, compiledAnimations) {
 	          var dependencies = [];
@@ -33916,18 +33754,32 @@
 	      return SourceModule;
 	  }());
 	  var NgModulesSummary = (function () {
-	      function NgModulesSummary(ngModuleByComponent) {
-	          this.ngModuleByComponent = ngModuleByComponent;
+	      function NgModulesSummary(ngModuleByDirective, ngModules) {
+	          this.ngModuleByDirective = ngModuleByDirective;
+	          this.ngModules = ngModules;
 	      }
 	      return NgModulesSummary;
 	  }());
+	  function analyzeModules(ngModules, metadataResolver) {
+	      var ngModuleByDirective = new Map();
+	      var modules = [];
+	      ngModules.forEach(function (ngModule) {
+	          var ngModuleMeta = metadataResolver.getNgModuleMetadata(ngModule);
+	          modules.push(ngModuleMeta);
+	          ngModuleMeta.declaredDirectives.forEach(function (dirMeta) {
+	              ngModuleByDirective.set(dirMeta.type.reference, ngModuleMeta);
+	          });
+	      });
+	      return new NgModulesSummary(ngModuleByDirective, modules);
+	  }
 	  var OfflineCompiler = (function () {
-	      function OfflineCompiler(_metadataResolver, _directiveNormalizer, _templateParser, _styleCompiler, _viewCompiler, _ngModuleCompiler, _outputEmitter, _localeId, _translationFormat) {
+	      function OfflineCompiler(_metadataResolver, _directiveNormalizer, _templateParser, _styleCompiler, _viewCompiler, _dirWrapperCompiler, _ngModuleCompiler, _outputEmitter, _localeId, _translationFormat) {
 	          this._metadataResolver = _metadataResolver;
 	          this._directiveNormalizer = _directiveNormalizer;
 	          this._templateParser = _templateParser;
 	          this._styleCompiler = _styleCompiler;
 	          this._viewCompiler = _viewCompiler;
+	          this._dirWrapperCompiler = _dirWrapperCompiler;
 	          this._ngModuleCompiler = _ngModuleCompiler;
 	          this._outputEmitter = _outputEmitter;
 	          this._localeId = _localeId;
@@ -33936,23 +33788,13 @@
 	          this._animationCompiler = new AnimationCompiler();
 	      }
 	      OfflineCompiler.prototype.analyzeModules = function (ngModules) {
-	          var _this = this;
-	          var ngModuleByComponent = new Map();
-	          ngModules.forEach(function (ngModule) {
-	              var ngModuleMeta = _this._metadataResolver.getNgModuleMetadata(ngModule);
-	              ngModuleMeta.declaredDirectives.forEach(function (dirMeta) {
-	                  if (dirMeta.isComponent) {
-	                      ngModuleByComponent.set(dirMeta.type.reference, ngModuleMeta);
-	                  }
-	              });
-	          });
-	          return new NgModulesSummary(ngModuleByComponent);
+	          return analyzeModules(ngModules, this._metadataResolver);
 	      };
 	      OfflineCompiler.prototype.clearCache = function () {
 	          this._directiveNormalizer.clearCache();
 	          this._metadataResolver.clearCache();
 	      };
-	      OfflineCompiler.prototype.compile = function (moduleUrl, ngModulesSummary, components, ngModules) {
+	      OfflineCompiler.prototype.compile = function (moduleUrl, ngModulesSummary, directives, ngModules) {
 	          var _this = this;
 	          var fileSuffix = _splitTypescriptSuffix(moduleUrl)[1];
 	          var statements = [];
@@ -33960,11 +33802,16 @@
 	          var outputSourceModules = [];
 	          // compile all ng modules
 	          exportedVars.push.apply(exportedVars, ngModules.map(function (ngModuleType) { return _this._compileModule(ngModuleType, statements); }));
+	          // compile directive wrappers
+	          exportedVars.push.apply(exportedVars, directives.map(function (directiveType) { return _this._compileDirectiveWrapper(directiveType, statements); }));
 	          // compile components
 	          return Promise
-	              .all(components.map(function (compType) {
-	              var compMeta = _this._metadataResolver.getDirectiveMetadata(compType);
-	              var ngModule = ngModulesSummary.ngModuleByComponent.get(compType);
+	              .all(directives.map(function (dirType) {
+	              var compMeta = _this._metadataResolver.getDirectiveMetadata(dirType);
+	              if (!compMeta.isComponent) {
+	                  return Promise.resolve(null);
+	              }
+	              var ngModule = ngModulesSummary.ngModuleByDirective.get(dirType);
 	              if (!ngModule) {
 	                  throw new Error("Cannot determine the module for component " + compMeta.type.name + "!");
 	              }
@@ -34011,6 +33858,12 @@
 	          });
 	          targetStatements.push.apply(targetStatements, appCompileResult.statements);
 	          return appCompileResult.ngModuleFactoryVar;
+	      };
+	      OfflineCompiler.prototype._compileDirectiveWrapper = function (directiveType, targetStatements) {
+	          var dirMeta = this._metadataResolver.getDirectiveMetadata(directiveType);
+	          var dirCompileResult = this._dirWrapperCompiler.compile(dirMeta);
+	          targetStatements.push.apply(targetStatements, dirCompileResult.statements);
+	          return dirCompileResult.dirWrapperClassVar;
 	      };
 	      OfflineCompiler.prototype._compileComponentFactory = function (compMeta, fileSuffix, targetStatements) {
 	          var hostMeta = createHostComponentMeta(compMeta);
@@ -34059,6 +33912,10 @@
 	              cfd.placeholder.name = _componentFactoryName(cfd.comp);
 	              cfd.placeholder.moduleUrl = _ngfactoryModuleUrl(cfd.comp.moduleUrl);
 	          }
+	          else if (dep instanceof DirectiveWrapperDependency) {
+	              var dwd = dep;
+	              dwd.placeholder.moduleUrl = _ngfactoryModuleUrl(dwd.dir.moduleUrl);
+	          }
 	      });
 	      return compileResult.statements;
 	  }
@@ -34068,8 +33925,8 @@
 	      });
 	      return compileResult.statements;
 	  }
-	  function _ngfactoryModuleUrl(compUrl) {
-	      var urlWithSuffix = _splitTypescriptSuffix(compUrl);
+	  function _ngfactoryModuleUrl(dirUrl) {
+	      var urlWithSuffix = _splitTypescriptSuffix(dirUrl);
 	      return urlWithSuffix[0] + ".ngfactory" + urlWithSuffix[1];
 	  }
 	  function _componentFactoryName(comp) {
@@ -34113,6 +33970,12 @@
 	  }());
 
 	  var _ASSET_SCHEME = 'asset:';
+	  /**
+	   * Create a {@link UrlResolver} with no package prefix.
+	   */
+	  function createUrlResolverWithoutPackagePrefix() {
+	      return new UrlResolver();
+	  }
 	  function createOfflineCompileUrlResolver() {
 	      return new UrlResolver(_ASSET_SCHEME);
 	  }
@@ -34167,8 +34030,8 @@
 	                  resolvedUrl = "asset:" + pathSegements[0] + "/lib/" + pathSegements.slice(1).join('/');
 	              }
 	              else {
-	                  prefix = StringWrapper.stripRight(prefix, '/');
-	                  path = StringWrapper.stripLeft(path, '/');
+	                  prefix = prefix.replace(/\/+$/, '');
+	                  path = path.replace(/^\/+/, '');
 	                  return prefix + "/" + path;
 	              }
 	          }
@@ -34702,6 +34565,13 @@
 	                  else if (a instanceof _angular_core.HostBinding) {
 	                      var hostBinding = a;
 	                      if (hostBinding.hostPropertyName) {
+	                          var startWith = hostBinding.hostPropertyName[0];
+	                          if (startWith === '(') {
+	                              throw new Error("@HostBinding can not bind to events. Use @HostListener instead.");
+	                          }
+	                          else if (startWith === '[') {
+	                              throw new Error("@HostBinding parameter should be a property name, 'class.<name>', or 'attr.<name>'.");
+	                          }
 	                          host[("[" + hostBinding.hostPropertyName + "]")] = propName;
 	                      }
 	                      else {
@@ -34794,30 +34664,28 @@
 	      return type instanceof _angular_core.Directive;
 	  }
 
-	  var LIFECYCLE_INTERFACES = MapWrapper.createFromPairs([
-	      [LifecycleHooks.OnInit, _angular_core.OnInit],
-	      [LifecycleHooks.OnDestroy, _angular_core.OnDestroy],
-	      [LifecycleHooks.DoCheck, _angular_core.DoCheck],
-	      [LifecycleHooks.OnChanges, _angular_core.OnChanges],
-	      [LifecycleHooks.AfterContentInit, _angular_core.AfterContentInit],
-	      [LifecycleHooks.AfterContentChecked, _angular_core.AfterContentChecked],
-	      [LifecycleHooks.AfterViewInit, _angular_core.AfterViewInit],
-	      [LifecycleHooks.AfterViewChecked, _angular_core.AfterViewChecked],
-	  ]);
-	  var LIFECYCLE_PROPS = MapWrapper.createFromPairs([
-	      [LifecycleHooks.OnInit, 'ngOnInit'],
-	      [LifecycleHooks.OnDestroy, 'ngOnDestroy'],
-	      [LifecycleHooks.DoCheck, 'ngDoCheck'],
-	      [LifecycleHooks.OnChanges, 'ngOnChanges'],
-	      [LifecycleHooks.AfterContentInit, 'ngAfterContentInit'],
-	      [LifecycleHooks.AfterContentChecked, 'ngAfterContentChecked'],
-	      [LifecycleHooks.AfterViewInit, 'ngAfterViewInit'],
-	      [LifecycleHooks.AfterViewChecked, 'ngAfterViewChecked'],
-	  ]);
 	  function hasLifecycleHook(hook, token) {
-	      var lcInterface = LIFECYCLE_INTERFACES.get(hook);
-	      var lcProp = LIFECYCLE_PROPS.get(hook);
-	      return reflector.hasLifecycleHook(token, lcInterface, lcProp);
+	      return reflector.hasLifecycleHook(token, getHookName(hook));
+	  }
+	  function getHookName(hook) {
+	      switch (hook) {
+	          case LifecycleHooks.OnInit:
+	              return 'ngOnInit';
+	          case LifecycleHooks.OnDestroy:
+	              return 'ngOnDestroy';
+	          case LifecycleHooks.DoCheck:
+	              return 'ngDoCheck';
+	          case LifecycleHooks.OnChanges:
+	              return 'ngOnChanges';
+	          case LifecycleHooks.AfterContentInit:
+	              return 'ngAfterContentInit';
+	          case LifecycleHooks.AfterContentChecked:
+	              return 'ngAfterContentChecked';
+	          case LifecycleHooks.AfterViewInit:
+	              return 'ngAfterViewInit';
+	          case LifecycleHooks.AfterViewChecked:
+	              return 'ngAfterViewChecked';
+	      }
 	  }
 
 	  function _isNgModuleMetadata(obj) {
@@ -34903,7 +34771,7 @@
 	   * Use of this source code is governed by an MIT-style license that can be
 	   * found in the LICENSE file at https://angular.io/license
 	   */
-	  var __extends$15 = (this && this.__extends) || function (d, b) {
+	  var __extends$16 = (this && this.__extends) || function (d, b) {
 	      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	      function __() { this.constructor = d; }
 	      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -35388,7 +35256,7 @@
 	      CompileMetadataResolver.prototype.getTokenMetadata = function (token) {
 	          token = _angular_core.resolveForwardRef(token);
 	          var compileToken;
-	          if (isString(token)) {
+	          if (typeof token === 'string') {
 	              compileToken = new CompileTokenMetadata({ value: token });
 	          }
 	          else {
@@ -35591,7 +35459,7 @@
 	      return visitValue(value, new _CompileValueConverter(), targetIdentifiers);
 	  }
 	  var _CompileValueConverter = (function (_super) {
-	      __extends$15(_CompileValueConverter, _super);
+	      __extends$16(_CompileValueConverter, _super);
 	      function _CompileValueConverter() {
 	          _super.apply(this, arguments);
 	      }
@@ -35723,12 +35591,12 @@
 	              result = this._getDependency(new CompileDiDependencyMetadata({ token: provider.useExisting }));
 	          }
 	          else if (isPresent(provider.useFactory)) {
-	              var deps = isPresent(provider.deps) ? provider.deps : provider.useFactory.diDeps;
+	              var deps = provider.deps || provider.useFactory.diDeps;
 	              var depsExpr = deps.map(function (dep) { return _this._getDependency(dep); });
 	              result = importExpr(provider.useFactory).callFn(depsExpr);
 	          }
 	          else if (isPresent(provider.useClass)) {
-	              var deps = isPresent(provider.deps) ? provider.deps : provider.useClass.diDeps;
+	              var deps = provider.deps || provider.useClass.diDeps;
 	              var depsExpr = deps.map(function (dep) { return _this._getDependency(dep); });
 	              result =
 	                  importExpr(provider.useClass).instantiate(depsExpr, importType(provider.useClass));
@@ -36038,7 +35906,7 @@
 	      AbstractEmitterVisitor.prototype.visitLiteralExpr = function (ast, ctx, absentValue) {
 	          if (absentValue === void 0) { absentValue = 'null'; }
 	          var value = ast.value;
-	          if (isString(value)) {
+	          if (typeof value === 'string') {
 	              ctx.print(escapeIdentifier(value, this._escapeDollarInStrings));
 	          }
 	          else if (isBlank(value)) {
@@ -36149,7 +36017,7 @@
 	          var useNewLine = ast.entries.length > 1;
 	          ctx.print("{", useNewLine);
 	          ctx.incIndent();
-	          this.visitAllObjects(function (entry /** TODO #9100 */) {
+	          this.visitAllObjects(function (entry) {
 	              ctx.print(escapeIdentifier(entry[0], _this._escapeDollarInStrings, false) + ": ");
 	              entry[1].visitExpression(_this, ctx);
 	          }, ast.entries, ctx, ',', useNewLine);
@@ -36160,7 +36028,7 @@
 	      AbstractEmitterVisitor.prototype.visitAllExpressions = function (expressions, ctx, separator, newLine) {
 	          var _this = this;
 	          if (newLine === void 0) { newLine = false; }
-	          this.visitAllObjects(function (expr /** TODO #9100 */) { return expr.visitExpression(_this, ctx); }, expressions, ctx, separator, newLine);
+	          this.visitAllObjects(function (expr) { return expr.visitExpression(_this, ctx); }, expressions, ctx, separator, newLine);
 	      };
 	      AbstractEmitterVisitor.prototype.visitAllObjects = function (handler, expressions, ctx, separator, newLine) {
 	          if (newLine === void 0) { newLine = false; }
@@ -36185,7 +36053,11 @@
 	      if (isBlank(input)) {
 	          return null;
 	      }
-	      var body = StringWrapper.replaceAllMapped(input, _SINGLE_QUOTE_ESCAPE_STRING_RE, function (match /** TODO #9100 */) {
+	      var body = input.replace(_SINGLE_QUOTE_ESCAPE_STRING_RE, function () {
+	          var match = [];
+	          for (var _i = 0; _i < arguments.length; _i++) {
+	              match[_i - 0] = arguments[_i];
+	          }
 	          if (match[0] == '$') {
 	              return escapeDollar ? '\\$' : '$';
 	          }
@@ -36217,7 +36089,7 @@
 	   * Use of this source code is governed by an MIT-style license that can be
 	   * found in the LICENSE file at https://angular.io/license
 	   */
-	  var __extends$16 = (this && this.__extends) || function (d, b) {
+	  var __extends$17 = (this && this.__extends) || function (d, b) {
 	      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	      function __() { this.constructor = d; }
 	      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -36226,13 +36098,7 @@
 	  function debugOutputAstAsTypeScript(ast) {
 	      var converter = new _TsEmitterVisitor(_debugModuleUrl);
 	      var ctx = EmitterVisitorContext.createRoot([]);
-	      var asts;
-	      if (isArray(ast)) {
-	          asts = ast;
-	      }
-	      else {
-	          asts = [ast];
-	      }
+	      var asts = Array.isArray(ast) ? ast : [ast];
 	      asts.forEach(function (ast) {
 	          if (ast instanceof Statement) {
 	              ast.visitStatement(converter, ctx);
@@ -36270,7 +36136,7 @@
 	      return TypeScriptEmitter;
 	  }());
 	  var _TsEmitterVisitor = (function (_super) {
-	      __extends$16(_TsEmitterVisitor, _super);
+	      __extends$17(_TsEmitterVisitor, _super);
 	      function _TsEmitterVisitor(_moduleUrl) {
 	          _super.call(this, false);
 	          this._moduleUrl = _moduleUrl;
@@ -36287,6 +36153,20 @@
 	      };
 	      _TsEmitterVisitor.prototype.visitLiteralExpr = function (ast, ctx) {
 	          _super.prototype.visitLiteralExpr.call(this, ast, ctx, '(null as any)');
+	      };
+	      // Temporary workaround to support strictNullCheck enabled consumers of ngc emit.
+	      // In SNC mode, [] have the type never[], so we cast here to any[].
+	      // TODO: narrow the cast to a more explicit type, or use a pattern that does not
+	      // start with [].concat. see https://github.com/angular/angular/pull/11846
+	      _TsEmitterVisitor.prototype.visitLiteralArrayExpr = function (ast, ctx) {
+	          if (ast.entries.length === 0) {
+	              ctx.print('(');
+	          }
+	          var result = _super.prototype.visitLiteralArrayExpr.call(this, ast, ctx);
+	          if (ast.entries.length === 0) {
+	              ctx.print(' as any[])');
+	          }
+	          return result;
 	      };
 	      _TsEmitterVisitor.prototype.visitExternalExpr = function (ast, ctx) {
 	          this._visitIdentifier(ast.value, ast.typeParams, ctx);
@@ -36490,7 +36370,7 @@
 	      };
 	      _TsEmitterVisitor.prototype._visitParams = function (params, ctx) {
 	          var _this = this;
-	          this.visitAllObjects(function (param /** TODO #9100 */) {
+	          this.visitAllObjects(function (param) {
 	              ctx.print(param.name);
 	              ctx.print(':');
 	              _this.visitType(param.type, ctx);
@@ -36519,7 +36399,7 @@
 	          }
 	          if (isPresent(typeParams) && typeParams.length > 0) {
 	              ctx.print("<");
-	              this.visitAllObjects(function (type /** TODO #9100 */) { return type.visitType(_this, ctx); }, typeParams, ctx, ',');
+	              this.visitAllObjects(function (type) { return type.visitType(_this, ctx); }, typeParams, ctx, ',');
 	              ctx.print(">");
 	          }
 	      };
@@ -36599,7 +36479,7 @@
 	          _classStmt.fields.forEach(function (field) { _this[field.name] = undefined; });
 	          _executeFunctionStatements(ctorParamNames, args, _classStmt.constructorMethod.body, instanceCtx, _visitor);
 	      };
-	      var superClass = _classStmt.parent.visitExpression(_visitor, _ctx);
+	      var superClass = _classStmt.parent ? _classStmt.parent.visitExpression(_visitor, _ctx) : Object;
 	      ctor.prototype = Object.create(superClass.prototype, propertyDescriptors);
 	      return ctor;
 	  }
@@ -36863,13 +36743,13 @@
 	   * Use of this source code is governed by an MIT-style license that can be
 	   * found in the LICENSE file at https://angular.io/license
 	   */
-	  var __extends$18 = (this && this.__extends) || function (d, b) {
+	  var __extends$19 = (this && this.__extends) || function (d, b) {
 	      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	      function __() { this.constructor = d; }
 	      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	  };
 	  var AbstractJsEmitterVisitor = (function (_super) {
-	      __extends$18(AbstractJsEmitterVisitor, _super);
+	      __extends$19(AbstractJsEmitterVisitor, _super);
 	      function AbstractJsEmitterVisitor() {
 	          _super.call(this, false);
 	      }
@@ -36999,7 +36879,7 @@
 	          return null;
 	      };
 	      AbstractJsEmitterVisitor.prototype._visitParams = function (params, ctx) {
-	          this.visitAllObjects(function (param /** TODO #9100 */) { return ctx.print(param.name); }, params, ctx, ',');
+	          this.visitAllObjects(function (param) { return ctx.print(param.name); }, params, ctx, ',');
 	      };
 	      AbstractJsEmitterVisitor.prototype.getBuiltinMethodName = function (method) {
 	          var name;
@@ -37028,11 +36908,21 @@
 	   * Use of this source code is governed by an MIT-style license that can be
 	   * found in the LICENSE file at https://angular.io/license
 	   */
-	  var __extends$17 = (this && this.__extends) || function (d, b) {
+	  var __extends$18 = (this && this.__extends) || function (d, b) {
 	      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	      function __() { this.constructor = d; }
 	      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	  };
+	  function evalExpression(sourceUrl, expr, declarations, vars) {
+	      var fnBody = declarations + "\nreturn " + expr + "\n//# sourceURL=" + sourceUrl;
+	      var fnArgNames = [];
+	      var fnArgValues = [];
+	      for (var argName in vars) {
+	          fnArgNames.push(argName);
+	          fnArgValues.push(vars[argName]);
+	      }
+	      return new (Function.bind.apply(Function, [void 0].concat(fnArgNames.concat(fnBody))))().apply(void 0, fnArgValues);
+	  }
 	  function jitStatements(sourceUrl, statements, resultVar) {
 	      var converter = new JitEmitterVisitor();
 	      var ctx = EmitterVisitorContext.createRoot([resultVar]);
@@ -37040,7 +36930,7 @@
 	      return evalExpression(sourceUrl, resultVar, ctx.toSource(), converter.getArgs());
 	  }
 	  var JitEmitterVisitor = (function (_super) {
-	      __extends$17(JitEmitterVisitor, _super);
+	      __extends$18(JitEmitterVisitor, _super);
 	      function JitEmitterVisitor() {
 	          _super.apply(this, arguments);
 	          this._evalArgNames = [];
@@ -37445,7 +37335,8 @@
 	          _polyfillHostRe.lastIndex = 0;
 	          if (_polyfillHostRe.test(selector)) {
 	              var replaceBy_1 = this.strictStyling ? "[" + hostSelector + "]" : scopeSelector;
-	              return selector.replace(_polyfillHostNoCombinatorRe, function (hnc, selector) { return selector + replaceBy_1; })
+	              return selector
+	                  .replace(_polyfillHostNoCombinatorRe, function (hnc, selector) { return selector[0] === ':' ? replaceBy_1 + selector : selector + replaceBy_1; })
 	                  .replace(_polyfillHostRe, replaceBy_1 + ' ');
 	          }
 	          return scopeSelector + ' ' + selector;
@@ -37720,7 +37611,7 @@
 	   * application to XSS risks.  For more detail, see the [Security Guide](http://g.co/ng/security).
 	   */
 	  var RuntimeCompiler = (function () {
-	      function RuntimeCompiler(_injector, _metadataResolver, _templateNormalizer, _templateParser, _styleCompiler, _viewCompiler, _ngModuleCompiler, _compilerConfig) {
+	      function RuntimeCompiler(_injector, _metadataResolver, _templateNormalizer, _templateParser, _styleCompiler, _viewCompiler, _ngModuleCompiler, _directiveWrapperCompiler, _compilerConfig) {
 	          this._injector = _injector;
 	          this._metadataResolver = _metadataResolver;
 	          this._templateNormalizer = _templateNormalizer;
@@ -37728,9 +37619,11 @@
 	          this._styleCompiler = _styleCompiler;
 	          this._viewCompiler = _viewCompiler;
 	          this._ngModuleCompiler = _ngModuleCompiler;
+	          this._directiveWrapperCompiler = _directiveWrapperCompiler;
 	          this._compilerConfig = _compilerConfig;
 	          this._compiledTemplateCache = new Map();
 	          this._compiledHostTemplateCache = new Map();
+	          this._compiledDirectiveWrapperCache = new Map();
 	          this._compiledNgModuleCache = new Map();
 	          this._animationParser = new AnimationParser();
 	          this._animationCompiler = new AnimationCompiler();
@@ -37764,10 +37657,10 @@
 	          var moduleMeta = this._metadataResolver.getNgModuleMetadata(moduleType);
 	          var componentFactories = [];
 	          var templates = new Set();
-	          moduleMeta.transitiveModule.modules.forEach(function (moduleMeta) {
-	              moduleMeta.declaredDirectives.forEach(function (dirMeta) {
+	          moduleMeta.transitiveModule.modules.forEach(function (localModuleMeta) {
+	              localModuleMeta.declaredDirectives.forEach(function (dirMeta) {
 	                  if (dirMeta.isComponent) {
-	                      var template = _this._createCompiledHostTemplate(dirMeta.type.reference);
+	                      var template = _this._createCompiledHostTemplate(dirMeta.type.reference, localModuleMeta);
 	                      templates.add(template);
 	                      componentFactories.push(template.proxyComponentFactory);
 	                  }
@@ -37802,7 +37695,7 @@
 	                      interpretStatements(compileResult.statements, compileResult.ngModuleFactoryVar);
 	              }
 	              else {
-	                  ngModuleFactory = jitStatements(moduleMeta_1.type.name + ".ngfactory.js", compileResult.statements, compileResult.ngModuleFactoryVar);
+	                  ngModuleFactory = jitStatements("/" + moduleMeta_1.type.name + "/module.ngfactory.js", compileResult.statements, compileResult.ngModuleFactoryVar);
 	              }
 	              this._compiledNgModuleCache.set(moduleMeta_1.type.reference, ngModuleFactory);
 	          }
@@ -37816,18 +37709,28 @@
 	          var templates = new Set();
 	          var loadingPromises = [];
 	          var ngModule = this._metadataResolver.getNgModuleMetadata(mainModule);
+	          var moduleByDirective = new Map();
+	          ngModule.transitiveModule.modules.forEach(function (localModuleMeta) {
+	              localModuleMeta.declaredDirectives.forEach(function (dirMeta) {
+	                  moduleByDirective.set(dirMeta.type.reference, localModuleMeta);
+	                  _this._compileDirectiveWrapper(dirMeta, localModuleMeta);
+	                  if (dirMeta.isComponent) {
+	                      templates.add(_this._createCompiledTemplate(dirMeta, localModuleMeta));
+	                  }
+	              });
+	          });
 	          ngModule.transitiveModule.modules.forEach(function (localModuleMeta) {
 	              localModuleMeta.declaredDirectives.forEach(function (dirMeta) {
 	                  if (dirMeta.isComponent) {
-	                      templates.add(_this._createCompiledTemplate(dirMeta, localModuleMeta));
 	                      dirMeta.entryComponents.forEach(function (entryComponentType) {
-	                          templates.add(_this._createCompiledHostTemplate(entryComponentType.reference));
+	                          var moduleMeta = moduleByDirective.get(entryComponentType.reference);
+	                          templates.add(_this._createCompiledHostTemplate(entryComponentType.reference, moduleMeta));
 	                      });
 	                  }
 	              });
 	              localModuleMeta.entryComponents.forEach(function (entryComponentType) {
-	                  templates.add(_this._createCompiledHostTemplate(entryComponentType.reference));
-	                  // TODO: what about entryComponents of entryComponents?
+	                  var moduleMeta = moduleByDirective.get(entryComponentType.reference);
+	                  templates.add(_this._createCompiledHostTemplate(entryComponentType.reference, moduleMeta));
 	              });
 	          });
 	          templates.forEach(function (template) {
@@ -37866,13 +37769,16 @@
 	          this._templateNormalizer.clearCache();
 	          this._compiledNgModuleCache.clear();
 	      };
-	      RuntimeCompiler.prototype._createCompiledHostTemplate = function (compType) {
+	      RuntimeCompiler.prototype._createCompiledHostTemplate = function (compType, ngModule) {
+	          if (!ngModule) {
+	              throw new Error("Component " + stringify(compType) + " is not part of any NgModule or the module has not been imported into your module.");
+	          }
 	          var compiledTemplate = this._compiledHostTemplateCache.get(compType);
 	          if (!compiledTemplate) {
 	              var compMeta = this._metadataResolver.getDirectiveMetadata(compType);
 	              assertComponent(compMeta);
 	              var hostMeta = createHostComponentMeta(compMeta);
-	              compiledTemplate = new CompiledTemplate(true, compMeta.selector, compMeta.type, [compMeta], [], [], this._templateNormalizer.normalizeDirective(hostMeta));
+	              compiledTemplate = new CompiledTemplate(true, compMeta.selector, compMeta.type, ngModule, [compMeta], this._templateNormalizer.normalizeDirective(hostMeta));
 	              this._compiledHostTemplateCache.set(compType, compiledTemplate);
 	          }
 	          return compiledTemplate;
@@ -37881,7 +37787,7 @@
 	          var compiledTemplate = this._compiledTemplateCache.get(compMeta.type.reference);
 	          if (!compiledTemplate) {
 	              assertComponent(compMeta);
-	              compiledTemplate = new CompiledTemplate(false, compMeta.selector, compMeta.type, ngModule.transitiveModule.directives, ngModule.transitiveModule.pipes, ngModule.schemas, this._templateNormalizer.normalizeDirective(compMeta));
+	              compiledTemplate = new CompiledTemplate(false, compMeta.selector, compMeta.type, ngModule, ngModule.transitiveModule.directives, this._templateNormalizer.normalizeDirective(compMeta));
 	              this._compiledTemplateCache.set(compMeta.type.reference, compiledTemplate);
 	          }
 	          return compiledTemplate;
@@ -37890,12 +37796,7 @@
 	          var compiledTemplate = isHost ? this._compiledHostTemplateCache.get(compType) :
 	              this._compiledTemplateCache.get(compType);
 	          if (!compiledTemplate) {
-	              if (isHost) {
-	                  throw new Error("Illegal state: Compiled view for component " + stringify(compType) + " does not exist!");
-	              }
-	              else {
-	                  throw new Error("Component " + stringify(compType) + " is not part of any NgModule or the module has not been imported into your module.");
-	              }
+	              throw new Error("Illegal state: Compiled view for component " + stringify(compType) + " does not exist!");
 	          }
 	          return compiledTemplate;
 	      };
@@ -37905,6 +37806,25 @@
 	              throw new Error("Illegal state: CompiledTemplate for " + stringify(compType) + " (isHost: " + isHost + ") is still loading!");
 	          }
 	          return compiledTemplate;
+	      };
+	      RuntimeCompiler.prototype._assertDirectiveWrapper = function (dirType) {
+	          var dirWrapper = this._compiledDirectiveWrapperCache.get(dirType);
+	          if (!dirWrapper) {
+	              throw new Error("Illegal state: Directive wrapper for " + stringify(dirType) + " has not been compiled!");
+	          }
+	          return dirWrapper;
+	      };
+	      RuntimeCompiler.prototype._compileDirectiveWrapper = function (dirMeta, moduleMeta) {
+	          var compileResult = this._directiveWrapperCompiler.compile(dirMeta);
+	          var statements = compileResult.statements;
+	          var directiveWrapperClass;
+	          if (!this._compilerConfig.useJit) {
+	              directiveWrapperClass = interpretStatements(statements, compileResult.dirWrapperClassVar);
+	          }
+	          else {
+	              directiveWrapperClass = jitStatements("/" + moduleMeta.type.name + "/" + dirMeta.type.name + "/wrapper.ngfactory.js", statements, compileResult.dirWrapperClassVar);
+	          }
+	          this._compiledDirectiveWrapperCache.set(dirMeta.type.reference, directiveWrapperClass);
 	      };
 	      RuntimeCompiler.prototype._compileTemplate = function (template) {
 	          var _this = this;
@@ -37935,6 +37855,10 @@
 	                  cfd.placeholder.reference = depTemplate.proxyComponentFactory;
 	                  cfd.placeholder.name = "compFactory_" + cfd.comp.name;
 	              }
+	              else if (dep instanceof DirectiveWrapperDependency) {
+	                  var dwd = dep;
+	                  dwd.placeholder.reference = _this._assertDirectiveWrapper(dwd.dir.reference);
+	              }
 	          });
 	          var statements = stylesCompileResult.componentStylesheet.statements.concat(compileResult.statements);
 	          compiledAnimations.forEach(function (entry) { entry.statements.forEach(function (statement) { statements.push(statement); }); });
@@ -37943,7 +37867,7 @@
 	              factory = interpretStatements(statements, compileResult.viewFactoryVar);
 	          }
 	          else {
-	              factory = jitStatements("" + template.compType.name + (template.isHost ? '_Host' : '') + ".ngfactory.js", statements, compileResult.viewFactoryVar);
+	              factory = jitStatements("/" + template.ngModule.type.name + "/" + template.compType.name + "/" + (template.isHost ? 'host' : 'component') + ".ngfactory.js", statements, compileResult.viewFactoryVar);
 	          }
 	          template.compiled(factory);
 	      };
@@ -37962,7 +37886,7 @@
 	              return interpretStatements(result.statements, result.stylesVar);
 	          }
 	          else {
-	              return jitStatements(result.meta.moduleUrl + ".css.js", result.statements, result.stylesVar);
+	              return jitStatements("/" + result.meta.moduleUrl + ".css.js", result.statements, result.stylesVar);
 	          }
 	      };
 	      RuntimeCompiler.decorators = [
@@ -37977,17 +37901,17 @@
 	          { type: StyleCompiler, },
 	          { type: ViewCompiler, },
 	          { type: NgModuleCompiler, },
+	          { type: DirectiveWrapperCompiler, },
 	          { type: CompilerConfig, },
 	      ];
 	      return RuntimeCompiler;
 	  }());
 	  var CompiledTemplate = (function () {
-	      function CompiledTemplate(isHost, selector, compType, viewDirectivesAndComponents, viewPipes, schemas, _normalizeResult) {
+	      function CompiledTemplate(isHost, selector, compType, ngModule, viewDirectiveAndComponents, _normalizeResult) {
 	          var _this = this;
 	          this.isHost = isHost;
 	          this.compType = compType;
-	          this.viewPipes = viewPipes;
-	          this.schemas = schemas;
+	          this.ngModule = ngModule;
 	          this._viewFactory = null;
 	          this.loading = null;
 	          this._normalizedCompMeta = null;
@@ -37995,7 +37919,9 @@
 	          this.isCompiledWithDeps = false;
 	          this.viewComponentTypes = [];
 	          this.viewDirectives = [];
-	          viewDirectivesAndComponents.forEach(function (dirMeta) {
+	          this.viewPipes = ngModule.transitiveModule.pipes;
+	          this.schemas = ngModule.schemas;
+	          viewDirectiveAndComponents.forEach(function (dirMeta) {
 	              if (dirMeta.isComponent) {
 	                  _this.viewComponentTypes.push(dirMeta.type.reference);
 	              }
@@ -38139,7 +38065,7 @@
 	   * Use of this source code is governed by an MIT-style license that can be
 	   * found in the LICENSE file at https://angular.io/license
 	   */
-	  var __extends$19 = (this && this.__extends) || function (d, b) {
+	  var __extends$20 = (this && this.__extends) || function (d, b) {
 	      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	      function __() { this.constructor = d; }
 	      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -38362,7 +38288,7 @@
 	      'tabindex': 'tabIndex',
 	  };
 	  var DomElementSchemaRegistry = (function (_super) {
-	      __extends$19(DomElementSchemaRegistry, _super);
+	      __extends$20(DomElementSchemaRegistry, _super);
 	      function DomElementSchemaRegistry() {
 	          var _this = this;
 	          _super.call(this);
@@ -38524,6 +38450,7 @@
 	      StyleCompiler,
 	      ViewCompiler,
 	      NgModuleCompiler,
+	      DirectiveWrapperCompiler,
 	      { provide: CompilerConfig, useValue: new CompilerConfig() },
 	      RuntimeCompiler,
 	      { provide: _angular_core.Compiler, useExisting: RuntimeCompiler },
@@ -38650,64 +38577,19 @@
 	      return AssetUrl;
 	  }());
 
-	  var __compiler_private__ = {
-	      SelectorMatcher: SelectorMatcher,
-	      CssSelector: CssSelector,
-	      AssetUrl: AssetUrl,
-	      ImportGenerator: ImportGenerator,
-	      CompileMetadataResolver: CompileMetadataResolver,
-	      HtmlParser: HtmlParser,
-	      InterpolationConfig: InterpolationConfig,
-	      DirectiveNormalizer: DirectiveNormalizer,
-	      Lexer: Lexer,
-	      Parser: Parser,
-	      ParseLocation: ParseLocation,
-	      ParseError: ParseError,
-	      ParseErrorLevel: ParseErrorLevel,
-	      ParseSourceFile: ParseSourceFile,
-	      ParseSourceSpan: ParseSourceSpan,
-	      TemplateParser: TemplateParser,
-	      DomElementSchemaRegistry: DomElementSchemaRegistry,
-	      StyleCompiler: StyleCompiler,
-	      ViewCompiler: ViewCompiler,
-	      NgModuleCompiler: NgModuleCompiler,
-	      TypeScriptEmitter: TypeScriptEmitter
-	  };
-
-	  exports.COMPILER_PROVIDERS = COMPILER_PROVIDERS;
-	  exports.CompileDiDependencyMetadata = CompileDiDependencyMetadata;
-	  exports.CompileDirectiveMetadata = CompileDirectiveMetadata;
-	  exports.CompileFactoryMetadata = CompileFactoryMetadata;
-	  exports.CompileIdentifierMetadata = CompileIdentifierMetadata;
-	  exports.CompileMetadataWithIdentifier = CompileMetadataWithIdentifier;
-	  exports.CompilePipeMetadata = CompilePipeMetadata;
-	  exports.CompileProviderMetadata = CompileProviderMetadata;
-	  exports.CompileQueryMetadata = CompileQueryMetadata;
-	  exports.CompileTemplateMetadata = CompileTemplateMetadata;
-	  exports.CompileTokenMetadata = CompileTokenMetadata;
-	  exports.CompileTypeMetadata = CompileTypeMetadata;
-	  exports.CompilerConfig = CompilerConfig;
-	  exports.DEFAULT_PACKAGE_URL_PROVIDER = DEFAULT_PACKAGE_URL_PROVIDER;
-	  exports.DirectiveResolver = DirectiveResolver;
-	  exports.NgModuleResolver = NgModuleResolver;
-	  exports.OfflineCompiler = OfflineCompiler;
-	  exports.PipeResolver = PipeResolver;
-	  exports.RenderTypes = RenderTypes;
-	  exports.ResourceLoader = ResourceLoader;
-	  exports.RuntimeCompiler = RuntimeCompiler;
-	  exports.SourceModule = SourceModule;
 	  exports.TEMPLATE_TRANSFORMS = TEMPLATE_TRANSFORMS;
-	  exports.UrlResolver = UrlResolver;
-	  exports.createOfflineCompileUrlResolver = createOfflineCompileUrlResolver;
-	  exports.platformCoreDynamic = platformCoreDynamic;
+	  exports.CompilerConfig = CompilerConfig;
+	  exports.RenderTypes = RenderTypes;
+	  exports.RuntimeCompiler = RuntimeCompiler;
+	  exports.DirectiveResolver = DirectiveResolver;
+	  exports.PipeResolver = PipeResolver;
+	  exports.NgModuleResolver = NgModuleResolver;
 	  exports.DEFAULT_INTERPOLATION_CONFIG = DEFAULT_INTERPOLATION_CONFIG;
 	  exports.InterpolationConfig = InterpolationConfig;
 	  exports.ElementSchemaRegistry = ElementSchemaRegistry;
-	  exports.I18NHtmlParser = I18NHtmlParser;
-	  exports.MessageBundle = MessageBundle;
-	  exports.Xliff = Xliff;
-	  exports.Xmb = Xmb;
-	  exports.Xtb = Xtb;
+	  exports.NgModuleCompiler = NgModuleCompiler;
+	  exports.DirectiveWrapperCompiler = DirectiveWrapperCompiler;
+	  exports.ViewCompiler = ViewCompiler;
 	  exports.TextAst = TextAst;
 	  exports.BoundTextAst = BoundTextAst;
 	  exports.AttrAst = AttrAst;
@@ -38722,18 +38604,99 @@
 	  exports.ProviderAst = ProviderAst;
 	  exports.NgContentAst = NgContentAst;
 	  exports.templateVisitAll = templateVisitAll;
-	  exports.__compiler_private__ = __compiler_private__;
+	  exports.CompileMetadataWithIdentifier = CompileMetadataWithIdentifier;
+	  exports.CompileAnimationEntryMetadata = CompileAnimationEntryMetadata;
+	  exports.CompileAnimationStateMetadata = CompileAnimationStateMetadata;
+	  exports.CompileAnimationStateDeclarationMetadata = CompileAnimationStateDeclarationMetadata;
+	  exports.CompileAnimationStateTransitionMetadata = CompileAnimationStateTransitionMetadata;
+	  exports.CompileAnimationMetadata = CompileAnimationMetadata;
+	  exports.CompileAnimationKeyframesSequenceMetadata = CompileAnimationKeyframesSequenceMetadata;
+	  exports.CompileAnimationStyleMetadata = CompileAnimationStyleMetadata;
+	  exports.CompileAnimationAnimateMetadata = CompileAnimationAnimateMetadata;
+	  exports.CompileAnimationWithStepsMetadata = CompileAnimationWithStepsMetadata;
+	  exports.CompileAnimationSequenceMetadata = CompileAnimationSequenceMetadata;
+	  exports.CompileAnimationGroupMetadata = CompileAnimationGroupMetadata;
+	  exports.CompileIdentifierMetadata = CompileIdentifierMetadata;
+	  exports.CompileDiDependencyMetadata = CompileDiDependencyMetadata;
+	  exports.CompileProviderMetadata = CompileProviderMetadata;
+	  exports.CompileFactoryMetadata = CompileFactoryMetadata;
+	  exports.CompileTokenMetadata = CompileTokenMetadata;
+	  exports.CompileTypeMetadata = CompileTypeMetadata;
+	  exports.CompileQueryMetadata = CompileQueryMetadata;
+	  exports.CompileStylesheetMetadata = CompileStylesheetMetadata;
+	  exports.CompileTemplateMetadata = CompileTemplateMetadata;
+	  exports.CompileDirectiveMetadata = CompileDirectiveMetadata;
+	  exports.createHostComponentMeta = createHostComponentMeta;
+	  exports.CompilePipeMetadata = CompilePipeMetadata;
+	  exports.CompileNgModuleMetadata = CompileNgModuleMetadata;
+	  exports.TransitiveCompileNgModuleMetadata = TransitiveCompileNgModuleMetadata;
+	  exports.removeIdentifierDuplicates = removeIdentifierDuplicates;
+	  exports.isStaticSymbol = isStaticSymbol;
+	  exports.ProviderMeta = ProviderMeta;
+	  exports.SourceModule = SourceModule;
+	  exports.NgModulesSummary = NgModulesSummary;
+	  exports.analyzeModules = analyzeModules;
+	  exports.OfflineCompiler = OfflineCompiler;
+	  exports.createUrlResolverWithoutPackagePrefix = createUrlResolverWithoutPackagePrefix;
+	  exports.createOfflineCompileUrlResolver = createOfflineCompileUrlResolver;
+	  exports.DEFAULT_PACKAGE_URL_PROVIDER = DEFAULT_PACKAGE_URL_PROVIDER;
+	  exports.UrlResolver = UrlResolver;
+	  exports.getUrlScheme = getUrlScheme;
+	  exports.ResourceLoader = ResourceLoader;
+	  exports.COMPILER_PROVIDERS = COMPILER_PROVIDERS;
+	  exports.RuntimeCompilerFactory = RuntimeCompilerFactory;
+	  exports.platformCoreDynamic = platformCoreDynamic;
+	  exports.I18NHtmlParser = I18NHtmlParser;
+	  exports.MessageBundle = MessageBundle;
+	  exports.Xliff = Xliff;
+	  exports.Xmb = Xmb;
+	  exports.Xtb = Xtb;
+	  exports.DirectiveNormalizer = DirectiveNormalizer;
+	  exports.Lexer = Lexer;
+	  exports.Token = Token;
+	  exports.EOF = EOF;
+	  exports.isIdentifier = isIdentifier;
+	  exports.isQuote = isQuote;
+	  exports.SplitInterpolation = SplitInterpolation;
+	  exports.TemplateBindingParseResult = TemplateBindingParseResult;
+	  exports.Parser = Parser;
+	  exports._ParseAST = _ParseAST;
+	  exports.CompileMetadataResolver = CompileMetadataResolver;
+	  exports.HtmlParser = HtmlParser;
+	  exports.ParseTreeResult = ParseTreeResult;
+	  exports.TreeError = TreeError;
+	  exports.ImportGenerator = ImportGenerator;
+	  exports.AssetUrl = AssetUrl;
+	  exports.debugOutputAstAsTypeScript = debugOutputAstAsTypeScript;
+	  exports.TypeScriptEmitter = TypeScriptEmitter;
+	  exports.ParseLocation = ParseLocation;
+	  exports.ParseSourceFile = ParseSourceFile;
+	  exports.ParseSourceSpan = ParseSourceSpan;
+	  exports.ParseError = ParseError;
+	  exports.DomElementSchemaRegistry = DomElementSchemaRegistry;
+	  exports.CssSelector = CssSelector;
+	  exports.SelectorMatcher = SelectorMatcher;
+	  exports.SelectorListContext = SelectorListContext;
+	  exports.SelectorContext = SelectorContext;
+	  exports.StylesCompileDependency = StylesCompileDependency;
+	  exports.StylesCompileResult = StylesCompileResult;
+	  exports.CompiledStylesheet = CompiledStylesheet;
+	  exports.StyleCompiler = StyleCompiler;
+	  exports.TemplateParseError = TemplateParseError;
+	  exports.TemplateParseResult = TemplateParseResult;
+	  exports.TemplateParser = TemplateParser;
+	  exports.splitClasses = splitClasses;
+	  exports.PipeCollector = PipeCollector;
 
 	}));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.0.2
+	 * @license Angular v2.1.1
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -38799,15 +38762,6 @@
 	    function isBlank(obj) {
 	        return obj === undefined || obj === null;
 	    }
-	    function isNumber(obj) {
-	        return typeof obj === 'number';
-	    }
-	    function isString(obj) {
-	        return typeof obj === 'string';
-	    }
-	    function isArray(obj) {
-	        return Array.isArray(obj);
-	    }
 	    function stringify(token) {
 	        if (typeof token === 'string') {
 	            return token;
@@ -38825,126 +38779,6 @@
 	        var newLineIndex = res.indexOf('\n');
 	        return newLineIndex === -1 ? res : res.substring(0, newLineIndex);
 	    }
-	    var StringWrapper = (function () {
-	        function StringWrapper() {
-	        }
-	        StringWrapper.fromCharCode = function (code) { return String.fromCharCode(code); };
-	        StringWrapper.charCodeAt = function (s, index) { return s.charCodeAt(index); };
-	        StringWrapper.split = function (s, regExp) { return s.split(regExp); };
-	        StringWrapper.equals = function (s, s2) { return s === s2; };
-	        StringWrapper.stripLeft = function (s, charVal) {
-	            if (s && s.length) {
-	                var pos = 0;
-	                for (var i = 0; i < s.length; i++) {
-	                    if (s[i] != charVal)
-	                        break;
-	                    pos++;
-	                }
-	                s = s.substring(pos);
-	            }
-	            return s;
-	        };
-	        StringWrapper.stripRight = function (s, charVal) {
-	            if (s && s.length) {
-	                var pos = s.length;
-	                for (var i = s.length - 1; i >= 0; i--) {
-	                    if (s[i] != charVal)
-	                        break;
-	                    pos--;
-	                }
-	                s = s.substring(0, pos);
-	            }
-	            return s;
-	        };
-	        StringWrapper.replace = function (s, from, replace) {
-	            return s.replace(from, replace);
-	        };
-	        StringWrapper.replaceAll = function (s, from, replace) {
-	            return s.replace(from, replace);
-	        };
-	        StringWrapper.slice = function (s, from, to) {
-	            if (from === void 0) { from = 0; }
-	            if (to === void 0) { to = null; }
-	            return s.slice(from, to === null ? undefined : to);
-	        };
-	        StringWrapper.replaceAllMapped = function (s, from, cb) {
-	            return s.replace(from, function () {
-	                var matches = [];
-	                for (var _i = 0; _i < arguments.length; _i++) {
-	                    matches[_i - 0] = arguments[_i];
-	                }
-	                // Remove offset & string from the result array
-	                matches.splice(-2, 2);
-	                // The callback receives match, p1, ..., pn
-	                return cb(matches);
-	            });
-	        };
-	        StringWrapper.contains = function (s, substr) { return s.indexOf(substr) != -1; };
-	        StringWrapper.compare = function (a, b) {
-	            if (a < b) {
-	                return -1;
-	            }
-	            else if (a > b) {
-	                return 1;
-	            }
-	            else {
-	                return 0;
-	            }
-	        };
-	        return StringWrapper;
-	    }());
-	    var NumberWrapper = (function () {
-	        function NumberWrapper() {
-	        }
-	        NumberWrapper.toFixed = function (n, fractionDigits) { return n.toFixed(fractionDigits); };
-	        NumberWrapper.equal = function (a, b) { return a === b; };
-	        NumberWrapper.parseIntAutoRadix = function (text) {
-	            var result = parseInt(text);
-	            if (isNaN(result)) {
-	                throw new Error('Invalid integer literal when parsing ' + text);
-	            }
-	            return result;
-	        };
-	        NumberWrapper.parseInt = function (text, radix) {
-	            if (radix == 10) {
-	                if (/^(\-|\+)?[0-9]+$/.test(text)) {
-	                    return parseInt(text, radix);
-	                }
-	            }
-	            else if (radix == 16) {
-	                if (/^(\-|\+)?[0-9ABCDEFabcdef]+$/.test(text)) {
-	                    return parseInt(text, radix);
-	                }
-	            }
-	            else {
-	                var result = parseInt(text, radix);
-	                if (!isNaN(result)) {
-	                    return result;
-	                }
-	            }
-	            throw new Error('Invalid integer literal when parsing ' + text + ' in base ' + radix);
-	        };
-	        Object.defineProperty(NumberWrapper, "NaN", {
-	            get: function () { return NaN; },
-	            enumerable: true,
-	            configurable: true
-	        });
-	        NumberWrapper.isNumeric = function (value) { return !isNaN(value - parseFloat(value)); };
-	        NumberWrapper.isNaN = function (value) { return isNaN(value); };
-	        NumberWrapper.isInteger = function (value) { return Number.isInteger(value); };
-	        return NumberWrapper;
-	    }());
-	    // Can't be all uppercase as our transpiler would think it is a special directive...
-	    var Json = (function () {
-	        function Json() {
-	        }
-	        Json.parse = function (s) { return global$1.JSON.parse(s); };
-	        Json.stringify = function (data) {
-	            // Dart doesn't take 3 arguments
-	            return global$1.JSON.stringify(data, null, 2);
-	        };
-	        return Json;
-	    }());
 	    function setValueOnPath(global, path, value) {
 	        var parts = path.split('.');
 	        var obj = global;
@@ -38963,13 +38797,32 @@
 	        obj[parts.shift()] = value;
 	    }
 
+	    /**
+	     * @license
+	     * Copyright Google Inc. All Rights Reserved.
+	     *
+	     * Use of this source code is governed by an MIT-style license that can be
+	     * found in the LICENSE file at https://angular.io/license
+	     */
 	    var CAMEL_CASE_REGEXP = /([A-Z])/g;
 	    var DASH_CASE_REGEXP = /-([a-z])/g;
 	    function camelCaseToDashCase(input) {
-	        return StringWrapper.replaceAllMapped(input, CAMEL_CASE_REGEXP, function (m) { return '-' + m[1].toLowerCase(); });
+	        return input.replace(CAMEL_CASE_REGEXP, function () {
+	            var m = [];
+	            for (var _i = 0; _i < arguments.length; _i++) {
+	                m[_i - 0] = arguments[_i];
+	            }
+	            return '-' + m[1].toLowerCase();
+	        });
 	    }
 	    function dashCaseToCamelCase(input) {
-	        return StringWrapper.replaceAllMapped(input, DASH_CASE_REGEXP, function (m) { return m[1].toUpperCase(); });
+	        return input.replace(DASH_CASE_REGEXP, function () {
+	            var m = [];
+	            for (var _i = 0; _i < arguments.length; _i++) {
+	                m[_i - 0] = arguments[_i];
+	            }
+	            return m[1].toUpperCase();
+	        });
 	    }
 
 	    /**
@@ -39161,7 +39014,7 @@
 	    function _resolveStyleUnit(val, userProvidedProp, formattedProp) {
 	        var unit = '';
 	        if (_isPixelDimensionStyle(formattedProp) && val != 0 && val != '0') {
-	            if (isNumber(val)) {
+	            if (typeof val === 'number') {
 	                unit = 'px';
 	            }
 	            else if (_findDimensionalSuffix(val.toString()).length == 0) {
@@ -39175,7 +39028,7 @@
 	    var _$PERIOD = 46;
 	    function _findDimensionalSuffix(value) {
 	        for (var i = 0; i < value.length; i++) {
-	            var c = StringWrapper.charCodeAt(value, i);
+	            var c = value.charCodeAt(i);
 	            if ((c >= _$0 && c <= _$9) || c == _$PERIOD)
 	                continue;
 	            return value.substring(i, value.length);
@@ -39784,22 +39637,6 @@
 	        return BrowserPlatformLocation;
 	    }(_angular_common.PlatformLocation));
 
-	    var _clearValues = (function () {
-	        if ((new Map()).keys().next) {
-	            return function _clearValues(m) {
-	                var keyIterator = m.keys();
-	                var k;
-	                while (!((k = keyIterator.next()).done)) {
-	                    m.set(k.value, null);
-	                }
-	            };
-	        }
-	        else {
-	            return function _clearValuesWithForeEach(m) {
-	                m.forEach(function (v, k) { m.set(k, null); });
-	            };
-	        }
-	    })();
 	    // Safari doesn't implement MapIterator.next(), which is used is Traceur's polyfill of Array.from
 	    // TODO(mlaval): remove the work around once we have a working polyfill of Array.from
 	    var _arrayFromMap = (function () {
@@ -39975,7 +39812,7 @@
 	        if (isPresent(source)) {
 	            for (var i = 0; i < source.length; i++) {
 	                var item = source[i];
-	                if (isArray(item)) {
+	                if (Array.isArray(item)) {
 	                    _flattenArray(item, target);
 	                }
 	                else {
@@ -40281,7 +40118,7 @@
 	        }
 	        DomRenderer.prototype.selectRootElement = function (selectorOrNode, debugInfo) {
 	            var el;
-	            if (isString(selectorOrNode)) {
+	            if (typeof selectorOrNode === 'string') {
 	                el = getDOM().querySelector(this._rootRenderer.document, selectorOrNode);
 	                if (isBlank(el)) {
 	                    throw new Error("The selector \"" + selectorOrNode + "\" did not match any elements");
@@ -40389,11 +40226,10 @@
 	        DomRenderer.prototype.setBindingDebugInfo = function (renderElement, propertyName, propertyValue) {
 	            var dashCasedPropertyName = camelCaseToDashCase(propertyName);
 	            if (getDOM().isCommentNode(renderElement)) {
-	                var existingBindings = StringWrapper.replaceAll(getDOM().getText(renderElement), /\n/g, '')
-	                    .match(TEMPLATE_BINDINGS_EXP);
-	                var parsedBindings = Json.parse(existingBindings[1]);
+	                var existingBindings = getDOM().getText(renderElement).replace(/\n/g, '').match(TEMPLATE_BINDINGS_EXP);
+	                var parsedBindings = JSON.parse(existingBindings[1]);
 	                parsedBindings[dashCasedPropertyName] = propertyValue;
-	                getDOM().setText(renderElement, StringWrapper.replace(TEMPLATE_COMMENT_TEXT, '{}', Json.stringify(parsedBindings)));
+	                getDOM().setText(renderElement, TEMPLATE_COMMENT_TEXT.replace('{}', JSON.stringify(parsedBindings, null, 2)));
 	            }
 	            else {
 	                this.setElementAttribute(renderElement, propertyName, propertyValue);
@@ -40459,19 +40295,19 @@
 	    var HOST_ATTR = "_nghost-" + COMPONENT_VARIABLE;
 	    var CONTENT_ATTR = "_ngcontent-" + COMPONENT_VARIABLE;
 	    function _shimContentAttribute(componentShortId) {
-	        return StringWrapper.replaceAll(CONTENT_ATTR, COMPONENT_REGEX, componentShortId);
+	        return CONTENT_ATTR.replace(COMPONENT_REGEX, componentShortId);
 	    }
 	    function _shimHostAttribute(componentShortId) {
-	        return StringWrapper.replaceAll(HOST_ATTR, COMPONENT_REGEX, componentShortId);
+	        return HOST_ATTR.replace(COMPONENT_REGEX, componentShortId);
 	    }
 	    function _flattenStyles(compId, styles, target) {
 	        for (var i = 0; i < styles.length; i++) {
 	            var style = styles[i];
-	            if (isArray(style)) {
+	            if (Array.isArray(style)) {
 	                _flattenStyles(compId, style, target);
 	            }
 	            else {
-	                style = StringWrapper.replaceAll(style, COMPONENT_REGEX, compId);
+	                style = style.replace(COMPONENT_REGEX, compId);
 	                target.push(style);
 	            }
 	        }
@@ -40759,9 +40595,7 @@
 	        KeyEventsPlugin.parseEventName = function (eventName) {
 	            var parts = eventName.toLowerCase().split('.');
 	            var domEventName = parts.shift();
-	            if ((parts.length === 0) ||
-	                !(StringWrapper.equals(domEventName, 'keydown') ||
-	                    StringWrapper.equals(domEventName, 'keyup'))) {
+	            if ((parts.length === 0) || !(domEventName === 'keydown' || domEventName === 'keyup')) {
 	                return null;
 	            }
 	            var key = KeyEventsPlugin._normalizeKey(parts.pop());
@@ -40786,10 +40620,10 @@
 	            var fullKey = '';
 	            var key = getDOM().getEventKey(event);
 	            key = key.toLowerCase();
-	            if (StringWrapper.equals(key, ' ')) {
+	            if (key === ' ') {
 	                key = 'space'; // for readability
 	            }
-	            else if (StringWrapper.equals(key, '.')) {
+	            else if (key === '.') {
 	                key = 'dot'; // because '.' is used as a separator in event names
 	            }
 	            modifierKeys.forEach(function (modifierName) {
@@ -40805,7 +40639,7 @@
 	        };
 	        KeyEventsPlugin.eventCallback = function (element, fullKey, handler, zone) {
 	            return function (event /** TODO #9100 */) {
-	                if (StringWrapper.equals(KeyEventsPlugin.getEventFullKey(event), fullKey)) {
+	                if (KeyEventsPlugin.getEventFullKey(event) === fullKey) {
 	                    zone.runGuarded(function () { return handler(event); });
 	                }
 	            };
@@ -41494,7 +41328,7 @@
 	         * ```
 	         */
 	        AngularProfiler.prototype.timeChangeDetection = function (config) {
-	            var record = isPresent(config) && config['record'];
+	            var record = config && config['record'];
 	            var profileName = 'Change Detection';
 	            // Profiler is not available in Android browsers, nor in IE 9 without dev tools opened
 	            var isProfilerAvailable = isPresent(win.console.profile);
@@ -41517,7 +41351,7 @@
 	            }
 	            var msPerTick = (end - start) / numTicks;
 	            win.console.log("ran " + numTicks + " change detection cycles");
-	            win.console.log(NumberWrapper.toFixed(msPerTick, 2) + " ms per check");
+	            win.console.log(msPerTick.toFixed(2) + " ms per check");
 	            return new ChangeDetectionPerfRecord(msPerTick, numTicks);
 	        };
 	        return AngularProfiler;
@@ -41638,7 +41472,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.0.2
+	 * @license Angular v2.1.1
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -41787,12 +41621,6 @@
 	    function isBlank(obj) {
 	        return obj === undefined || obj === null;
 	    }
-	    function isStringMap(obj) {
-	        return typeof obj === 'object' && obj !== null;
-	    }
-	    function isArray(obj) {
-	        return Array.isArray(obj);
-	    }
 	    function isDate(obj) {
 	        return obj instanceof Date && !isNaN(obj.valueOf());
 	    }
@@ -41816,8 +41644,6 @@
 	    var NumberWrapper = (function () {
 	        function NumberWrapper() {
 	        }
-	        NumberWrapper.toFixed = function (n, fractionDigits) { return n.toFixed(fractionDigits); };
-	        NumberWrapper.equal = function (a, b) { return a === b; };
 	        NumberWrapper.parseIntAutoRadix = function (text) {
 	            var result = parseInt(text);
 	            if (isNaN(result)) {
@@ -41844,30 +41670,12 @@
 	            }
 	            throw new Error('Invalid integer literal when parsing ' + text + ' in base ' + radix);
 	        };
-	        Object.defineProperty(NumberWrapper, "NaN", {
-	            get: function () { return NaN; },
-	            enumerable: true,
-	            configurable: true
-	        });
 	        NumberWrapper.isNumeric = function (value) { return !isNaN(value - parseFloat(value)); };
-	        NumberWrapper.isNaN = function (value) { return isNaN(value); };
-	        NumberWrapper.isInteger = function (value) { return Number.isInteger(value); };
 	        return NumberWrapper;
 	    }());
 	    function isJsObject(o) {
 	        return o !== null && (typeof o === 'function' || typeof o === 'object');
 	    }
-	    // Can't be all uppercase as our transpiler would think it is a special directive...
-	    var Json = (function () {
-	        function Json() {
-	        }
-	        Json.parse = function (s) { return _global.JSON.parse(s); };
-	        Json.stringify = function (data) {
-	            // Dart doesn't take 3 arguments
-	            return _global.JSON.stringify(data, null, 2);
-	        };
-	        return Json;
-	    }());
 	    var _symbolIterator = null;
 	    function getSymbolIterator() {
 	        if (isBlank(_symbolIterator)) {
@@ -42732,22 +42540,6 @@
 	        }
 	    }
 
-	    var _clearValues = (function () {
-	        if ((new Map()).keys().next) {
-	            return function _clearValues(m) {
-	                var keyIterator = m.keys();
-	                var k;
-	                while (!((k = keyIterator.next()).done)) {
-	                    m.set(k.value, null);
-	                }
-	            };
-	        }
-	        else {
-	            return function _clearValuesWithForeEach(m) {
-	                m.forEach(function (v, k) { m.set(k, null); });
-	            };
-	        }
-	    })();
 	    // Safari doesn't implement MapIterator.next(), which is used is Traceur's polyfill of Array.from
 	    // TODO(mlaval): remove the work around once we have a working polyfill of Array.from
 	    var _arrayFromMap = (function () {
@@ -42889,7 +42681,7 @@
 	        if (isPresent(source)) {
 	            for (var i = 0; i < source.length; i++) {
 	                var item = source[i];
-	                if (isArray(item)) {
+	                if (Array.isArray(item)) {
 	                    _flattenArray(item, target);
 	                }
 	                else {
@@ -42902,7 +42694,7 @@
 	    function isListLikeIterable(obj) {
 	        if (!isJsObject(obj))
 	            return false;
-	        return isArray(obj) ||
+	        return Array.isArray(obj) ||
 	            (!(obj instanceof Map) &&
 	                getSymbolIterator() in obj); // JS Iterable have a Symbol.iterator prop
 	    }
@@ -43237,14 +43029,14 @@
 	    /**
 	     * Removes or recreates a portion of the DOM tree based on an {expression}.
 	     *
-	     * If the expression assigned to `ngIf` evaluates to a false value then the element
+	     * If the expression assigned to `ngIf` evaluates to a falsy value then the element
 	     * is removed from the DOM, otherwise a clone of the element is reinserted into the DOM.
 	     *
 	     * ### Example ([live demo](http://plnkr.co/edit/fe0kgemFBtmQOY31b4tw?p=preview)):
 	     *
 	     * ```
 	     * <div *ngIf="errorCount > 0" class="error">
-	     *   <!-- Error message displayed when the errorCount property on the current context is greater
+	     *   <!-- Error message displayed when the errorCount property in the current context is greater
 	     * than 0. -->
 	     *   {{errorCount}} errors detected
 	     * </div>
@@ -43292,7 +43084,7 @@
 	        return NgIf;
 	    }());
 
-	    var _CASE_DEFAULT = new Object();
+	    var _CASE_DEFAULT = {};
 	    var SwitchView = (function () {
 	        function SwitchView(_viewContainerRef, _templateRef) {
 	            this._viewContainerRef = _viewContainerRef;
@@ -43319,7 +43111,7 @@
 	     *         <inner-element></inner-element>
 	     *         <inner-other-element></inner-other-element>
 	     *       </ng-container>
-	     *       <some-element *ngSwitchDefault>...</p>
+	     *       <some-element *ngSwitchDefault>...</some-element>
 	     *     </container-element>
 	     * ```
 	     * @description
@@ -43334,8 +43126,7 @@
 	     * root elements.
 	     *
 	     * Elements within `NgSwitch` but outside of a `NgSwitchCase` or `NgSwitchDefault` directives will
-	     * be
-	     * preserved at the location.
+	     * be preserved at the location.
 	     *
 	     * The `ngSwitchCase` directive informs the parent `NgSwitch` of which view to display when the
 	     * expression is evaluated.
@@ -43352,15 +43143,21 @@
 	        }
 	        Object.defineProperty(NgSwitch.prototype, "ngSwitch", {
 	            set: function (value) {
-	                // Empty the currently active ViewContainers
-	                this._emptyAllActiveViews();
-	                // Add the ViewContainers matching the value (with a fallback to default)
-	                this._useDefault = false;
+	                // Set of views to display for this value
 	                var views = this._valueViews.get(value);
-	                if (!views) {
-	                    this._useDefault = true;
-	                    views = this._valueViews.get(_CASE_DEFAULT) || null;
+	                if (views) {
+	                    this._useDefault = false;
 	                }
+	                else {
+	                    // No view to display for the current value -> default case
+	                    // Nothing to do if the default case was already active
+	                    if (this._useDefault) {
+	                        return;
+	                    }
+	                    this._useDefault = true;
+	                    views = this._valueViews.get(_CASE_DEFAULT);
+	                }
+	                this._emptyAllActiveViews();
 	                this._activateViews(views);
 	                this._switchValue = value;
 	            },
@@ -44314,7 +44111,7 @@
 	        I18nPluralPipe.prototype.transform = function (value, pluralMap) {
 	            if (isBlank(value))
 	                return '';
-	            if (!isStringMap(pluralMap)) {
+	            if (typeof pluralMap !== 'object' || pluralMap === null) {
 	                throw new InvalidPipeArgumentError(I18nPluralPipe, pluralMap);
 	            }
 	            var key = getPluralCategory(value, Object.keys(pluralMap), this._localization);
@@ -44352,10 +44149,10 @@
 	        I18nSelectPipe.prototype.transform = function (value, mapping) {
 	            if (isBlank(value))
 	                return '';
-	            if (!isStringMap(mapping)) {
+	            if (typeof mapping !== 'object' || mapping === null) {
 	                throw new InvalidPipeArgumentError(I18nSelectPipe, mapping);
 	            }
-	            return mapping.hasOwnProperty(value) ? mapping[value] : '';
+	            return mapping[value] || '';
 	        };
 	        I18nSelectPipe.decorators = [
 	            { type: _angular_core.Pipe, args: [{ name: 'i18nSelect', pure: true },] },
@@ -44381,7 +44178,7 @@
 	    var JsonPipe = (function () {
 	        function JsonPipe() {
 	        }
-	        JsonPipe.prototype.transform = function (value) { return Json.stringify(value); };
+	        JsonPipe.prototype.transform = function (value) { return JSON.stringify(value, null, 2); };
 	        JsonPipe.decorators = [
 	            { type: _angular_core.Pipe, args: [{ name: 'json', pure: false },] },
 	        ];
@@ -44782,20 +44579,20 @@
 	var platform_browser_1 = __webpack_require__(331);
 	var app_component_1 = __webpack_require__(338);
 	var auction_component_1 = __webpack_require__(513);
-	var auction_service_1 = __webpack_require__(515);
-	var authentication_service_1 = __webpack_require__(516);
-	var alert_service_1 = __webpack_require__(545);
-	var alert_component_1 = __webpack_require__(547);
-	var app_routing_1 = __webpack_require__(549);
-	var bid_service_1 = __webpack_require__(558);
+	var auction_service_1 = __webpack_require__(522);
+	var authentication_service_1 = __webpack_require__(523);
+	var alert_component_1 = __webpack_require__(556);
+	var app_routing_1 = __webpack_require__(559);
+	var bid_service_1 = __webpack_require__(514);
 	var user_service_1 = __webpack_require__(339);
-	var navbar_component_1 = __webpack_require__(559);
-	var home_component_1 = __webpack_require__(550);
-	var profile_component_1 = __webpack_require__(552);
-	var auction_list_component_1 = __webpack_require__(561);
-	var countdown_component_1 = __webpack_require__(563);
-	var register_component_1 = __webpack_require__(554);
-	var login_component_1 = __webpack_require__(556);
+	var navbar_component_1 = __webpack_require__(568);
+	var home_component_1 = __webpack_require__(560);
+	var profile_component_1 = __webpack_require__(562);
+	var auction_list_component_1 = __webpack_require__(570);
+	var countdown_component_1 = __webpack_require__(572);
+	var register_component_1 = __webpack_require__(564);
+	var login_component_1 = __webpack_require__(566);
+	var angular2_flash_messages_1 = __webpack_require__(515);
 	var declarations = [
 	    app_component_1.AppComponent,
 	    auction_component_1.AuctionComponent,
@@ -44811,14 +44608,14 @@
 	var imports = [
 	    platform_browser_1.BrowserModule,
 	    app_routing_1.routing,
-	    forms_1.FormsModule
+	    forms_1.FormsModule,
+	    angular2_flash_messages_1.FlashMessagesModule
 	];
 	var providers = [
 	    bid_service_1.BidService,
 	    auction_service_1.AuctionService,
 	    user_service_1.UserService,
-	    authentication_service_1.AuthenticationService,
-	    alert_service_1.AlertService
+	    authentication_service_1.AuthenticationService
 	];
 	var AppModule = (function () {
 	    function AppModule() {
@@ -44842,7 +44639,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * @license Angular v2.0.2
+	 * @license Angular v2.1.1
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -44858,124 +44655,6 @@
 	    function isBlank(obj) {
 	        return obj === undefined || obj === null;
 	    }
-	    function isString(obj) {
-	        return typeof obj === 'string';
-	    }
-	    function isStringMap(obj) {
-	        return typeof obj === 'object' && obj !== null;
-	    }
-	    function isArray(obj) {
-	        return Array.isArray(obj);
-	    }
-	    var StringWrapper = (function () {
-	        function StringWrapper() {
-	        }
-	        StringWrapper.fromCharCode = function (code) { return String.fromCharCode(code); };
-	        StringWrapper.charCodeAt = function (s, index) { return s.charCodeAt(index); };
-	        StringWrapper.split = function (s, regExp) { return s.split(regExp); };
-	        StringWrapper.equals = function (s, s2) { return s === s2; };
-	        StringWrapper.stripLeft = function (s, charVal) {
-	            if (s && s.length) {
-	                var pos = 0;
-	                for (var i = 0; i < s.length; i++) {
-	                    if (s[i] != charVal)
-	                        break;
-	                    pos++;
-	                }
-	                s = s.substring(pos);
-	            }
-	            return s;
-	        };
-	        StringWrapper.stripRight = function (s, charVal) {
-	            if (s && s.length) {
-	                var pos = s.length;
-	                for (var i = s.length - 1; i >= 0; i--) {
-	                    if (s[i] != charVal)
-	                        break;
-	                    pos--;
-	                }
-	                s = s.substring(0, pos);
-	            }
-	            return s;
-	        };
-	        StringWrapper.replace = function (s, from, replace) {
-	            return s.replace(from, replace);
-	        };
-	        StringWrapper.replaceAll = function (s, from, replace) {
-	            return s.replace(from, replace);
-	        };
-	        StringWrapper.slice = function (s, from, to) {
-	            if (from === void 0) { from = 0; }
-	            if (to === void 0) { to = null; }
-	            return s.slice(from, to === null ? undefined : to);
-	        };
-	        StringWrapper.replaceAllMapped = function (s, from, cb) {
-	            return s.replace(from, function () {
-	                var matches = [];
-	                for (var _i = 0; _i < arguments.length; _i++) {
-	                    matches[_i - 0] = arguments[_i];
-	                }
-	                // Remove offset & string from the result array
-	                matches.splice(-2, 2);
-	                // The callback receives match, p1, ..., pn
-	                return cb(matches);
-	            });
-	        };
-	        StringWrapper.contains = function (s, substr) { return s.indexOf(substr) != -1; };
-	        StringWrapper.compare = function (a, b) {
-	            if (a < b) {
-	                return -1;
-	            }
-	            else if (a > b) {
-	                return 1;
-	            }
-	            else {
-	                return 0;
-	            }
-	        };
-	        return StringWrapper;
-	    }());
-	    var NumberWrapper = (function () {
-	        function NumberWrapper() {
-	        }
-	        NumberWrapper.toFixed = function (n, fractionDigits) { return n.toFixed(fractionDigits); };
-	        NumberWrapper.equal = function (a, b) { return a === b; };
-	        NumberWrapper.parseIntAutoRadix = function (text) {
-	            var result = parseInt(text);
-	            if (isNaN(result)) {
-	                throw new Error('Invalid integer literal when parsing ' + text);
-	            }
-	            return result;
-	        };
-	        NumberWrapper.parseInt = function (text, radix) {
-	            if (radix == 10) {
-	                if (/^(\-|\+)?[0-9]+$/.test(text)) {
-	                    return parseInt(text, radix);
-	                }
-	            }
-	            else if (radix == 16) {
-	                if (/^(\-|\+)?[0-9ABCDEFabcdef]+$/.test(text)) {
-	                    return parseInt(text, radix);
-	                }
-	            }
-	            else {
-	                var result = parseInt(text, radix);
-	                if (!isNaN(result)) {
-	                    return result;
-	                }
-	            }
-	            throw new Error('Invalid integer literal when parsing ' + text + ' in base ' + radix);
-	        };
-	        Object.defineProperty(NumberWrapper, "NaN", {
-	            get: function () { return NaN; },
-	            enumerable: true,
-	            configurable: true
-	        });
-	        NumberWrapper.isNumeric = function (value) { return !isNaN(value - parseFloat(value)); };
-	        NumberWrapper.isNaN = function (value) { return isNaN(value); };
-	        NumberWrapper.isInteger = function (value) { return Number.isInteger(value); };
-	        return NumberWrapper;
-	    }());
 	    // JS has NaN !== NaN
 	    function looseIdentical(a, b) {
 	        return a === b || typeof a === 'number' && typeof b === 'number' && isNaN(a) && isNaN(b);
@@ -44988,9 +44667,6 @@
 	    }
 	    function isPrimitive(obj) {
 	        return !isJsObject(obj);
-	    }
-	    function hasConstructor(value, type) {
-	        return value.constructor === type;
 	    }
 
 	    /**
@@ -45135,41 +44811,6 @@
 	        return ControlContainer;
 	    }(AbstractControlDirective));
 
-	    // Safari and Internet Explorer do not support the iterable parameter to the
-	    // Map constructor.  We work around that by manually adding the items.
-	    var createMapFromPairs = (function () {
-	        try {
-	            if (new Map([[1, 2]]).size === 1) {
-	                return function createMapFromPairs(pairs) { return new Map(pairs); };
-	            }
-	        }
-	        catch (e) {
-	        }
-	        return function createMapAndPopulateFromPairs(pairs) {
-	            var map = new Map();
-	            for (var i = 0; i < pairs.length; i++) {
-	                var pair = pairs[i];
-	                map.set(pair[0], pair[1]);
-	            }
-	            return map;
-	        };
-	    })();
-	    var _clearValues = (function () {
-	        if ((new Map()).keys().next) {
-	            return function _clearValues(m) {
-	                var keyIterator = m.keys();
-	                var k;
-	                while (!((k = keyIterator.next()).done)) {
-	                    m.set(k.value, null);
-	                }
-	            };
-	        }
-	        else {
-	            return function _clearValuesWithForeEach(m) {
-	                m.forEach(function (v, k) { m.set(k, null); });
-	            };
-	        }
-	    })();
 	    // Safari doesn't implement MapIterator.next(), which is used is Traceur's polyfill of Array.from
 	    // TODO(mlaval): remove the work around once we have a working polyfill of Array.from
 	    var _arrayFromMap = (function () {
@@ -45201,13 +44842,6 @@
 	            }
 	            return result;
 	        };
-	        MapWrapper.toStringMap = function (m) {
-	            var r = {};
-	            m.forEach(function (v, k) { return r[k] = v; });
-	            return r;
-	        };
-	        MapWrapper.createFromPairs = function (pairs) { return createMapFromPairs(pairs); };
-	        MapWrapper.iterable = function (m) { return m; };
 	        MapWrapper.keys = function (m) { return _arrayFromMap(m, false); };
 	        MapWrapper.values = function (m) { return _arrayFromMap(m, true); };
 	        return MapWrapper;
@@ -45366,7 +45000,7 @@
 	        if (isPresent(source)) {
 	            for (var i = 0; i < source.length; i++) {
 	                var item = source[i];
-	                if (isArray(item)) {
+	                if (Array.isArray(item)) {
 	                    _flattenArray(item, target);
 	                }
 	                else {
@@ -45379,6 +45013,9 @@
 
 	    var isPromise = _angular_core.__core_private__.isPromise;
 
+	    function isEmptyInputValue(value) {
+	        return value == null || typeof value === 'string' && value.length === 0;
+	    }
 	    /**
 	     * Providers for validators to be used for {@link FormControl}s in a form.
 	     *
@@ -45422,20 +45059,19 @@
 	         * Validator that requires controls to have a non-empty value.
 	         */
 	        Validators.required = function (control) {
-	            return isBlank(control.value) || (isString(control.value) && control.value == '') ?
-	                { 'required': true } :
-	                null;
+	            return isEmptyInputValue(control.value) ? { 'required': true } : null;
 	        };
 	        /**
 	         * Validator that requires controls to have a value of a minimum length.
 	         */
 	        Validators.minLength = function (minLength) {
 	            return function (control) {
-	                if (isPresent(Validators.required(control)))
-	                    return null;
-	                var v = control.value;
-	                return v.length < minLength ?
-	                    { 'minlength': { 'requiredLength': minLength, 'actualLength': v.length } } :
+	                if (isEmptyInputValue(control.value)) {
+	                    return null; // don't validate empty values to allow optional controls
+	                }
+	                var length = typeof control.value === 'string' ? control.value.length : 0;
+	                return length < minLength ?
+	                    { 'minlength': { 'requiredLength': minLength, 'actualLength': length } } :
 	                    null;
 	            };
 	        };
@@ -45444,11 +45080,9 @@
 	         */
 	        Validators.maxLength = function (maxLength) {
 	            return function (control) {
-	                if (isPresent(Validators.required(control)))
-	                    return null;
-	                var v = control.value;
-	                return v.length > maxLength ?
-	                    { 'maxlength': { 'requiredLength': maxLength, 'actualLength': v.length } } :
+	                var length = typeof control.value === 'string' ? control.value.length : 0;
+	                return length > maxLength ?
+	                    { 'maxlength': { 'requiredLength': maxLength, 'actualLength': length } } :
 	                    null;
 	            };
 	        };
@@ -45457,10 +45091,14 @@
 	         */
 	        Validators.pattern = function (pattern) {
 	            return function (control) {
+	                if (isEmptyInputValue(control.value)) {
+	                    return null; // don't validate empty values to allow optional controls
+	                }
 	                var regex = new RegExp("^" + pattern + "$");
-	                var v = control.value;
-	                return regex.test(v) ? null :
-	                    { 'pattern': { 'requiredPattern': "^" + pattern + "$", 'actualValue': v } };
+	                var value = control.value;
+	                return regex.test(value) ?
+	                    null :
+	                    { 'pattern': { 'requiredPattern': "^" + pattern + "$", 'actualValue': value } };
 	            };
 	        };
 	        /**
@@ -45886,7 +45524,7 @@
 	            return "" + value;
 	        if (!isPrimitive(value))
 	            value = 'Object';
-	        return StringWrapper.slice(id + ": " + value, 0, 50);
+	        return (id + ": " + value).slice(0, 50);
 	    }
 	    function _extractId(valueString) {
 	        return valueString.split(':')[0];
@@ -46057,11 +45695,11 @@
 	    function _buildValueString$1(id, value) {
 	        if (isBlank(id))
 	            return "" + value;
-	        if (isString(value))
+	        if (typeof value === 'string')
 	            value = "'" + value + "'";
 	        if (!isPrimitive(value))
 	            value = 'Object';
-	        return StringWrapper.slice(id + ": " + value, 0, 50);
+	        return (id + ": " + value).slice(0, 50);
 	    }
 	    function _extractId$1(valueString) {
 	        return valueString.split(':')[0];
@@ -46231,9 +45869,7 @@
 	    }());
 
 	    function controlPath(name, parent) {
-	        var p = ListWrapper.clone(parent.path);
-	        p.push(name);
-	        return p;
+	        return parent.path.concat([name]);
 	    }
 	    function setUpControl(control, dir) {
 	        if (!control)
@@ -46316,12 +45952,15 @@
 	            return true;
 	        return !looseIdentical(viewModel, change.currentValue);
 	    }
+	    var BUILTIN_ACCESSORS = [
+	        CheckboxControlValueAccessor,
+	        NumberValueAccessor,
+	        SelectControlValueAccessor,
+	        SelectMultipleControlValueAccessor,
+	        RadioControlValueAccessor,
+	    ];
 	    function isBuiltInAccessor(valueAccessor) {
-	        return (hasConstructor(valueAccessor, CheckboxControlValueAccessor) ||
-	            hasConstructor(valueAccessor, NumberValueAccessor) ||
-	            hasConstructor(valueAccessor, SelectControlValueAccessor) ||
-	            hasConstructor(valueAccessor, SelectMultipleControlValueAccessor) ||
-	            hasConstructor(valueAccessor, RadioControlValueAccessor));
+	        return BUILTIN_ACCESSORS.some(function (a) { return valueAccessor.constructor === a; });
 	    }
 	    // TODO: vsavkin remove it once https://github.com/angular/angular/issues/3011 is implemented
 	    function selectValueAccessor(dir, valueAccessors) {
@@ -46331,25 +45970,25 @@
 	        var builtinAccessor;
 	        var customAccessor;
 	        valueAccessors.forEach(function (v) {
-	            if (hasConstructor(v, DefaultValueAccessor)) {
+	            if (v.constructor === DefaultValueAccessor) {
 	                defaultAccessor = v;
 	            }
 	            else if (isBuiltInAccessor(v)) {
-	                if (isPresent(builtinAccessor))
+	                if (builtinAccessor)
 	                    _throwError(dir, 'More than one built-in value accessor matches form control with');
 	                builtinAccessor = v;
 	            }
 	            else {
-	                if (isPresent(customAccessor))
+	                if (customAccessor)
 	                    _throwError(dir, 'More than one custom value accessor matches form control with');
 	                customAccessor = v;
 	            }
 	        });
-	        if (isPresent(customAccessor))
+	        if (customAccessor)
 	            return customAccessor;
-	        if (isPresent(builtinAccessor))
+	        if (builtinAccessor)
 	            return builtinAccessor;
-	        if (isPresent(defaultAccessor))
+	        if (defaultAccessor)
 	            return defaultAccessor;
 	        _throwError(dir, 'No valid value accessor for form control with');
 	        return null;
@@ -46613,9 +46252,9 @@
 	            var errorFn = function (err) { return null; };
 	            var completeFn = function () { return null; };
 	            if (generatorOrNext && typeof generatorOrNext === 'object') {
-	                schedulerFn = this.__isAsync ? function (value /** TODO #9100 */) {
+	                schedulerFn = this.__isAsync ? function (value) {
 	                    setTimeout(function () { return generatorOrNext.next(value); });
-	                } : function (value /** TODO #9100 */) { generatorOrNext.next(value); };
+	                } : function (value) { generatorOrNext.next(value); };
 	                if (generatorOrNext.error) {
 	                    errorFn = this.__isAsync ? function (err) { setTimeout(function () { return generatorOrNext.error(err); }); } :
 	                        function (err) { generatorOrNext.error(err); };
@@ -46626,9 +46265,8 @@
 	                }
 	            }
 	            else {
-	                schedulerFn = this.__isAsync ? function (value /** TODO #9100 */) {
-	                    setTimeout(function () { return generatorOrNext(value); });
-	                } : function (value /** TODO #9100 */) { generatorOrNext(value); };
+	                schedulerFn = this.__isAsync ? function (value) { setTimeout(function () { return generatorOrNext(value); }); } :
+	                    function (value) { generatorOrNext(value); };
 	                if (error) {
 	                    errorFn =
 	                        this.__isAsync ? function (err) { setTimeout(function () { return error(err); }); } : function (err) { error(err); };
@@ -46679,19 +46317,16 @@
 	        if (!(path instanceof Array)) {
 	            path = path.split(delimiter);
 	        }
-	        if (path instanceof Array && ListWrapper.isEmpty(path))
+	        if (path instanceof Array && (path.length === 0))
 	            return null;
 	        return path.reduce(function (v, name) {
 	            if (v instanceof FormGroup) {
-	                return isPresent(v.controls[name]) ? v.controls[name] : null;
+	                return v.controls[name] || null;
 	            }
-	            else if (v instanceof FormArray) {
-	                var index = name;
-	                return isPresent(v.at(index)) ? v.at(index) : null;
+	            if (v instanceof FormArray) {
+	                return v.at(name) || null;
 	            }
-	            else {
-	                return null;
-	            }
+	            return null;
 	        }, control);
 	    }
 	    function toObservable(r) {
@@ -47110,7 +46745,7 @@
 	         */
 	        AbstractControl.prototype.getError = function (errorCode, path) {
 	            if (path === void 0) { path = null; }
-	            var control = isPresent(path) && !ListWrapper.isEmpty(path) ? this.get(path) : this;
+	            var control = isPresent(path) && (path.length > 0) ? this.get(path) : this;
 	            if (isPresent(control) && isPresent(control._errors)) {
 	                return control._errors[errorCode];
 	            }
@@ -47170,7 +46805,7 @@
 	        };
 	        /** @internal */
 	        AbstractControl.prototype._anyControlsHaveStatus = function (status) {
-	            return this._anyControls(function (control) { return control.status == status; });
+	            return this._anyControls(function (control) { return control.status === status; });
 	        };
 	        /** @internal */
 	        AbstractControl.prototype._anyControlsDirty = function () {
@@ -47198,8 +46833,8 @@
 	        };
 	        /** @internal */
 	        AbstractControl.prototype._isBoxedValue = function (formState) {
-	            return isStringMap(formState) && Object.keys(formState).length === 2 && 'value' in formState &&
-	                'disabled' in formState;
+	            return typeof formState === 'object' && formState !== null &&
+	                Object.keys(formState).length === 2 && 'value' in formState && 'disabled' in formState;
 	        };
 	        /** @internal */
 	        AbstractControl.prototype._registerOnCollectionChange = function (fn) { this._onCollectionChange = fn; };
@@ -47756,7 +47391,7 @@
 	         * Insert a new {@link AbstractControl} at the given `index` in the array.
 	         */
 	        FormArray.prototype.insert = function (index, control) {
-	            ListWrapper.insert(this.controls, index, control);
+	            this.controls.splice(index, 0, control);
 	            this._registerControl(control);
 	            this.updateValueAndValidity();
 	            this._onCollectionChange();
@@ -47767,7 +47402,7 @@
 	        FormArray.prototype.removeAt = function (index) {
 	            if (this.controls[index])
 	                this.controls[index]._registerOnCollectionChange(function () { });
-	            ListWrapper.removeAt(this.controls, index);
+	            this.controls.splice(index, 1);
 	            this.updateValueAndValidity();
 	            this._onCollectionChange();
 	        };
@@ -47777,9 +47412,9 @@
 	        FormArray.prototype.setControl = function (index, control) {
 	            if (this.controls[index])
 	                this.controls[index]._registerOnCollectionChange(function () { });
-	            ListWrapper.removeAt(this.controls, index);
+	            this.controls.splice(index, 1);
 	            if (control) {
-	                ListWrapper.insert(this.controls, index, control);
+	                this.controls.splice(index, 0, control);
 	                this._registerControl(control);
 	            }
 	            this.updateValueAndValidity();
@@ -47991,7 +47626,8 @@
 	     * sub-groups within the form.
 	     *
 	     * You can listen to the directive's `ngSubmit` event to be notified when the user has
-	     * triggered a form submission.
+	     * triggered a form submission. The `ngSubmit` event will be emitted with the original form
+	     * submission event.
 	     *
 	     * {@example forms/ts/simpleForm/simple_form_example.ts region='Component'}
 	     *
@@ -48082,9 +47718,9 @@
 	            });
 	        };
 	        NgForm.prototype.setValue = function (value) { this.control.setValue(value); };
-	        NgForm.prototype.onSubmit = function () {
+	        NgForm.prototype.onSubmit = function ($event) {
 	            this._submitted = true;
-	            this.ngSubmit.emit(null);
+	            this.ngSubmit.emit($event);
 	            return false;
 	        };
 	        NgForm.prototype.onReset = function () { this.resetForm(); };
@@ -48102,7 +47738,7 @@
 	            { type: _angular_core.Directive, args: [{
 	                        selector: 'form:not([ngNoForm]):not([formGroup]),ngForm,[ngForm]',
 	                        providers: [formDirectiveProvider],
-	                        host: { '(submit)': 'onSubmit()', '(reset)': 'onReset()' },
+	                        host: { '(submit)': 'onSubmit($event)', '(reset)': 'onReset()' },
 	                        outputs: ['ngSubmit'],
 	                        exportAs: 'ngForm'
 	                    },] },
@@ -48619,6 +48255,10 @@
 	     * its {@link AbstractControl.statusChanges} event to be notified when the validation status is
 	     * re-calculated.
 	     *
+	     * Furthermore, you can listen to the directive's `ngSubmit` event to be notified when the user has
+	     * triggered a form submission. The `ngSubmit` event will be emitted with the original form
+	     * submission event.
+	     *
 	     * ### Example
 	     *
 	     * In this example, we create form controls for first name and last name.
@@ -48697,9 +48337,9 @@
 	            var ctrl = this.form.get(dir.path);
 	            ctrl.setValue(value);
 	        };
-	        FormGroupDirective.prototype.onSubmit = function () {
+	        FormGroupDirective.prototype.onSubmit = function ($event) {
 	            this._submitted = true;
-	            this.ngSubmit.emit(null);
+	            this.ngSubmit.emit($event);
 	            return false;
 	        };
 	        FormGroupDirective.prototype.onReset = function () { this.resetForm(); };
@@ -48744,7 +48384,7 @@
 	            { type: _angular_core.Directive, args: [{
 	                        selector: '[formGroup]',
 	                        providers: [formDirectiveProvider$1],
-	                        host: { '(submit)': 'onSubmit()', '(reset)': 'onReset()' },
+	                        host: { '(submit)': 'onSubmit($event)', '(reset)': 'onReset()' },
 	                        exportAs: 'ngForm'
 	                    },] },
 	        ];
@@ -49401,7 +49041,7 @@
 	                controlConfig instanceof FormArray) {
 	                return controlConfig;
 	            }
-	            else if (isArray(controlConfig)) {
+	            else if (Array.isArray(controlConfig)) {
 	                var value = controlConfig[0];
 	                var validator = controlConfig.length > 1 ? controlConfig[1] : null;
 	                var asyncValidator = controlConfig.length > 2 ? controlConfig[2] : null;
@@ -49854,13 +49494,8 @@
 	    ParseWrapper.prototype.model = function () {
 	        return this.klassModel;
 	    };
-	    ParseWrapper.prototype.extractData = function (_data) {
-	        var _collection = [];
-	        for (var _i = 0, _data_1 = _data; _i < _data_1.length; _i++) {
-	            var _dataObject = _data_1[_i];
-	            _collection.push(_dataObject.attributes);
-	        }
-	        return _collection;
+	    ParseWrapper.prototype.newModel = function () {
+	        return new this.klassModel;
 	    };
 	    /**
 	     * Initialize the parameters connection here.
@@ -64381,7 +64016,7 @@
 /* 511 */
 /***/ function(module, exports) {
 
-	module.exports = "<navbar></navbar>\n<div class=\"container\">\n      <alert></alert>\n      <router-outlet></router-outlet>\n</div>"
+	module.exports = "<navbar></navbar>\n<div class=\"container\">\n      <!--alert></alert-->\n      <flash-messages></flash-messages>\n      <router-outlet></router-outlet>\n</div>"
 
 /***/ },
 /* 512 */
@@ -64404,12 +64039,71 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
+	var user_service_1 = __webpack_require__(339);
+	var bid_service_1 = __webpack_require__(514);
+	var angular2_flash_messages_1 = __webpack_require__(515);
 	var AuctionComponent = (function () {
-	    function AuctionComponent() {
+	    function AuctionComponent(_userService, bidService, _flashMessagesService) {
+	        this._userService = _userService;
+	        this.bidService = bidService;
+	        this._flashMessagesService = _flashMessagesService;
+	        this.userSignedIn = false;
+	        this.currentUser = {};
+	        var user = _userService.getCurrentUser();
+	        if (user) {
+	            this.currentUser = user;
+	            this.userSignedIn = true;
+	        }
 	    }
+	    AuctionComponent.prototype.bid = function () {
+	        var _this = this;
+	        this.currentUser.fetch(); // REMOTE THIS WHEN WE HAVE A WAY OF ADDING CREDITS
+	        console.log("this.currentUser.get('credits') = " + this.currentUser.get('credits'));
+	        if (this.currentUser.get('credits') <= 0) {
+	            this._flashMessagesService.show("No tienes suficientes créditos.", { cssClass: 'alert-danger', timeout: 5000 });
+	        }
+	        else {
+	            this.bidService.bidAuction(this.currentUser, this.auction).then(function (bid) {
+	                // BEGIN: THIS SHOULD OCCUR IN PARSE SERVER
+	                _this.currentUser.increment('credits', -1);
+	                _this.currentUser.save();
+	                _this.auction.increment("bids");
+	                _this.auction.increment("currentPrice", 0.01);
+	                var newTime = _this.auction.get("endDate");
+	                newTime.setMinutes(newTime.getMinutes() + 1);
+	                _this.auction.set("endDate", newTime);
+	                _this.auction.save();
+	                // END: THIS SHOULD OCCUR IN PARSE SERVER
+	                _this.auction.fetch();
+	                _this.currentUser.fetch();
+	                _this._flashMessagesService.show("Subasta Exitosa", { cssClass: 'alert-success', timeout: 2000 });
+	            }).catch(function (error) {
+	                _this._flashMessagesService.show(error.message, { cssClass: 'alert-danger', timeout: 5000 });
+	            });
+	        }
+	    };
+	    AuctionComponent.prototype.onAuctionFinished = function (event) {
+	        console.log(event);
+	    };
 	    AuctionComponent.prototype.ngOnInit = function () {
+	        this.determineUserSignedIn();
 	    };
 	    AuctionComponent.prototype.ngOnDestroy = function () {
+	        this.subscription.unsubscribe();
+	        this.currentUser = null;
+	        this.userSignedIn = false;
+	    };
+	    AuctionComponent.prototype.determineUserSignedIn = function () {
+	        var _this = this;
+	        this.subscription = this._userService.userLoggedIn.subscribe(function (user) {
+	            if (user) {
+	                _this.currentUser = user;
+	                _this.userSignedIn = true;
+	            }
+	        });
+	    };
+	    AuctionComponent.prototype.isUserSignedIn = function () {
+	        return this.userSignedIn;
 	    };
 	    __decorate([
 	        core_1.Input(), 
@@ -64418,9 +64112,9 @@
 	    AuctionComponent = __decorate([
 	        core_1.Component({
 	            selector: "auction",
-	            template: __webpack_require__(514),
+	            template: __webpack_require__(521),
 	        }), 
-	        __metadata('design:paramtypes', [])
+	        __metadata('design:paramtypes', [user_service_1.UserService, bid_service_1.BidService, angular2_flash_messages_1.FlashMessagesService])
 	    ], AuctionComponent);
 	    return AuctionComponent;
 	}());
@@ -64429,12 +64123,217 @@
 
 /***/ },
 /* 514 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "\n    <div class=\"col-sm-6\">\n      <div class=\"thumbnail\">\n        <img src=\"https://dummyimage.com/242x200/fafafa/000000\" alt=\"dummy-img\">\n        <div class=\"caption\">\n          <h3>{{auction.name}}</h3>\n          <p>Some description</p>\n          <countdown units=\"Days | Hours | Minutes | Seconds\" [date]=\"auction.endDate\"></countdown>\n          <p><a href=\"#\" class=\"btn btn-primary\" role=\"button\">Button</a> <a href=\"#\" class=\"btn btn-default\" role=\"button\">Button</a></p>\n        </div>\n      </div>\n    </div>\n"
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var parse_wrapper_1 = __webpack_require__(340);
+	var util_deferred_1 = __webpack_require__(510);
+	/**
+	 * this is important otherwise trying
+	 * to inject one service into another
+	 * would cause: missing param error
+	 */
+	var BidService = (function (_super) {
+	    __extends(BidService, _super);
+	    function BidService() {
+	        _super.call(this, "Bid");
+	    }
+	    BidService.prototype.bidAuction = function (user, auction) {
+	        var newBid = this.newModel();
+	        var deferred = new util_deferred_1.Deferred();
+	        newBid.set("user", user);
+	        newBid.set("auction", auction);
+	        newBid.save().then(function (bid) { deferred.resolve(user); }, function (error) { deferred.reject(error); });
+	        return deferred.toPromise();
+	    };
+	    return BidService;
+	}(parse_wrapper_1.ParseWrapper));
+	exports.BidService = BidService;
+
 
 /***/ },
 /* 515 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	__export(__webpack_require__(516));
+	//# sourceMappingURL=index.js.map
+
+/***/ },
+/* 516 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var module_1 = __webpack_require__(517);
+	exports.FlashMessagesModule = module_1.FlashMessagesModule;
+	var flash_messages_service_1 = __webpack_require__(520);
+	exports.FlashMessagesService = flash_messages_service_1.FlashMessagesService;
+	//# sourceMappingURL=index.js.map
+
+/***/ },
+/* 517 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(311);
+	var common_1 = __webpack_require__(332);
+	var flash_messages_component_1 = __webpack_require__(518);
+	var flash_messages_service_1 = __webpack_require__(520);
+	var FlashMessagesModule = (function () {
+	    function FlashMessagesModule() {
+	    }
+	    FlashMessagesModule = __decorate([
+	        core_1.NgModule({
+	            imports: [common_1.CommonModule],
+	            declarations: [flash_messages_component_1.FlashMessagesComponent],
+	            exports: [flash_messages_component_1.FlashMessagesComponent],
+	            providers: [flash_messages_service_1.FlashMessagesService]
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], FlashMessagesModule);
+	    return FlashMessagesModule;
+	}());
+	exports.FlashMessagesModule = FlashMessagesModule;
+	//# sourceMappingURL=module.js.map
+
+/***/ },
+/* 518 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(311);
+	var flash_message_1 = __webpack_require__(519);
+	var flash_messages_service_1 = __webpack_require__(520);
+	var FlashMessagesComponent = (function () {
+	    function FlashMessagesComponent(_flashMessagesService) {
+	        this._flashMessagesService = _flashMessagesService;
+	        this._defaults = {
+	            text: 'default message',
+	            cssClass: ''
+	        };
+	        this.messages = [];
+	        this._grayOut = false;
+	        this._flashMessagesService.show = this.show.bind(this);
+	        this._flashMessagesService.grayOut = this.grayOut.bind(this);
+	    }
+	    FlashMessagesComponent.prototype.ngOnInit = function () {
+	        this._flashMessagesElement = document.getElementById('flashMessages');
+	    };
+	    FlashMessagesComponent.prototype.show = function (text, options) {
+	        var _this = this;
+	        if (options === void 0) { options = {}; }
+	        var defaults = {
+	            timeout: 2500,
+	            cssClass: ''
+	        };
+	        for (var attrname in options) {
+	            defaults[attrname] = options[attrname];
+	        }
+	        var message = new flash_message_1.FlashMessage(text, defaults.cssClass);
+	        this.messages.push(message);
+	        window.setTimeout(function () {
+	            _this._remove(message);
+	        }, defaults.timeout);
+	    };
+	    FlashMessagesComponent.prototype.grayOut = function (value) {
+	        if (value === void 0) { value = false; }
+	        this._grayOut = value;
+	    };
+	    FlashMessagesComponent.prototype._remove = function (message) {
+	        this.messages = this.messages.filter(function (msg) {
+	            return msg.text !== message.text;
+	        });
+	    };
+	    FlashMessagesComponent = __decorate([
+	        core_1.Component({
+	            selector: 'flash-messages',
+	            template: "\n      <div id=\"flashMessages\" class=\"flash-messages {{classes}}\">\n          <div id=\"grayOutDiv\" *ngIf='_grayOut && messages.length'></div>\n          <div class=\"alert flash-message {{message.cssClass}}\" *ngFor='let message of messages'>\n              <p>{{message.text}}</p>\n          </div> \n      </div>\n  "
+	        }), 
+	        __metadata('design:paramtypes', [flash_messages_service_1.FlashMessagesService])
+	    ], FlashMessagesComponent);
+	    return FlashMessagesComponent;
+	}());
+	exports.FlashMessagesComponent = FlashMessagesComponent;
+	//# sourceMappingURL=flash-messages.component.js.map
+
+/***/ },
+/* 519 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var FlashMessage = (function () {
+	    function FlashMessage(text, cssClass) {
+	        this.text = 'default text';
+	        this.cssClass = '';
+	        this.text = text;
+	        this.cssClass = cssClass;
+	    }
+	    return FlashMessage;
+	}());
+	exports.FlashMessage = FlashMessage;
+	//# sourceMappingURL=flash-message.js.map
+
+/***/ },
+/* 520 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(311);
+	var FlashMessagesService = (function () {
+	    function FlashMessagesService() {
+	    }
+	    FlashMessagesService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [])
+	    ], FlashMessagesService);
+	    return FlashMessagesService;
+	}());
+	exports.FlashMessagesService = FlashMessagesService;
+	//# sourceMappingURL=flash-messages.service.js.map
+
+/***/ },
+/* 521 */
+/***/ function(module, exports) {
+
+	module.exports = "\n    <div class=\"col-sm-6\">\n      <div class=\"thumbnail\">\n        <img src=\"https://dummyimage.com/242x200/fafafa/000000\" alt=\"dummy-img\">\n        <div class=\"caption\">\n          <h3>{{auction.get('name')}}</h3>\n          <p>\n            Precio Actual: {{ auction.get('currentPrice') | currency:\"USD\":2 }}\n          </p>\n          <p>Subastas: {{ auction.get('bids') }}</p>\n          <countdown units=\"Days | Hours | Minutes | Seconds\" (ended)=\"onAuctionFinished($event)\" [date]=\"auction.get('endDate')\"></countdown>\n          <p><button *ngIf=\"userSignedIn\" class=\"btn btn-primary\" role=\"button\" (click)=\"bid()\">Subastar</button></p>\n          <p><a *ngIf=\"!userSignedIn\" routerLink=\"/register\">Registrarse para subastar</a></p>\n        </div>\n      </div>\n    </div>\n"
+
+/***/ },
+/* 522 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64465,7 +64364,7 @@
 
 
 /***/ },
-/* 516 */
+/* 523 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64479,10 +64378,10 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var router_1 = __webpack_require__(517);
+	var router_1 = __webpack_require__(524);
 	var user_service_1 = __webpack_require__(339);
-	var alert_service_1 = __webpack_require__(545);
-	__webpack_require__(546);
+	var alert_service_1 = __webpack_require__(554);
+	__webpack_require__(555);
 	var AuthenticationService = (function () {
 	    function AuthenticationService(router, userService, alertService) {
 	        this.router = router;
@@ -64513,19 +64412,19 @@
 
 
 /***/ },
-/* 517 */
+/* 524 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * @license Angular v3.0.2
+	 * @license Angular v3.1.1
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
 	(function (global, factory) {
-	     true ? factory(exports, __webpack_require__(332), __webpack_require__(311), __webpack_require__(312), __webpack_require__(518), __webpack_require__(530), __webpack_require__(531), __webpack_require__(532), __webpack_require__(533), __webpack_require__(537), __webpack_require__(538), __webpack_require__(313), __webpack_require__(539), __webpack_require__(540), __webpack_require__(541), __webpack_require__(542), __webpack_require__(336), __webpack_require__(543), __webpack_require__(544)) :
-	    typeof define === 'function' && define.amd ? define(['exports', '@angular/common', '@angular/core', 'rxjs/Subject', 'rxjs/observable/from', 'rxjs/observable/of', 'rxjs/operator/every', 'rxjs/operator/map', 'rxjs/operator/mergeAll', 'rxjs/operator/mergeMap', 'rxjs/operator/reduce', 'rxjs/Observable', 'rxjs/operator/catch', 'rxjs/operator/concatAll', 'rxjs/operator/first', 'rxjs/util/EmptyError', 'rxjs/observable/fromPromise', 'rxjs/operator/last', 'rxjs/BehaviorSubject'], factory) :
-	    (factory((global.ng = global.ng || {}, global.ng.router = global.ng.router || {}),global.ng.common,global.ng.core,global.Rx,global.Rx.Observable,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx));
-	}(this, function (exports,_angular_common,_angular_core,rxjs_Subject,rxjs_observable_from,rxjs_observable_of,rxjs_operator_every,rxjs_operator_map,rxjs_operator_mergeAll,rxjs_operator_mergeMap,rxjs_operator_reduce,rxjs_Observable,rxjs_operator_catch,rxjs_operator_concatAll,rxjs_operator_first,rxjs_util_EmptyError,rxjs_observable_fromPromise,l,rxjs_BehaviorSubject) { 'use strict';
+	     true ? factory(exports, __webpack_require__(332), __webpack_require__(311), __webpack_require__(312), __webpack_require__(525), __webpack_require__(537), __webpack_require__(538), __webpack_require__(543), __webpack_require__(544), __webpack_require__(545), __webpack_require__(539), __webpack_require__(546), __webpack_require__(313), __webpack_require__(547), __webpack_require__(548), __webpack_require__(549), __webpack_require__(550), __webpack_require__(336), __webpack_require__(551), __webpack_require__(552), __webpack_require__(553)) :
+	    typeof define === 'function' && define.amd ? define(['exports', '@angular/common', '@angular/core', 'rxjs/Subject', 'rxjs/observable/from', 'rxjs/observable/of', 'rxjs/operator/concatMap', 'rxjs/operator/every', 'rxjs/operator/map', 'rxjs/operator/mergeAll', 'rxjs/operator/mergeMap', 'rxjs/operator/reduce', 'rxjs/Observable', 'rxjs/operator/catch', 'rxjs/operator/concatAll', 'rxjs/operator/first', 'rxjs/util/EmptyError', 'rxjs/observable/fromPromise', 'rxjs/operator/last', 'rxjs/BehaviorSubject', 'rxjs/operator/filter'], factory) :
+	    (factory((global.ng = global.ng || {}, global.ng.router = global.ng.router || {}),global.ng.common,global.ng.core,global.Rx,global.Rx.Observable,global.Rx.Observable,global.rxjs_operator_concatMap,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable.prototype));
+	}(this, function (exports,_angular_common,_angular_core,rxjs_Subject,rxjs_observable_from,rxjs_observable_of,rxjs_operator_concatMap,rxjs_operator_every,rxjs_operator_map,rxjs_operator_mergeAll,rxjs_operator_mergeMap,rxjs_operator_reduce,rxjs_Observable,rxjs_operator_catch,rxjs_operator_concatAll,rxjs_operator_first,rxjs_util_EmptyError,rxjs_observable_fromPromise,l,rxjs_BehaviorSubject,rxjs_operator_filter) { 'use strict';
 
 	    /**
 	     * @license
@@ -65284,7 +65183,7 @@
 	            });
 	        };
 	        ApplyRedirects.prototype.noMatchError = function (e) {
-	            return new Error("Cannot match any routes: '" + e.segmentGroup + "'");
+	            return new Error("Cannot match any routes. URL Segment: '" + e.segmentGroup + "'");
 	        };
 	        ApplyRedirects.prototype.createUrlTree = function (rootCandidate) {
 	            var root = rootCandidate.segments.length > 0 ?
@@ -65342,19 +65241,20 @@
 	        };
 	        ApplyRedirects.prototype.expandSegmentAgainstRouteUsingRedirect = function (injector, segmentGroup, routes, route, segments, outlet) {
 	            if (route.path === '**') {
-	                return this.expandWildCardWithParamsAgainstRouteUsingRedirect(route);
+	                return this.expandWildCardWithParamsAgainstRouteUsingRedirect(injector, routes, route, outlet);
 	            }
 	            else {
 	                return this.expandRegularSegmentAgainstRouteUsingRedirect(injector, segmentGroup, routes, route, segments, outlet);
 	            }
 	        };
-	        ApplyRedirects.prototype.expandWildCardWithParamsAgainstRouteUsingRedirect = function (route) {
+	        ApplyRedirects.prototype.expandWildCardWithParamsAgainstRouteUsingRedirect = function (injector, routes, route, outlet) {
 	            var newSegments = applyRedirectCommands([], route.redirectTo, {});
 	            if (route.redirectTo.startsWith('/')) {
 	                return absoluteRedirect(newSegments);
 	            }
 	            else {
-	                return rxjs_observable_of.of(new UrlSegmentGroup(newSegments, {}));
+	                var group = new UrlSegmentGroup(newSegments, {});
+	                return this.expandSegment(injector, group, routes, newSegments, outlet, false);
 	            }
 	        };
 	        ApplyRedirects.prototype.expandRegularSegmentAgainstRouteUsingRedirect = function (injector, segmentGroup, routes, route, segments, outlet) {
@@ -65372,7 +65272,15 @@
 	        ApplyRedirects.prototype.matchSegmentAgainstRoute = function (injector, rawSegmentGroup, route, segments) {
 	            var _this = this;
 	            if (route.path === '**') {
-	                return rxjs_observable_of.of(new UrlSegmentGroup(segments, {}));
+	                if (route.loadChildren) {
+	                    return rxjs_operator_map.map.call(this.configLoader.load(injector, route.loadChildren), function (r) {
+	                        route._loadedConfig = r;
+	                        return rxjs_observable_of.of(new UrlSegmentGroup(segments, {}));
+	                    });
+	                }
+	                else {
+	                    return rxjs_observable_of.of(new UrlSegmentGroup(segments, {}));
+	                }
 	            }
 	            else {
 	                var _a = match(rawSegmentGroup, route, segments), matched = _a.matched, consumedSegments_1 = _a.consumedSegments, lastChild = _a.lastChild;
@@ -66320,6 +66228,8 @@
 	        return new Position(g, false, ci - dd);
 	    }
 	    function getPath(command) {
+	        if (typeof command === 'object' && command.outlets)
+	            return command.outlets[PRIMARY_OUTLET];
 	        return "" + command;
 	    }
 	    function getOutlets(commands) {
@@ -66338,8 +66248,14 @@
 	            return updateSegmentGroupChildren(segmentGroup, startIndex, commands);
 	        }
 	        var m = prefixedWith(segmentGroup, startIndex, commands);
-	        var slicedCommands = commands.slice(m.lastIndex);
-	        if (m.match && slicedCommands.length === 0) {
+	        var slicedCommands = commands.slice(m.commandIndex);
+	        if (m.match && m.pathIndex < segmentGroup.segments.length) {
+	            var g = new UrlSegmentGroup(segmentGroup.segments.slice(0, m.pathIndex), {});
+	            g.children[PRIMARY_OUTLET] =
+	                new UrlSegmentGroup(segmentGroup.segments.slice(m.pathIndex), segmentGroup.children);
+	            return updateSegmentGroupChildren(g, 0, slicedCommands);
+	        }
+	        else if (m.match && slicedCommands.length === 0) {
 	            return new UrlSegmentGroup(segmentGroup.segments, {});
 	        }
 	        else if (m.match && !segmentGroup.hasChildren()) {
@@ -66375,13 +66291,15 @@
 	    function prefixedWith(segmentGroup, startIndex, commands) {
 	        var currentCommandIndex = 0;
 	        var currentPathIndex = startIndex;
-	        var noMatch = { match: false, lastIndex: 0 };
+	        var noMatch = { match: false, pathIndex: 0, commandIndex: 0 };
 	        while (currentPathIndex < segmentGroup.segments.length) {
 	            if (currentCommandIndex >= commands.length)
 	                return noMatch;
 	            var path = segmentGroup.segments[currentPathIndex];
 	            var curr = getPath(commands[currentCommandIndex]);
 	            var next = currentCommandIndex < commands.length - 1 ? commands[currentCommandIndex + 1] : null;
+	            if (currentPathIndex > 0 && curr === undefined)
+	                break;
 	            if (curr && next && (typeof next === 'object') && next.outlets === undefined) {
 	                if (!compare(curr, next, path))
 	                    return noMatch;
@@ -66394,7 +66312,7 @@
 	            }
 	            currentPathIndex++;
 	        }
-	        return { match: true, lastIndex: currentCommandIndex };
+	        return { match: true, pathIndex: currentPathIndex, commandIndex: currentCommandIndex };
 	    }
 	    function createNewSegmentGroup(segmentGroup, startIndex, commands) {
 	        var paths = segmentGroup.segments.slice(0, startIndex);
@@ -67263,7 +67181,7 @@
 	            if (this.checks.length === 0)
 	                return rxjs_observable_of.of(null);
 	            var checks$ = rxjs_observable_from.from(this.checks);
-	            var runningChecks$ = rxjs_operator_mergeMap.mergeMap.call(checks$, function (s) {
+	            var runningChecks$ = rxjs_operator_concatMap.concatMap.call(checks$, function (s) {
 	                if (s instanceof CanActivate) {
 	                    return _this.runResolve(s.route);
 	                }
@@ -67779,7 +67697,7 @@
 	     * @howToUse
 	     *
 	     * ```
-	     * <a [routerLink]='/user/bob' routerLinkActive='active-link'>Bob</a>
+	     * <a routerLink="/user/bob" routerLinkActive="active-link">Bob</a>
 	     * ```
 	     *
 	     * @description
@@ -67790,7 +67708,7 @@
 	     * Consider the following example:
 	     *
 	     * ```
-	     * <a [routerLink]="/user/bob" routerLinkActive="active-link">Bob</a>
+	     * <a routerLink="/user/bob" routerLinkActive="active-link">Bob</a>
 	     * ```
 	     *
 	     * When the url is either '/user' or '/user/bob', the active-link class will
@@ -67799,15 +67717,15 @@
 	     * You can set more than one class, as follows:
 	     *
 	     * ```
-	     * <a [routerLink]="/user/bob" routerLinkActive="class1 class2">Bob</a>
-	     * <a [routerLink]="/user/bob" [routerLinkActive]="['class1', 'class2']">Bob</a>
+	     * <a routerLink="/user/bob" routerLinkActive="class1 class2">Bob</a>
+	     * <a routerLink="/user/bob" [routerLinkActive]="['class1', 'class2']">Bob</a>
 	     * ```
 	     *
 	     * You can configure RouterLinkActive by passing `exact: true`. This will add the classes
 	     * only when the url matches the link exactly.
 	     *
 	     * ```
-	     * <a [routerLink]="/user/bob" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:
+	     * <a routerLink="/user/bob" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:
 	     * true}">Bob</a>
 	     * ```
 	     *
@@ -67815,8 +67733,8 @@
 	     *
 	     * ```
 	     * <div routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
-	     *   <a [routerLink]="/user/jim">Jim</a>
-	     *   <a [routerLink]="/user/bob">Bob</a>
+	     *   <a routerLink="/user/jim">Jim</a>
+	     *   <a routerLink="/user/bob">Bob</a>
 	     * </div>
 	     * ```
 	     *
@@ -68000,6 +67918,118 @@
 	    }());
 
 	    /**
+	     * @whatItDoes Provides a preloading strategy.
+	     *
+	     * @experimental
+	     */
+	    var PreloadingStrategy = (function () {
+	        function PreloadingStrategy() {
+	        }
+	        return PreloadingStrategy;
+	    }());
+	    /**
+	     * @whatItDoes Provides a preloading strategy that preloads all modules as quicky as possible.
+	     *
+	     * @howToUse
+	     *
+	     * ```
+	     * RouteModule.forRoot(ROUTES, {preloadingStrategy: PreloadAllModules})
+	     * ```
+	     *
+	     * @experimental
+	     */
+	    var PreloadAllModules = (function () {
+	        function PreloadAllModules() {
+	        }
+	        PreloadAllModules.prototype.preload = function (route, fn) {
+	            return rxjs_operator_catch._catch.call(fn(), function () { return rxjs_observable_of.of(null); });
+	        };
+	        return PreloadAllModules;
+	    }());
+	    /**
+	     * @whatItDoes Provides a preloading strategy that does not preload any modules.
+	     *
+	     * @description
+	     *
+	     * This strategy is enabled by default.
+	     *
+	     * @experimental
+	     */
+	    var NoPreloading = (function () {
+	        function NoPreloading() {
+	        }
+	        NoPreloading.prototype.preload = function (route, fn) { return rxjs_observable_of.of(null); };
+	        return NoPreloading;
+	    }());
+	    /**
+	     * The preloader optimistically loads all router configurations to
+	     * make navigations into lazily-loaded sections of the application faster.
+	     *
+	     * The preloader runs in the background. When the router bootstraps, the preloader
+	     * starts listening to all navigation events. After every such event, the preloader
+	     * will check if any configurations can be loaded lazily.
+	     *
+	     * If a route is protected by `canLoad` guards, the preloaded will not load it.
+	     */
+	    var RouterPreloader = (function () {
+	        function RouterPreloader(router, moduleLoader, compiler, injector, preloadingStrategy) {
+	            this.router = router;
+	            this.injector = injector;
+	            this.preloadingStrategy = preloadingStrategy;
+	            this.loader = new RouterConfigLoader(moduleLoader, compiler);
+	        }
+	        ;
+	        RouterPreloader.prototype.setUpPreloading = function () {
+	            var _this = this;
+	            var navigations = rxjs_operator_filter.filter.call(this.router.events, function (e) { return e instanceof NavigationEnd; });
+	            this.subscription = rxjs_operator_concatMap.concatMap.call(navigations, function () { return _this.preload(); }).subscribe(function (v) { });
+	        };
+	        RouterPreloader.prototype.preload = function () { return this.processRoutes(this.injector, this.router.config); };
+	        RouterPreloader.prototype.ngOnDestroy = function () { this.subscription.unsubscribe(); };
+	        RouterPreloader.prototype.processRoutes = function (injector, routes) {
+	            var res = [];
+	            for (var _i = 0, routes_1 = routes; _i < routes_1.length; _i++) {
+	                var c = routes_1[_i];
+	                // we already have the config loaded, just recurce
+	                if (c.loadChildren && !c.canLoad && c._loadedConfig) {
+	                    var childConfig = c._loadedConfig;
+	                    res.push(this.processRoutes(childConfig.injector, childConfig.routes));
+	                }
+	                else if (c.loadChildren && !c.canLoad) {
+	                    res.push(this.preloadConfig(injector, c));
+	                }
+	                else if (c.children) {
+	                    res.push(this.processRoutes(injector, c.children));
+	                }
+	            }
+	            return rxjs_operator_mergeAll.mergeAll.call(rxjs_observable_from.from(res));
+	        };
+	        RouterPreloader.prototype.preloadConfig = function (injector, route) {
+	            var _this = this;
+	            return this.preloadingStrategy.preload(route, function () {
+	                var loaded = _this.loader.load(injector, route.loadChildren);
+	                return rxjs_operator_mergeMap.mergeMap.call(loaded, function (config) {
+	                    var c = route;
+	                    c._loadedConfig = config;
+	                    return _this.processRoutes(config.injector, config.routes);
+	                });
+	            });
+	        };
+	        RouterPreloader.decorators = [
+	            { type: _angular_core.Injectable },
+	        ];
+	        /** @nocollapse */
+	        RouterPreloader.ctorParameters = [
+	            { type: Router, },
+	            { type: _angular_core.NgModuleFactoryLoader, },
+	            { type: _angular_core.Compiler, },
+	            { type: _angular_core.Injector, },
+	            { type: PreloadingStrategy, },
+	        ];
+	        return RouterPreloader;
+	    }());
+
+	    /**
 	     * @whatItDoes Contains a list of directives
 	     * @stable
 	     */
@@ -68023,8 +68053,8 @@
 	            ]
 	        },
 	        RouterOutletMap, { provide: ActivatedRoute, useFactory: rootRoute, deps: [Router] },
-	        { provide: _angular_core.NgModuleFactoryLoader, useClass: _angular_core.SystemJsNgModuleLoader },
-	        { provide: ROUTER_CONFIGURATION, useValue: { enableTracing: false } }
+	        { provide: _angular_core.NgModuleFactoryLoader, useClass: _angular_core.SystemJsNgModuleLoader }, RouterPreloader, NoPreloading,
+	        PreloadAllModules, { provide: ROUTER_CONFIGURATION, useValue: { enableTracing: false } }
 	    ];
 	    /**
 	     * @whatItDoes Adds router directives and providers.
@@ -68108,6 +68138,11 @@
 	                            _angular_common.PlatformLocation, [new _angular_core.Inject(_angular_common.APP_BASE_HREF), new _angular_core.Optional()], ROUTER_CONFIGURATION
 	                        ]
 	                    },
+	                    {
+	                        provide: PreloadingStrategy,
+	                        useExisting: config && config.preloadingStrategy ? config.preloadingStrategy :
+	                            NoPreloading
+	                    },
 	                    provideRouterInitializer()
 	                ]
 	            };
@@ -68161,11 +68196,7 @@
 	    }
 	    function setupRouter(ref, urlSerializer, outletMap, location, injector, loader, compiler, config, opts) {
 	        if (opts === void 0) { opts = {}; }
-	        if (ref.componentTypes.length == 0) {
-	            throw new Error('Bootstrap at least one component before injecting Router.');
-	        }
-	        var componentType = ref.componentTypes[0];
-	        var r = new Router(componentType, urlSerializer, outletMap, location, injector, loader, compiler, flatten(config));
+	        var r = new Router(null, urlSerializer, outletMap, location, injector, loader, compiler, flatten(config));
 	        if (opts.errorHandler) {
 	            r.errorHandler = opts.errorHandler;
 	        }
@@ -68182,8 +68213,10 @@
 	    function rootRoute(router) {
 	        return router.routerState.root;
 	    }
-	    function initialRouterNavigation(router, opts) {
+	    function initialRouterNavigation(router, ref, preloader, opts) {
 	        return function () {
+	            router.resetRootComponentType(ref.componentTypes[0]);
+	            preloader.setUpPreloading();
 	            if (opts.initialNavigation === false) {
 	                router.setUpLocationChangeListener();
 	            }
@@ -68197,7 +68230,7 @@
 	            provide: _angular_core.APP_BOOTSTRAP_LISTENER,
 	            multi: true,
 	            useFactory: initialRouterNavigation,
-	            deps: [Router, ROUTER_CONFIGURATION]
+	            deps: [Router, _angular_core.ApplicationRef, RouterPreloader, ROUTER_CONFIGURATION]
 	        };
 	    }
 
@@ -68220,6 +68253,9 @@
 	    exports.RouterModule = RouterModule;
 	    exports.provideRoutes = provideRoutes;
 	    exports.RouterOutletMap = RouterOutletMap;
+	    exports.NoPreloading = NoPreloading;
+	    exports.PreloadAllModules = PreloadAllModules;
+	    exports.PreloadingStrategy = PreloadingStrategy;
 	    exports.ActivatedRoute = ActivatedRoute;
 	    exports.ActivatedRouteSnapshot = ActivatedRouteSnapshot;
 	    exports.RouterState = RouterState;
@@ -68235,16 +68271,16 @@
 
 
 /***/ },
-/* 518 */
+/* 525 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var FromObservable_1 = __webpack_require__(519);
+	var FromObservable_1 = __webpack_require__(526);
 	exports.from = FromObservable_1.FromObservable.create;
 	//# sourceMappingURL=from.js.map
 
 /***/ },
-/* 519 */
+/* 526 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68254,14 +68290,14 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var isArray_1 = __webpack_require__(319);
-	var isPromise_1 = __webpack_require__(520);
+	var isPromise_1 = __webpack_require__(527);
 	var PromiseObservable_1 = __webpack_require__(337);
-	var IteratorObservable_1 = __webpack_require__(521);
-	var ArrayObservable_1 = __webpack_require__(523);
-	var ArrayLikeObservable_1 = __webpack_require__(527);
-	var iterator_1 = __webpack_require__(522);
+	var IteratorObservable_1 = __webpack_require__(528);
+	var ArrayObservable_1 = __webpack_require__(530);
+	var ArrayLikeObservable_1 = __webpack_require__(534);
+	var iterator_1 = __webpack_require__(529);
 	var Observable_1 = __webpack_require__(313);
-	var observeOn_1 = __webpack_require__(528);
+	var observeOn_1 = __webpack_require__(535);
 	var observable_1 = __webpack_require__(326);
 	var isArrayLike = (function (x) { return x && typeof x.length === 'number'; });
 	/**
@@ -68365,7 +68401,7 @@
 	//# sourceMappingURL=FromObservable.js.map
 
 /***/ },
-/* 520 */
+/* 527 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -68376,7 +68412,7 @@
 	//# sourceMappingURL=isPromise.js.map
 
 /***/ },
-/* 521 */
+/* 528 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68387,7 +68423,7 @@
 	};
 	var root_1 = __webpack_require__(314);
 	var Observable_1 = __webpack_require__(313);
-	var iterator_1 = __webpack_require__(522);
+	var iterator_1 = __webpack_require__(529);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -68538,7 +68574,7 @@
 	//# sourceMappingURL=IteratorObservable.js.map
 
 /***/ },
-/* 522 */
+/* 529 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68575,7 +68611,7 @@
 	//# sourceMappingURL=iterator.js.map
 
 /***/ },
-/* 523 */
+/* 530 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68585,9 +68621,9 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(313);
-	var ScalarObservable_1 = __webpack_require__(524);
-	var EmptyObservable_1 = __webpack_require__(525);
-	var isScheduler_1 = __webpack_require__(526);
+	var ScalarObservable_1 = __webpack_require__(531);
+	var EmptyObservable_1 = __webpack_require__(532);
+	var isScheduler_1 = __webpack_require__(533);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -68702,7 +68738,7 @@
 	//# sourceMappingURL=ArrayObservable.js.map
 
 /***/ },
-/* 524 */
+/* 531 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68765,7 +68801,7 @@
 	//# sourceMappingURL=ScalarObservable.js.map
 
 /***/ },
-/* 525 */
+/* 532 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68845,7 +68881,7 @@
 	//# sourceMappingURL=EmptyObservable.js.map
 
 /***/ },
-/* 526 */
+/* 533 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -68856,7 +68892,7 @@
 	//# sourceMappingURL=isScheduler.js.map
 
 /***/ },
-/* 527 */
+/* 534 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68866,8 +68902,8 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(313);
-	var ScalarObservable_1 = __webpack_require__(524);
-	var EmptyObservable_1 = __webpack_require__(525);
+	var ScalarObservable_1 = __webpack_require__(531);
+	var EmptyObservable_1 = __webpack_require__(532);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -68931,7 +68967,7 @@
 	//# sourceMappingURL=ArrayLikeObservable.js.map
 
 /***/ },
-/* 528 */
+/* 535 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68941,7 +68977,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(316);
-	var Notification_1 = __webpack_require__(529);
+	var Notification_1 = __webpack_require__(536);
 	/**
 	 * @see {@link Notification}
 	 *
@@ -69011,7 +69047,7 @@
 	//# sourceMappingURL=observeOn.js.map
 
 /***/ },
-/* 529 */
+/* 536 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -69143,462 +69179,94 @@
 	//# sourceMappingURL=Notification.js.map
 
 /***/ },
-/* 530 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var ArrayObservable_1 = __webpack_require__(523);
-	exports.of = ArrayObservable_1.ArrayObservable.of;
-	//# sourceMappingURL=of.js.map
-
-/***/ },
-/* 531 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var Subscriber_1 = __webpack_require__(316);
-	/**
-	 * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
-	 * @param {function} predicate a function for determining if an item meets a specified condition.
-	 * @param {any} [thisArg] optional object to use for `this` in the callback
-	 * @return {Observable} an Observable of booleans that determines if all items of the source Observable meet the condition specified.
-	 * @method every
-	 * @owner Observable
-	 */
-	function every(predicate, thisArg) {
-	    return this.lift(new EveryOperator(predicate, thisArg, this));
-	}
-	exports.every = every;
-	var EveryOperator = (function () {
-	    function EveryOperator(predicate, thisArg, source) {
-	        this.predicate = predicate;
-	        this.thisArg = thisArg;
-	        this.source = source;
-	    }
-	    EveryOperator.prototype.call = function (observer, source) {
-	        return source._subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
-	    };
-	    return EveryOperator;
-	}());
-	/**
-	 * We need this JSDoc comment for affecting ESDoc.
-	 * @ignore
-	 * @extends {Ignored}
-	 */
-	var EverySubscriber = (function (_super) {
-	    __extends(EverySubscriber, _super);
-	    function EverySubscriber(destination, predicate, thisArg, source) {
-	        _super.call(this, destination);
-	        this.predicate = predicate;
-	        this.thisArg = thisArg;
-	        this.source = source;
-	        this.index = 0;
-	        this.thisArg = thisArg || this;
-	    }
-	    EverySubscriber.prototype.notifyComplete = function (everyValueMatch) {
-	        this.destination.next(everyValueMatch);
-	        this.destination.complete();
-	    };
-	    EverySubscriber.prototype._next = function (value) {
-	        var result = false;
-	        try {
-	            result = this.predicate.call(this.thisArg, value, this.index++, this.source);
-	        }
-	        catch (err) {
-	            this.destination.error(err);
-	            return;
-	        }
-	        if (!result) {
-	            this.notifyComplete(false);
-	        }
-	    };
-	    EverySubscriber.prototype._complete = function () {
-	        this.notifyComplete(true);
-	    };
-	    return EverySubscriber;
-	}(Subscriber_1.Subscriber));
-	//# sourceMappingURL=every.js.map
-
-/***/ },
-/* 532 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var Subscriber_1 = __webpack_require__(316);
-	/**
-	 * Applies a given `project` function to each value emitted by the source
-	 * Observable, and emits the resulting values as an Observable.
-	 *
-	 * <span class="informal">Like [Array.prototype.map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map),
-	 * it passes each source value through a transformation function to get
-	 * corresponding output values.</span>
-	 *
-	 * <img src="./img/map.png" width="100%">
-	 *
-	 * Similar to the well known `Array.prototype.map` function, this operator
-	 * applies a projection to each value and emits that projection in the output
-	 * Observable.
-	 *
-	 * @example <caption>Map every every click to the clientX position of that click</caption>
-	 * var clicks = Rx.Observable.fromEvent(document, 'click');
-	 * var positions = clicks.map(ev => ev.clientX);
-	 * positions.subscribe(x => console.log(x));
-	 *
-	 * @see {@link mapTo}
-	 * @see {@link pluck}
-	 *
-	 * @param {function(value: T, index: number): R} project The function to apply
-	 * to each `value` emitted by the source Observable. The `index` parameter is
-	 * the number `i` for the i-th emission that has happened since the
-	 * subscription, starting from the number `0`.
-	 * @param {any} [thisArg] An optional argument to define what `this` is in the
-	 * `project` function.
-	 * @return {Observable<R>} An Observable that emits the values from the source
-	 * Observable transformed by the given `project` function.
-	 * @method map
-	 * @owner Observable
-	 */
-	function map(project, thisArg) {
-	    if (typeof project !== 'function') {
-	        throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
-	    }
-	    return this.lift(new MapOperator(project, thisArg));
-	}
-	exports.map = map;
-	var MapOperator = (function () {
-	    function MapOperator(project, thisArg) {
-	        this.project = project;
-	        this.thisArg = thisArg;
-	    }
-	    MapOperator.prototype.call = function (subscriber, source) {
-	        return source._subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
-	    };
-	    return MapOperator;
-	}());
-	exports.MapOperator = MapOperator;
-	/**
-	 * We need this JSDoc comment for affecting ESDoc.
-	 * @ignore
-	 * @extends {Ignored}
-	 */
-	var MapSubscriber = (function (_super) {
-	    __extends(MapSubscriber, _super);
-	    function MapSubscriber(destination, project, thisArg) {
-	        _super.call(this, destination);
-	        this.project = project;
-	        this.count = 0;
-	        this.thisArg = thisArg || this;
-	    }
-	    // NOTE: This looks unoptimized, but it's actually purposefully NOT
-	    // using try/catch optimizations.
-	    MapSubscriber.prototype._next = function (value) {
-	        var result;
-	        try {
-	            result = this.project.call(this.thisArg, value, this.count++);
-	        }
-	        catch (err) {
-	            this.destination.error(err);
-	            return;
-	        }
-	        this.destination.next(result);
-	    };
-	    return MapSubscriber;
-	}(Subscriber_1.Subscriber));
-	//# sourceMappingURL=map.js.map
-
-/***/ },
-/* 533 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var OuterSubscriber_1 = __webpack_require__(534);
-	var subscribeToResult_1 = __webpack_require__(535);
-	/**
-	 * Converts a higher-order Observable into a first-order Observable which
-	 * concurrently delivers all values that are emitted on the inner Observables.
-	 *
-	 * <span class="informal">Flattens an Observable-of-Observables.</span>
-	 *
-	 * <img src="./img/mergeAll.png" width="100%">
-	 *
-	 * `mergeAll` subscribes to an Observable that emits Observables, also known as
-	 * a higher-order Observable. Each time it observes one of these emitted inner
-	 * Observables, it subscribes to that and delivers all the values from the
-	 * inner Observable on the output Observable. The output Observable only
-	 * completes once all inner Observables have completed. Any error delivered by
-	 * a inner Observable will be immediately emitted on the output Observable.
-	 *
-	 * @example <caption>Spawn a new interval Observable for each click event, and blend their outputs as one Observable</caption>
-	 * var clicks = Rx.Observable.fromEvent(document, 'click');
-	 * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000));
-	 * var firstOrder = higherOrder.mergeAll();
-	 * firstOrder.subscribe(x => console.log(x));
-	 *
-	 * @example <caption>Count from 0 to 9 every second for each click, but only allow 2 concurrent timers</caption>
-	 * var clicks = Rx.Observable.fromEvent(document, 'click');
-	 * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(10));
-	 * var firstOrder = higherOrder.mergeAll(2);
-	 * firstOrder.subscribe(x => console.log(x));
-	 *
-	 * @see {@link combineAll}
-	 * @see {@link concatAll}
-	 * @see {@link exhaust}
-	 * @see {@link merge}
-	 * @see {@link mergeMap}
-	 * @see {@link mergeMapTo}
-	 * @see {@link mergeScan}
-	 * @see {@link switch}
-	 * @see {@link zipAll}
-	 *
-	 * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of inner
-	 * Observables being subscribed to concurrently.
-	 * @return {Observable} An Observable that emits values coming from all the
-	 * inner Observables emitted by the source Observable.
-	 * @method mergeAll
-	 * @owner Observable
-	 */
-	function mergeAll(concurrent) {
-	    if (concurrent === void 0) { concurrent = Number.POSITIVE_INFINITY; }
-	    return this.lift(new MergeAllOperator(concurrent));
-	}
-	exports.mergeAll = mergeAll;
-	var MergeAllOperator = (function () {
-	    function MergeAllOperator(concurrent) {
-	        this.concurrent = concurrent;
-	    }
-	    MergeAllOperator.prototype.call = function (observer, source) {
-	        return source._subscribe(new MergeAllSubscriber(observer, this.concurrent));
-	    };
-	    return MergeAllOperator;
-	}());
-	exports.MergeAllOperator = MergeAllOperator;
-	/**
-	 * We need this JSDoc comment for affecting ESDoc.
-	 * @ignore
-	 * @extends {Ignored}
-	 */
-	var MergeAllSubscriber = (function (_super) {
-	    __extends(MergeAllSubscriber, _super);
-	    function MergeAllSubscriber(destination, concurrent) {
-	        _super.call(this, destination);
-	        this.concurrent = concurrent;
-	        this.hasCompleted = false;
-	        this.buffer = [];
-	        this.active = 0;
-	    }
-	    MergeAllSubscriber.prototype._next = function (observable) {
-	        if (this.active < this.concurrent) {
-	            this.active++;
-	            this.add(subscribeToResult_1.subscribeToResult(this, observable));
-	        }
-	        else {
-	            this.buffer.push(observable);
-	        }
-	    };
-	    MergeAllSubscriber.prototype._complete = function () {
-	        this.hasCompleted = true;
-	        if (this.active === 0 && this.buffer.length === 0) {
-	            this.destination.complete();
-	        }
-	    };
-	    MergeAllSubscriber.prototype.notifyComplete = function (innerSub) {
-	        var buffer = this.buffer;
-	        this.remove(innerSub);
-	        this.active--;
-	        if (buffer.length > 0) {
-	            this._next(buffer.shift());
-	        }
-	        else if (this.active === 0 && this.hasCompleted) {
-	            this.destination.complete();
-	        }
-	    };
-	    return MergeAllSubscriber;
-	}(OuterSubscriber_1.OuterSubscriber));
-	exports.MergeAllSubscriber = MergeAllSubscriber;
-	//# sourceMappingURL=mergeAll.js.map
-
-/***/ },
-/* 534 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var Subscriber_1 = __webpack_require__(316);
-	/**
-	 * We need this JSDoc comment for affecting ESDoc.
-	 * @ignore
-	 * @extends {Ignored}
-	 */
-	var OuterSubscriber = (function (_super) {
-	    __extends(OuterSubscriber, _super);
-	    function OuterSubscriber() {
-	        _super.apply(this, arguments);
-	    }
-	    OuterSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-	        this.destination.next(innerValue);
-	    };
-	    OuterSubscriber.prototype.notifyError = function (error, innerSub) {
-	        this.destination.error(error);
-	    };
-	    OuterSubscriber.prototype.notifyComplete = function (innerSub) {
-	        this.destination.complete();
-	    };
-	    return OuterSubscriber;
-	}(Subscriber_1.Subscriber));
-	exports.OuterSubscriber = OuterSubscriber;
-	//# sourceMappingURL=OuterSubscriber.js.map
-
-/***/ },
-/* 535 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var root_1 = __webpack_require__(314);
-	var isArray_1 = __webpack_require__(319);
-	var isPromise_1 = __webpack_require__(520);
-	var Observable_1 = __webpack_require__(313);
-	var iterator_1 = __webpack_require__(522);
-	var InnerSubscriber_1 = __webpack_require__(536);
-	var observable_1 = __webpack_require__(326);
-	function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
-	    var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
-	    if (destination.closed) {
-	        return null;
-	    }
-	    if (result instanceof Observable_1.Observable) {
-	        if (result._isScalar) {
-	            destination.next(result.value);
-	            destination.complete();
-	            return null;
-	        }
-	        else {
-	            return result.subscribe(destination);
-	        }
-	    }
-	    if (isArray_1.isArray(result)) {
-	        for (var i = 0, len = result.length; i < len && !destination.closed; i++) {
-	            destination.next(result[i]);
-	        }
-	        if (!destination.closed) {
-	            destination.complete();
-	        }
-	    }
-	    else if (isPromise_1.isPromise(result)) {
-	        result.then(function (value) {
-	            if (!destination.closed) {
-	                destination.next(value);
-	                destination.complete();
-	            }
-	        }, function (err) { return destination.error(err); })
-	            .then(null, function (err) {
-	            // Escaping the Promise trap: globally throw unhandled errors
-	            root_1.root.setTimeout(function () { throw err; });
-	        });
-	        return destination;
-	    }
-	    else if (typeof result[iterator_1.$$iterator] === 'function') {
-	        var iterator = result[iterator_1.$$iterator]();
-	        do {
-	            var item = iterator.next();
-	            if (item.done) {
-	                destination.complete();
-	                break;
-	            }
-	            destination.next(item.value);
-	            if (destination.closed) {
-	                break;
-	            }
-	        } while (true);
-	    }
-	    else if (typeof result[observable_1.$$observable] === 'function') {
-	        var obs = result[observable_1.$$observable]();
-	        if (typeof obs.subscribe !== 'function') {
-	            destination.error(new Error('invalid observable'));
-	        }
-	        else {
-	            return obs.subscribe(new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex));
-	        }
-	    }
-	    else {
-	        destination.error(new TypeError('unknown type returned'));
-	    }
-	    return null;
-	}
-	exports.subscribeToResult = subscribeToResult;
-	//# sourceMappingURL=subscribeToResult.js.map
-
-/***/ },
-/* 536 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var Subscriber_1 = __webpack_require__(316);
-	/**
-	 * We need this JSDoc comment for affecting ESDoc.
-	 * @ignore
-	 * @extends {Ignored}
-	 */
-	var InnerSubscriber = (function (_super) {
-	    __extends(InnerSubscriber, _super);
-	    function InnerSubscriber(parent, outerValue, outerIndex) {
-	        _super.call(this);
-	        this.parent = parent;
-	        this.outerValue = outerValue;
-	        this.outerIndex = outerIndex;
-	        this.index = 0;
-	    }
-	    InnerSubscriber.prototype._next = function (value) {
-	        this.parent.notifyNext(this.outerValue, value, this.outerIndex, this.index++, this);
-	    };
-	    InnerSubscriber.prototype._error = function (error) {
-	        this.parent.notifyError(error, this);
-	        this.unsubscribe();
-	    };
-	    InnerSubscriber.prototype._complete = function () {
-	        this.parent.notifyComplete(this);
-	        this.unsubscribe();
-	    };
-	    return InnerSubscriber;
-	}(Subscriber_1.Subscriber));
-	exports.InnerSubscriber = InnerSubscriber;
-	//# sourceMappingURL=InnerSubscriber.js.map
-
-/***/ },
 /* 537 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	var ArrayObservable_1 = __webpack_require__(530);
+	exports.of = ArrayObservable_1.ArrayObservable.of;
+	//# sourceMappingURL=of.js.map
+
+/***/ },
+/* 538 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var mergeMap_1 = __webpack_require__(539);
+	/**
+	 * Projects each source value to an Observable which is merged in the output
+	 * Observable, in a serialized fashion waiting for each one to complete before
+	 * merging the next.
+	 *
+	 * <span class="informal">Maps each value to an Observable, then flattens all of
+	 * these inner Observables using {@link concatAll}.</span>
+	 *
+	 * <img src="./img/concatMap.png" width="100%">
+	 *
+	 * Returns an Observable that emits items based on applying a function that you
+	 * supply to each item emitted by the source Observable, where that function
+	 * returns an (so-called "inner") Observable. Each new inner Observable is
+	 * concatenated with the previous inner Observable.
+	 *
+	 * __Warning:__ if source values arrive endlessly and faster than their
+	 * corresponding inner Observables can complete, it will result in memory issues
+	 * as inner Observables amass in an unbounded buffer waiting for their turn to
+	 * be subscribed to.
+	 *
+	 * Note: `concatMap` is equivalent to `mergeMap` with concurrency parameter set
+	 * to `1`.
+	 *
+	 * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>
+	 * var clicks = Rx.Observable.fromEvent(document, 'click');
+	 * var result = clicks.concatMap(ev => Rx.Observable.interval(1000).take(4));
+	 * result.subscribe(x => console.log(x));
+	 *
+	 * @see {@link concat}
+	 * @see {@link concatAll}
+	 * @see {@link concatMapTo}
+	 * @see {@link exhaustMap}
+	 * @see {@link mergeMap}
+	 * @see {@link switchMap}
+	 *
+	 * @param {function(value: T, ?index: number): Observable} project A function
+	 * that, when applied to an item emitted by the source Observable, returns an
+	 * Observable.
+	 * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
+	 * A function to produce the value on the output Observable based on the values
+	 * and the indices of the source (outer) emission and the inner Observable
+	 * emission. The arguments passed to this function are:
+	 * - `outerValue`: the value that came from the source
+	 * - `innerValue`: the value that came from the projected Observable
+	 * - `outerIndex`: the "index" of the value that came from the source
+	 * - `innerIndex`: the "index" of the value from the projected Observable
+	 * @return {Observable} an observable of values merged from the projected
+	 * Observables as they were subscribed to, one at a time. Optionally, these
+	 * values may have been projected from a passed `projectResult` argument.
+	 * @return {Observable} An Observable that emits the result of applying the
+	 * projection function (and the optional `resultSelector`) to each item emitted
+	 * by the source Observable and taking values from each projected inner
+	 * Observable sequentially.
+	 * @method concatMap
+	 * @owner Observable
+	 */
+	function concatMap(project, resultSelector) {
+	    return this.lift(new mergeMap_1.MergeMapOperator(project, resultSelector, 1));
+	}
+	exports.concatMap = concatMap;
+	//# sourceMappingURL=concatMap.js.map
+
+/***/ },
+/* 539 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var subscribeToResult_1 = __webpack_require__(535);
-	var OuterSubscriber_1 = __webpack_require__(534);
+	var subscribeToResult_1 = __webpack_require__(540);
+	var OuterSubscriber_1 = __webpack_require__(542);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable.
@@ -69754,7 +69422,443 @@
 	//# sourceMappingURL=mergeMap.js.map
 
 /***/ },
-/* 538 */
+/* 540 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var root_1 = __webpack_require__(314);
+	var isArray_1 = __webpack_require__(319);
+	var isPromise_1 = __webpack_require__(527);
+	var Observable_1 = __webpack_require__(313);
+	var iterator_1 = __webpack_require__(529);
+	var InnerSubscriber_1 = __webpack_require__(541);
+	var observable_1 = __webpack_require__(326);
+	function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
+	    var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
+	    if (destination.closed) {
+	        return null;
+	    }
+	    if (result instanceof Observable_1.Observable) {
+	        if (result._isScalar) {
+	            destination.next(result.value);
+	            destination.complete();
+	            return null;
+	        }
+	        else {
+	            return result.subscribe(destination);
+	        }
+	    }
+	    if (isArray_1.isArray(result)) {
+	        for (var i = 0, len = result.length; i < len && !destination.closed; i++) {
+	            destination.next(result[i]);
+	        }
+	        if (!destination.closed) {
+	            destination.complete();
+	        }
+	    }
+	    else if (isPromise_1.isPromise(result)) {
+	        result.then(function (value) {
+	            if (!destination.closed) {
+	                destination.next(value);
+	                destination.complete();
+	            }
+	        }, function (err) { return destination.error(err); })
+	            .then(null, function (err) {
+	            // Escaping the Promise trap: globally throw unhandled errors
+	            root_1.root.setTimeout(function () { throw err; });
+	        });
+	        return destination;
+	    }
+	    else if (typeof result[iterator_1.$$iterator] === 'function') {
+	        var iterator = result[iterator_1.$$iterator]();
+	        do {
+	            var item = iterator.next();
+	            if (item.done) {
+	                destination.complete();
+	                break;
+	            }
+	            destination.next(item.value);
+	            if (destination.closed) {
+	                break;
+	            }
+	        } while (true);
+	    }
+	    else if (typeof result[observable_1.$$observable] === 'function') {
+	        var obs = result[observable_1.$$observable]();
+	        if (typeof obs.subscribe !== 'function') {
+	            destination.error(new Error('invalid observable'));
+	        }
+	        else {
+	            return obs.subscribe(new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex));
+	        }
+	    }
+	    else {
+	        destination.error(new TypeError('unknown type returned'));
+	    }
+	    return null;
+	}
+	exports.subscribeToResult = subscribeToResult;
+	//# sourceMappingURL=subscribeToResult.js.map
+
+/***/ },
+/* 541 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Subscriber_1 = __webpack_require__(316);
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
+	var InnerSubscriber = (function (_super) {
+	    __extends(InnerSubscriber, _super);
+	    function InnerSubscriber(parent, outerValue, outerIndex) {
+	        _super.call(this);
+	        this.parent = parent;
+	        this.outerValue = outerValue;
+	        this.outerIndex = outerIndex;
+	        this.index = 0;
+	    }
+	    InnerSubscriber.prototype._next = function (value) {
+	        this.parent.notifyNext(this.outerValue, value, this.outerIndex, this.index++, this);
+	    };
+	    InnerSubscriber.prototype._error = function (error) {
+	        this.parent.notifyError(error, this);
+	        this.unsubscribe();
+	    };
+	    InnerSubscriber.prototype._complete = function () {
+	        this.parent.notifyComplete(this);
+	        this.unsubscribe();
+	    };
+	    return InnerSubscriber;
+	}(Subscriber_1.Subscriber));
+	exports.InnerSubscriber = InnerSubscriber;
+	//# sourceMappingURL=InnerSubscriber.js.map
+
+/***/ },
+/* 542 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Subscriber_1 = __webpack_require__(316);
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
+	var OuterSubscriber = (function (_super) {
+	    __extends(OuterSubscriber, _super);
+	    function OuterSubscriber() {
+	        _super.apply(this, arguments);
+	    }
+	    OuterSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+	        this.destination.next(innerValue);
+	    };
+	    OuterSubscriber.prototype.notifyError = function (error, innerSub) {
+	        this.destination.error(error);
+	    };
+	    OuterSubscriber.prototype.notifyComplete = function (innerSub) {
+	        this.destination.complete();
+	    };
+	    return OuterSubscriber;
+	}(Subscriber_1.Subscriber));
+	exports.OuterSubscriber = OuterSubscriber;
+	//# sourceMappingURL=OuterSubscriber.js.map
+
+/***/ },
+/* 543 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Subscriber_1 = __webpack_require__(316);
+	/**
+	 * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
+	 * @param {function} predicate a function for determining if an item meets a specified condition.
+	 * @param {any} [thisArg] optional object to use for `this` in the callback
+	 * @return {Observable} an Observable of booleans that determines if all items of the source Observable meet the condition specified.
+	 * @method every
+	 * @owner Observable
+	 */
+	function every(predicate, thisArg) {
+	    return this.lift(new EveryOperator(predicate, thisArg, this));
+	}
+	exports.every = every;
+	var EveryOperator = (function () {
+	    function EveryOperator(predicate, thisArg, source) {
+	        this.predicate = predicate;
+	        this.thisArg = thisArg;
+	        this.source = source;
+	    }
+	    EveryOperator.prototype.call = function (observer, source) {
+	        return source._subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
+	    };
+	    return EveryOperator;
+	}());
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
+	var EverySubscriber = (function (_super) {
+	    __extends(EverySubscriber, _super);
+	    function EverySubscriber(destination, predicate, thisArg, source) {
+	        _super.call(this, destination);
+	        this.predicate = predicate;
+	        this.thisArg = thisArg;
+	        this.source = source;
+	        this.index = 0;
+	        this.thisArg = thisArg || this;
+	    }
+	    EverySubscriber.prototype.notifyComplete = function (everyValueMatch) {
+	        this.destination.next(everyValueMatch);
+	        this.destination.complete();
+	    };
+	    EverySubscriber.prototype._next = function (value) {
+	        var result = false;
+	        try {
+	            result = this.predicate.call(this.thisArg, value, this.index++, this.source);
+	        }
+	        catch (err) {
+	            this.destination.error(err);
+	            return;
+	        }
+	        if (!result) {
+	            this.notifyComplete(false);
+	        }
+	    };
+	    EverySubscriber.prototype._complete = function () {
+	        this.notifyComplete(true);
+	    };
+	    return EverySubscriber;
+	}(Subscriber_1.Subscriber));
+	//# sourceMappingURL=every.js.map
+
+/***/ },
+/* 544 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Subscriber_1 = __webpack_require__(316);
+	/**
+	 * Applies a given `project` function to each value emitted by the source
+	 * Observable, and emits the resulting values as an Observable.
+	 *
+	 * <span class="informal">Like [Array.prototype.map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map),
+	 * it passes each source value through a transformation function to get
+	 * corresponding output values.</span>
+	 *
+	 * <img src="./img/map.png" width="100%">
+	 *
+	 * Similar to the well known `Array.prototype.map` function, this operator
+	 * applies a projection to each value and emits that projection in the output
+	 * Observable.
+	 *
+	 * @example <caption>Map every every click to the clientX position of that click</caption>
+	 * var clicks = Rx.Observable.fromEvent(document, 'click');
+	 * var positions = clicks.map(ev => ev.clientX);
+	 * positions.subscribe(x => console.log(x));
+	 *
+	 * @see {@link mapTo}
+	 * @see {@link pluck}
+	 *
+	 * @param {function(value: T, index: number): R} project The function to apply
+	 * to each `value` emitted by the source Observable. The `index` parameter is
+	 * the number `i` for the i-th emission that has happened since the
+	 * subscription, starting from the number `0`.
+	 * @param {any} [thisArg] An optional argument to define what `this` is in the
+	 * `project` function.
+	 * @return {Observable<R>} An Observable that emits the values from the source
+	 * Observable transformed by the given `project` function.
+	 * @method map
+	 * @owner Observable
+	 */
+	function map(project, thisArg) {
+	    if (typeof project !== 'function') {
+	        throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
+	    }
+	    return this.lift(new MapOperator(project, thisArg));
+	}
+	exports.map = map;
+	var MapOperator = (function () {
+	    function MapOperator(project, thisArg) {
+	        this.project = project;
+	        this.thisArg = thisArg;
+	    }
+	    MapOperator.prototype.call = function (subscriber, source) {
+	        return source._subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
+	    };
+	    return MapOperator;
+	}());
+	exports.MapOperator = MapOperator;
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
+	var MapSubscriber = (function (_super) {
+	    __extends(MapSubscriber, _super);
+	    function MapSubscriber(destination, project, thisArg) {
+	        _super.call(this, destination);
+	        this.project = project;
+	        this.count = 0;
+	        this.thisArg = thisArg || this;
+	    }
+	    // NOTE: This looks unoptimized, but it's actually purposefully NOT
+	    // using try/catch optimizations.
+	    MapSubscriber.prototype._next = function (value) {
+	        var result;
+	        try {
+	            result = this.project.call(this.thisArg, value, this.count++);
+	        }
+	        catch (err) {
+	            this.destination.error(err);
+	            return;
+	        }
+	        this.destination.next(result);
+	    };
+	    return MapSubscriber;
+	}(Subscriber_1.Subscriber));
+	//# sourceMappingURL=map.js.map
+
+/***/ },
+/* 545 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var OuterSubscriber_1 = __webpack_require__(542);
+	var subscribeToResult_1 = __webpack_require__(540);
+	/**
+	 * Converts a higher-order Observable into a first-order Observable which
+	 * concurrently delivers all values that are emitted on the inner Observables.
+	 *
+	 * <span class="informal">Flattens an Observable-of-Observables.</span>
+	 *
+	 * <img src="./img/mergeAll.png" width="100%">
+	 *
+	 * `mergeAll` subscribes to an Observable that emits Observables, also known as
+	 * a higher-order Observable. Each time it observes one of these emitted inner
+	 * Observables, it subscribes to that and delivers all the values from the
+	 * inner Observable on the output Observable. The output Observable only
+	 * completes once all inner Observables have completed. Any error delivered by
+	 * a inner Observable will be immediately emitted on the output Observable.
+	 *
+	 * @example <caption>Spawn a new interval Observable for each click event, and blend their outputs as one Observable</caption>
+	 * var clicks = Rx.Observable.fromEvent(document, 'click');
+	 * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000));
+	 * var firstOrder = higherOrder.mergeAll();
+	 * firstOrder.subscribe(x => console.log(x));
+	 *
+	 * @example <caption>Count from 0 to 9 every second for each click, but only allow 2 concurrent timers</caption>
+	 * var clicks = Rx.Observable.fromEvent(document, 'click');
+	 * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(10));
+	 * var firstOrder = higherOrder.mergeAll(2);
+	 * firstOrder.subscribe(x => console.log(x));
+	 *
+	 * @see {@link combineAll}
+	 * @see {@link concatAll}
+	 * @see {@link exhaust}
+	 * @see {@link merge}
+	 * @see {@link mergeMap}
+	 * @see {@link mergeMapTo}
+	 * @see {@link mergeScan}
+	 * @see {@link switch}
+	 * @see {@link zipAll}
+	 *
+	 * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of inner
+	 * Observables being subscribed to concurrently.
+	 * @return {Observable} An Observable that emits values coming from all the
+	 * inner Observables emitted by the source Observable.
+	 * @method mergeAll
+	 * @owner Observable
+	 */
+	function mergeAll(concurrent) {
+	    if (concurrent === void 0) { concurrent = Number.POSITIVE_INFINITY; }
+	    return this.lift(new MergeAllOperator(concurrent));
+	}
+	exports.mergeAll = mergeAll;
+	var MergeAllOperator = (function () {
+	    function MergeAllOperator(concurrent) {
+	        this.concurrent = concurrent;
+	    }
+	    MergeAllOperator.prototype.call = function (observer, source) {
+	        return source._subscribe(new MergeAllSubscriber(observer, this.concurrent));
+	    };
+	    return MergeAllOperator;
+	}());
+	exports.MergeAllOperator = MergeAllOperator;
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
+	var MergeAllSubscriber = (function (_super) {
+	    __extends(MergeAllSubscriber, _super);
+	    function MergeAllSubscriber(destination, concurrent) {
+	        _super.call(this, destination);
+	        this.concurrent = concurrent;
+	        this.hasCompleted = false;
+	        this.buffer = [];
+	        this.active = 0;
+	    }
+	    MergeAllSubscriber.prototype._next = function (observable) {
+	        if (this.active < this.concurrent) {
+	            this.active++;
+	            this.add(subscribeToResult_1.subscribeToResult(this, observable));
+	        }
+	        else {
+	            this.buffer.push(observable);
+	        }
+	    };
+	    MergeAllSubscriber.prototype._complete = function () {
+	        this.hasCompleted = true;
+	        if (this.active === 0 && this.buffer.length === 0) {
+	            this.destination.complete();
+	        }
+	    };
+	    MergeAllSubscriber.prototype.notifyComplete = function (innerSub) {
+	        var buffer = this.buffer;
+	        this.remove(innerSub);
+	        this.active--;
+	        if (buffer.length > 0) {
+	            this._next(buffer.shift());
+	        }
+	        else if (this.active === 0 && this.hasCompleted) {
+	            this.destination.complete();
+	        }
+	    };
+	    return MergeAllSubscriber;
+	}(OuterSubscriber_1.OuterSubscriber));
+	exports.MergeAllSubscriber = MergeAllSubscriber;
+	//# sourceMappingURL=mergeAll.js.map
+
+/***/ },
+/* 546 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -69871,7 +69975,7 @@
 	//# sourceMappingURL=reduce.js.map
 
 /***/ },
-/* 539 */
+/* 547 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -69880,8 +69984,8 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(534);
-	var subscribeToResult_1 = __webpack_require__(535);
+	var OuterSubscriber_1 = __webpack_require__(542);
+	var subscribeToResult_1 = __webpack_require__(540);
 	/**
 	 * Catches errors on the observable to be handled by returning a new observable or throwing an error.
 	 * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
@@ -69941,11 +70045,11 @@
 	//# sourceMappingURL=catch.js.map
 
 /***/ },
-/* 540 */
+/* 548 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeAll_1 = __webpack_require__(533);
+	var mergeAll_1 = __webpack_require__(545);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by
 	 * concatenating the inner Observables in order.
@@ -69995,7 +70099,7 @@
 	//# sourceMappingURL=concatAll.js.map
 
 /***/ },
-/* 541 */
+/* 549 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70005,7 +70109,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(316);
-	var EmptyError_1 = __webpack_require__(542);
+	var EmptyError_1 = __webpack_require__(550);
 	/**
 	 * Emits only the first value (or the first value that meets some condition)
 	 * emitted by the source Observable.
@@ -70148,7 +70252,7 @@
 	//# sourceMappingURL=first.js.map
 
 /***/ },
-/* 542 */
+/* 550 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -70181,7 +70285,7 @@
 	//# sourceMappingURL=EmptyError.js.map
 
 /***/ },
-/* 543 */
+/* 551 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70191,7 +70295,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(316);
-	var EmptyError_1 = __webpack_require__(542);
+	var EmptyError_1 = __webpack_require__(550);
 	/**
 	 * Returns an Observable that emits only the last item emitted by the source Observable.
 	 * It optionally takes a predicate function as a parameter, in which case, rather than emitting
@@ -70304,7 +70408,7 @@
 	//# sourceMappingURL=last.js.map
 
 /***/ },
-/* 544 */
+/* 552 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70358,7 +70462,105 @@
 	//# sourceMappingURL=BehaviorSubject.js.map
 
 /***/ },
-/* 545 */
+/* 553 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Subscriber_1 = __webpack_require__(316);
+	/**
+	 * Filter items emitted by the source Observable by only emitting those that
+	 * satisfy a specified predicate.
+	 *
+	 * <span class="informal">Like
+	 * [Array.prototype.filter()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter),
+	 * it only emits a value from the source if it passes a criterion function.</span>
+	 *
+	 * <img src="./img/filter.png" width="100%">
+	 *
+	 * Similar to the well-known `Array.prototype.filter` method, this operator
+	 * takes values from the source Observable, passes them through a `predicate`
+	 * function and only emits those values that yielded `true`.
+	 *
+	 * @example <caption>Emit only click events whose target was a DIV element</caption>
+	 * var clicks = Rx.Observable.fromEvent(document, 'click');
+	 * var clicksOnDivs = clicks.filter(ev => ev.target.tagName === 'DIV');
+	 * clicksOnDivs.subscribe(x => console.log(x));
+	 *
+	 * @see {@link distinct}
+	 * @see {@link distinctKey}
+	 * @see {@link distinctUntilChanged}
+	 * @see {@link distinctUntilKeyChanged}
+	 * @see {@link ignoreElements}
+	 * @see {@link partition}
+	 * @see {@link skip}
+	 *
+	 * @param {function(value: T, index: number): boolean} predicate A function that
+	 * evaluates each value emitted by the source Observable. If it returns `true`,
+	 * the value is emitted, if `false` the value is not passed to the output
+	 * Observable. The `index` parameter is the number `i` for the i-th source
+	 * emission that has happened since the subscription, starting from the number
+	 * `0`.
+	 * @param {any} [thisArg] An optional argument to determine the value of `this`
+	 * in the `predicate` function.
+	 * @return {Observable} An Observable of values from the source that were
+	 * allowed by the `predicate` function.
+	 * @method filter
+	 * @owner Observable
+	 */
+	function filter(predicate, thisArg) {
+	    return this.lift(new FilterOperator(predicate, thisArg));
+	}
+	exports.filter = filter;
+	var FilterOperator = (function () {
+	    function FilterOperator(predicate, thisArg) {
+	        this.predicate = predicate;
+	        this.thisArg = thisArg;
+	    }
+	    FilterOperator.prototype.call = function (subscriber, source) {
+	        return source._subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
+	    };
+	    return FilterOperator;
+	}());
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
+	var FilterSubscriber = (function (_super) {
+	    __extends(FilterSubscriber, _super);
+	    function FilterSubscriber(destination, predicate, thisArg) {
+	        _super.call(this, destination);
+	        this.predicate = predicate;
+	        this.thisArg = thisArg;
+	        this.count = 0;
+	        this.predicate = predicate;
+	    }
+	    // the try catch block below is left specifically for
+	    // optimization and perf reasons. a tryCatcher is not necessary here.
+	    FilterSubscriber.prototype._next = function (value) {
+	        var result;
+	        try {
+	            result = this.predicate.call(this.thisArg, value, this.count++);
+	        }
+	        catch (err) {
+	            this.destination.error(err);
+	            return;
+	        }
+	        if (result) {
+	            this.destination.next(value);
+	        }
+	    };
+	    return FilterSubscriber;
+	}(Subscriber_1.Subscriber));
+	//# sourceMappingURL=filter.js.map
+
+/***/ },
+/* 554 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70372,7 +70574,7 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var router_1 = __webpack_require__(517);
+	var router_1 = __webpack_require__(524);
 	var Subject_1 = __webpack_require__(312);
 	var AlertService = (function () {
 	    function AlertService(router) {
@@ -70407,6 +70609,9 @@
 	    AlertService.prototype.getMessage = function () {
 	        return this.subject.asObservable();
 	    };
+	    AlertService.prototype.clearMessages = function () {
+	        this.subject.next();
+	    };
 	    AlertService = __decorate([
 	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [router_1.Router])
@@ -70417,17 +70622,17 @@
 
 
 /***/ },
-/* 546 */
+/* 555 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(313);
-	var map_1 = __webpack_require__(532);
+	var map_1 = __webpack_require__(544);
 	Observable_1.Observable.prototype.map = map_1.map;
 	//# sourceMappingURL=map.js.map
 
 /***/ },
-/* 547 */
+/* 556 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70441,7 +70646,7 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var alert_service_1 = __webpack_require__(545);
+	var alert_service_1 = __webpack_require__(554);
 	var AlertComponent = (function () {
 	    function AlertComponent(alertService) {
 	        this.alertService = alertService;
@@ -70450,10 +70655,14 @@
 	        var _this = this;
 	        this.alertService.getMessage().subscribe(function (message) { _this.message = message; });
 	    };
+	    AlertComponent.prototype.close = function () {
+	        this.alertService.clearMessages();
+	    };
 	    AlertComponent = __decorate([
 	        core_1.Component({
 	            selector: 'alert',
-	            template: __webpack_require__(548)
+	            template: __webpack_require__(557),
+	            styles: [__webpack_require__(558)]
 	        }), 
 	        __metadata('design:paramtypes', [alert_service_1.AlertService])
 	    ], AlertComponent);
@@ -70463,21 +70672,27 @@
 
 
 /***/ },
-/* 548 */
+/* 557 */
 /***/ function(module, exports) {
 
-	module.exports = "<div *ngIf=\"message\" [ngClass]=\"{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error' }\">{{message.text}}</div>\n"
+	module.exports = "<div *ngIf=\"message\" [ngClass]=\"{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error' }\">\n    {{message.text}}\n    <label class=\"message-close\" (click)=\"close()\">x</label>\n</div>\n"
 
 /***/ },
-/* 549 */
+/* 558 */
+/***/ function(module, exports) {
+
+	module.exports = "label.message-close {\n    float: right;\n    cursor: pointer;\n}"
+
+/***/ },
+/* 559 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var router_1 = __webpack_require__(517);
-	var home_component_1 = __webpack_require__(550);
-	var profile_component_1 = __webpack_require__(552);
-	var register_component_1 = __webpack_require__(554);
-	var login_component_1 = __webpack_require__(556);
+	var router_1 = __webpack_require__(524);
+	var home_component_1 = __webpack_require__(560);
+	var profile_component_1 = __webpack_require__(562);
+	var register_component_1 = __webpack_require__(564);
+	var login_component_1 = __webpack_require__(566);
 	exports.routing = router_1.RouterModule.forRoot([
 	    {
 	        path: 'home',
@@ -70502,7 +70717,7 @@
 
 
 /***/ },
-/* 550 */
+/* 560 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70525,7 +70740,7 @@
 	    HomeComponent = __decorate([
 	        core_1.Component({
 	            selector: 'home',
-	            template: __webpack_require__(551),
+	            template: __webpack_require__(561),
 	        }), 
 	        __metadata('design:paramtypes', [user_service_1.UserService])
 	    ], HomeComponent);
@@ -70535,13 +70750,13 @@
 
 
 /***/ },
-/* 551 */
+/* 561 */
 /***/ function(module, exports) {
 
 	module.exports = "<auction-list></auction-list>"
 
 /***/ },
-/* 552 */
+/* 562 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70561,7 +70776,7 @@
 	    ProfileComponent = __decorate([
 	        core_1.Component({
 	            selector: 'profile',
-	            template: __webpack_require__(553),
+	            template: __webpack_require__(563),
 	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], ProfileComponent);
@@ -70571,13 +70786,13 @@
 
 
 /***/ },
-/* 553 */
+/* 563 */
 /***/ function(module, exports) {
 
 	module.exports = "PROFILE"
 
 /***/ },
-/* 554 */
+/* 564 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70591,14 +70806,14 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var router_1 = __webpack_require__(517);
-	var alert_service_1 = __webpack_require__(545);
+	var router_1 = __webpack_require__(524);
 	var user_service_1 = __webpack_require__(339);
+	var angular2_flash_messages_1 = __webpack_require__(515);
 	var RegisterComponent = (function () {
-	    function RegisterComponent(router, userService, alertService) {
+	    function RegisterComponent(router, userService, _flashMessagesService) {
 	        this.router = router;
 	        this.userService = userService;
-	        this.alertService = alertService;
+	        this._flashMessagesService = _flashMessagesService;
 	        this.model = {};
 	        this.loading = false;
 	    }
@@ -70616,19 +70831,18 @@
 	            //verify its email
 	            _this.userService.logOut();
 	            f.resetForm();
-	            _this.alertService.success('Registration successful, please verify your email address.', true);
+	            _this._flashMessagesService.show('Registro Exitoso, por favor verifique su correo.', { cssClass: 'alert-success', timeout: 3000 });
 	            _this.router.navigate(['/']);
 	        }).catch(function (error) {
-	            _this.alertService.error(error.message);
-	            console.error(error);
+	            _this._flashMessagesService.show(error.message, { cssClass: 'alert-danger', timeout: 5000 });
 	            _this.loading = false;
 	        });
 	    };
 	    RegisterComponent = __decorate([
 	        core_1.Component({
-	            template: __webpack_require__(555)
+	            template: __webpack_require__(565)
 	        }), 
-	        __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService, alert_service_1.AlertService])
+	        __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService, angular2_flash_messages_1.FlashMessagesService])
 	    ], RegisterComponent);
 	    return RegisterComponent;
 	}());
@@ -70636,13 +70850,13 @@
 
 
 /***/ },
-/* 555 */
+/* 565 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"col-md-6 col-md-offset-3\">\n    <h2>Registrar</h2>\n    <form name=\"form\" (ngSubmit)=\"f.form.valid && register(f)\" #f=\"ngForm\" novalidate>\n        <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !email.valid }\">\n            <label for=\"firstName\">Nombre</label>\n            <input type=\"text\" class=\"form-control\" name=\"firstName\" [(ngModel)]=\"model.firstName\" #firstName=\"ngModel\" required />\n            <div *ngIf=\"f.submitted && !firstName.valid\" class=\"help-block\">Nombre es requerido</div>\n        </div>\n        <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !email.valid }\">\n            <label for=\"lastName\">Apellido</label>\n            <input type=\"text\" class=\"form-control\" name=\"lastName\" [(ngModel)]=\"model.lastName\" #lastName=\"ngModel\" required />\n            <div *ngIf=\"f.submitted && !lastName.valid\" class=\"help-block\">Apellido es requerido</div>\n        </div>\n        <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !email.valid }\">\n            <label for=\"email\">Correo Electrónico</label>\n            <input type=\"text\" class=\"form-control\" name=\"email\" [(ngModel)]=\"model.email\" #email=\"ngModel\" required />\n            <div *ngIf=\"f.submitted && !email.valid\" class=\"help-block\">Correo Electrónico es requerido</div>\n        </div>\n        <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !password.valid }\">\n            <label for=\"password\">Contraseña</label>\n            <input type=\"password\" class=\"form-control\" name=\"password\" [(ngModel)]=\"model.password\" #password=\"ngModel\" required />\n            <div *ngIf=\"f.submitted && !password.valid\" class=\"help-block\">Contraseña es requerida</div>\n        </div>\n        <div class=\"form-group\">\n            <button [disabled]=\"loading\" class=\"btn btn-primary\">Registrar</button>\n            <img *ngIf=\"loading\" src=\"data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==\" />\n            <a [routerLink]=\"['/login']\" class=\"btn btn-link\">Cancelar</a>\n        </div>\n    </form>\n</div>"
 
 /***/ },
-/* 556 */
+/* 566 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70656,14 +70870,12 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var router_1 = __webpack_require__(517);
-	var authentication_service_1 = __webpack_require__(516);
-	var alert_service_1 = __webpack_require__(545);
+	var router_1 = __webpack_require__(524);
+	var authentication_service_1 = __webpack_require__(523);
 	var LoginComponent = (function () {
-	    function LoginComponent(router, authenticationService, alertService) {
+	    function LoginComponent(router, authenticationService) {
 	        this.router = router;
 	        this.authenticationService = authenticationService;
-	        this.alertService = alertService;
 	        this.model = {};
 	        this.loading = false;
 	        console.log("testing master push");
@@ -70678,9 +70890,9 @@
 	    };
 	    LoginComponent = __decorate([
 	        core_1.Component({
-	            template: __webpack_require__(557)
+	            template: __webpack_require__(567)
 	        }), 
-	        __metadata('design:paramtypes', [router_1.Router, authentication_service_1.AuthenticationService, alert_service_1.AlertService])
+	        __metadata('design:paramtypes', [router_1.Router, authentication_service_1.AuthenticationService])
 	    ], LoginComponent);
 	    return LoginComponent;
 	}());
@@ -70688,52 +70900,13 @@
 
 
 /***/ },
-/* 557 */
+/* 567 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"col-md-6 col-md-offset-3\">\n    <h2>Iniciar Sesión</h2>\n    <form name=\"form\" (ngSubmit)=\"f.form.valid && login(f)\" #f=\"ngForm\" novalidate>\n        <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !email.valid }\">\n            <label for=\"email\">Nombre de Usuario</label>\n            <input placeholder=\"Correo o Nombre de Usuario\" type=\"text\" class=\"form-control\" name=\"username\" [(ngModel)]=\"model.username\" #email=\"ngModel\" required />\n            <div *ngIf=\"f.submitted && !email.valid\" class=\"help-block\">Correo Electrónico es requerido</div>\n        </div>\n        <div class=\"form-group\" [ngClass]=\"{ 'has-error': f.submitted && !password.valid }\">\n            <label for=\"password\">Contraseña</label>\n            <input placeholder=\"Password\" type=\"password\" class=\"form-control\" name=\"password\" [(ngModel)]=\"model.password\" #password=\"ngModel\" required />\n            <div *ngIf=\"f.submitted && !password.valid\" class=\"help-block\">Contraseña es requerida</div>\n        </div>\n        <div class=\"form-group\">\n            <button [disabled]=\"loading\" class=\"btn btn-primary\">Login</button>\n            <img *ngIf=\"loading\" src=\"data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==\" />\n            <a [routerLink]=\"['/register']\" class=\"btn btn-link\">Register</a>\n        </div>\n    </form>\n</div>"
 
 /***/ },
-/* 558 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var parse_wrapper_1 = __webpack_require__(340);
-	var util_deferred_1 = __webpack_require__(510);
-	/**
-	 * this is important otherwise trying
-	 * to inject one service into another
-	 * would cause: missing param error
-	 */
-	var BidService = (function (_super) {
-	    __extends(BidService, _super);
-	    function BidService() {
-	        _super.call(this, "Bid");
-	    }
-	    /**
-	     * Get all Bids from Parse Server
-	     */
-	    BidService.prototype.getBids = function () {
-	        var deferred = new util_deferred_1.Deferred();
-	        _super.prototype.query.call(this).find().then(function (results) {
-	            deferred.resolve(results);
-	        }, function (error) {
-	            deferred.reject(error);
-	        });
-	        return deferred.promise;
-	    };
-	    return BidService;
-	}(parse_wrapper_1.ParseWrapper));
-	exports.BidService = BidService;
-
-
-/***/ },
-/* 559 */
+/* 568 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70748,11 +70921,9 @@
 	};
 	var core_1 = __webpack_require__(311);
 	var user_service_1 = __webpack_require__(339);
-	var alert_service_1 = __webpack_require__(545);
 	var NavbarComponent = (function () {
-	    function NavbarComponent(_userService, alertService) {
+	    function NavbarComponent(_userService) {
 	        this._userService = _userService;
-	        this.alertService = alertService;
 	        this.userSignedIn = false;
 	        this.currentUser = {};
 	        var user = _userService.getCurrentUser();
@@ -70763,7 +70934,6 @@
 	    }
 	    NavbarComponent.prototype.logOut = function () {
 	        if (this._userService.getCurrentUser()) {
-	            this.alertService.success("Hasta luego");
 	            this._userService.logOut();
 	        }
 	    };
@@ -70790,9 +70960,9 @@
 	    NavbarComponent = __decorate([
 	        core_1.Component({
 	            selector: 'navbar',
-	            template: __webpack_require__(560),
+	            template: __webpack_require__(569),
 	        }), 
-	        __metadata('design:paramtypes', [user_service_1.UserService, alert_service_1.AlertService])
+	        __metadata('design:paramtypes', [user_service_1.UserService])
 	    ], NavbarComponent);
 	    return NavbarComponent;
 	}());
@@ -70800,13 +70970,13 @@
 
 
 /***/ },
-/* 560 */
+/* 569 */
 /***/ function(module, exports) {
 
 	module.exports = "<nav class=\"navbar navbar-default\">\n  <div class=\"container-fluid\">\n    <!-- Brand and toggle get grouped for better mobile display -->\n    <div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\">\n        <span class=\"sr-only\">Toggle navigation</span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"navbar-brand\" href=\"\">App</a>\n    </div>\n\n    <!-- Collect the nav links, forms, and other content for toggling -->\n    <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n      <ul class=\"nav navbar-nav\">\n        <!--li class=\"active\"><a href=\"#\">Link <span class=\"sr-only\">(current)</span></a></li-->\n        <li><a routerLink=\"/\">Home</a></li>\n        <!--li class=\"dropdown\">\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Dropdown <span class=\"caret\"></span></a>\n          <ul class=\"dropdown-menu\">\n            <li><a href=\"#\">Action</a></li>\n            <li><a href=\"#\">Another action</a></li>\n            <li><a href=\"#\">Something else here</a></li>\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"#\">Separated link</a></li>\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"#\">One more separated link</a></li>\n          </ul>\n        </li-->\n      </ul>\n      <!--form class=\"navbar-form navbar-left\">\n        <div class=\"form-group\">\n          <input type=\"text\" class=\"form-control\" placeholder=\"Search\">\n        </div>\n        <button type=\"submit\" class=\"btn btn-default\">Submit</button>\n      </form-->\n      <ul class=\"nav navbar-nav navbar-right\">\n        <li *ngIf=\"!isUserSignedIn()\"><a routerLink=\"/login\">Iniciar Sesión</a></li>\n        <li *ngIf=\"!isUserSignedIn()\"><a routerLink=\"/register\">Registrarse</a></li>\n        <li *ngIf=\"isUserSignedIn()\" class=\"dropdown\">\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Mi Perfil <span class=\"caret\"></span></a>\n          <ul class=\"dropdown-menu\">\n            <li><a routerLink=\"/profile\">{{ currentUser.attributes.firstName }} {{ currentUser.attributes.lastName }}</a></li>\n            <!--li><a href=\"#\">Another action</a></li-->\n            <!--li><a href=\"#\">Something else here</a></li-->\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"\">TuPuja Dashboard</a></li>\n            <li *ngIf=\"isUserSignedIn()\"><a href=\"\" (click)=\"logOut()\">Logout</a></li>\n          </ul>\n        </li>\n      </ul>\n    </div><!-- /.navbar-collapse -->\n  </div><!-- /.container-fluid -->\n</nav>"
 
 /***/ },
-/* 561 */
+/* 570 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70820,7 +70990,7 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var auction_service_1 = __webpack_require__(515);
+	var auction_service_1 = __webpack_require__(522);
 	var AutionListComponent = (function () {
 	    function AutionListComponent(auctionService) {
 	        var _this = this;
@@ -70828,14 +70998,14 @@
 	        this.auctions = [];
 	        this.auctionService.getAuctions()
 	            .then(function (auctions) {
-	            _this.auctions = _this.auctionService.extractData(auctions);
+	            _this.auctions = auctions;
 	        })
 	            .catch(function (error) { return console.error(error); });
 	    }
 	    AutionListComponent = __decorate([
 	        core_1.Component({
 	            selector: "auction-list",
-	            template: __webpack_require__(562),
+	            template: __webpack_require__(571),
 	        }), 
 	        __metadata('design:paramtypes', [auction_service_1.AuctionService])
 	    ], AutionListComponent);
@@ -70845,13 +71015,13 @@
 
 
 /***/ },
-/* 562 */
+/* 571 */
 /***/ function(module, exports) {
 
 	module.exports = "<div *ngIf=\"auctions.length > 0\" class=\"row\">\n  <auction *ngFor=\"let auction of auctions\" [auction]=\"auction\"></auction>\n</div>"
 
 /***/ },
-/* 563 */
+/* 572 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70867,6 +71037,7 @@
 	var core_1 = __webpack_require__(311);
 	var CountdownComponent = (function () {
 	    function CountdownComponent() {
+	        this.signalFinished = new core_1.EventEmitter();
 	        this.units = [];
 	    }
 	    CountdownComponent.prototype.displayDate = function () {
@@ -70874,6 +71045,14 @@
 	            this.units = this.unitsAsString.split('|');
 	        }
 	        var dateDifference = this.date.getTime() - new Date().getTime();
+	        if (dateDifference <= 0) {
+	            this.displayString = "";
+	            this.signalFinished.emit(true);
+	            if (this.timerId) {
+	                clearInterval(this.timerId);
+	            }
+	            return;
+	        }
 	        var lastUnit = this.units[this.units.length - 1], unitConstantForMillisecs = {
 	            weeks: (1000 * 60 * 60 * 24 * 7),
 	            days: (1000 * 60 * 60 * 24),
@@ -70908,7 +71087,7 @@
 	    };
 	    CountdownComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        setInterval(function () { return _this.displayDate(); }, 1);
+	        this.timerId = setInterval(function () { return _this.displayDate(); }, 1);
 	    };
 	    CountdownComponent.prototype.ngOnDestroy = function () {
 	    };
@@ -70920,10 +71099,14 @@
 	        core_1.Input('units'), 
 	        __metadata('design:type', String)
 	    ], CountdownComponent.prototype, "unitsAsString", void 0);
+	    __decorate([
+	        core_1.Output('ended'), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], CountdownComponent.prototype, "signalFinished", void 0);
 	    CountdownComponent = __decorate([
 	        core_1.Component({
 	            selector: "countdown",
-	            template: __webpack_require__(564),
+	            template: __webpack_require__(573),
 	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], CountdownComponent);
@@ -70933,7 +71116,7 @@
 
 
 /***/ },
-/* 564 */
+/* 573 */
 /***/ function(module, exports) {
 
 	module.exports = "<span>{{displayString}}</span>"
