@@ -44581,7 +44581,7 @@
 	var auction_component_1 = __webpack_require__(513);
 	var auction_service_1 = __webpack_require__(522);
 	var authentication_service_1 = __webpack_require__(523);
-	var alert_component_1 = __webpack_require__(556);
+	var alert_component_1 = __webpack_require__(555);
 	var app_routing_1 = __webpack_require__(559);
 	var bid_service_1 = __webpack_require__(514);
 	var user_service_1 = __webpack_require__(339);
@@ -64380,22 +64380,22 @@
 	var core_1 = __webpack_require__(311);
 	var router_1 = __webpack_require__(524);
 	var user_service_1 = __webpack_require__(339);
-	var alert_service_1 = __webpack_require__(554);
-	__webpack_require__(555);
+	__webpack_require__(554);
+	var angular2_flash_messages_1 = __webpack_require__(515);
 	var AuthenticationService = (function () {
-	    function AuthenticationService(router, userService, alertService) {
+	    function AuthenticationService(router, userService, _flashMessagesService) {
 	        this.router = router;
 	        this.userService = userService;
-	        this.alertService = alertService;
+	        this._flashMessagesService = _flashMessagesService;
 	    }
 	    AuthenticationService.prototype.login = function (username, password) {
 	        var _this = this;
 	        this.userService.logIn(username, password).then(function (user) {
-	            _this.alertService.success('Welcome.', true);
+	            _this._flashMessagesService.show('Bienvenido.', { cssClass: 'alert-success', timeout: 3000 });
 	            _this.router.navigate(['/']);
 	        })
 	            .catch(function (error) {
-	            _this.alertService.error(error.message);
+	            _this._flashMessagesService.show(error.message, { cssClass: 'alert-danger', timeout: 3000 });
 	            console.error(JSON.stringify(error));
 	        });
 	    };
@@ -64404,7 +64404,7 @@
 	    };
 	    AuthenticationService = __decorate([
 	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService, alert_service_1.AlertService])
+	        __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService, angular2_flash_messages_1.FlashMessagesService])
 	    ], AuthenticationService);
 	    return AuthenticationService;
 	}());
@@ -70564,6 +70564,56 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	var Observable_1 = __webpack_require__(313);
+	var map_1 = __webpack_require__(544);
+	Observable_1.Observable.prototype.map = map_1.map;
+	//# sourceMappingURL=map.js.map
+
+/***/ },
+/* 555 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(311);
+	var alert_service_1 = __webpack_require__(556);
+	var AlertComponent = (function () {
+	    function AlertComponent(alertService) {
+	        this.alertService = alertService;
+	    }
+	    AlertComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.alertService.getMessage().subscribe(function (message) { _this.message = message; });
+	    };
+	    AlertComponent.prototype.close = function () {
+	        this.alertService.clearMessages();
+	    };
+	    AlertComponent = __decorate([
+	        core_1.Component({
+	            selector: 'alert',
+	            template: __webpack_require__(557),
+	            styles: [__webpack_require__(558)]
+	        }), 
+	        __metadata('design:paramtypes', [alert_service_1.AlertService])
+	    ], AlertComponent);
+	    return AlertComponent;
+	}());
+	exports.AlertComponent = AlertComponent;
+
+
+/***/ },
+/* 556 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
 	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -70619,56 +70669,6 @@
 	    return AlertService;
 	}());
 	exports.AlertService = AlertService;
-
-
-/***/ },
-/* 555 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(313);
-	var map_1 = __webpack_require__(544);
-	Observable_1.Observable.prototype.map = map_1.map;
-	//# sourceMappingURL=map.js.map
-
-/***/ },
-/* 556 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(311);
-	var alert_service_1 = __webpack_require__(554);
-	var AlertComponent = (function () {
-	    function AlertComponent(alertService) {
-	        this.alertService = alertService;
-	    }
-	    AlertComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this.alertService.getMessage().subscribe(function (message) { _this.message = message; });
-	    };
-	    AlertComponent.prototype.close = function () {
-	        this.alertService.clearMessages();
-	    };
-	    AlertComponent = __decorate([
-	        core_1.Component({
-	            selector: 'alert',
-	            template: __webpack_require__(557),
-	            styles: [__webpack_require__(558)]
-	        }), 
-	        __metadata('design:paramtypes', [alert_service_1.AlertService])
-	    ], AlertComponent);
-	    return AlertComponent;
-	}());
-	exports.AlertComponent = AlertComponent;
 
 
 /***/ },
