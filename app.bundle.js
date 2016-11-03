@@ -44579,7 +44579,7 @@
 	var platform_browser_1 = __webpack_require__(331);
 	var app_component_1 = __webpack_require__(338);
 	var auction_component_1 = __webpack_require__(513);
-	var auction_service_1 = __webpack_require__(522);
+	var auction_service_1 = __webpack_require__(515);
 	var authentication_service_1 = __webpack_require__(523);
 	var alert_component_1 = __webpack_require__(555);
 	var app_routing_1 = __webpack_require__(559);
@@ -44592,7 +44592,7 @@
 	var countdown_component_1 = __webpack_require__(572);
 	var register_component_1 = __webpack_require__(564);
 	var login_component_1 = __webpack_require__(566);
-	var angular2_flash_messages_1 = __webpack_require__(515);
+	var angular2_flash_messages_1 = __webpack_require__(516);
 	var declarations = [
 	    app_component_1.AppComponent,
 	    auction_component_1.AuctionComponent,
@@ -64041,19 +64041,16 @@
 	var core_1 = __webpack_require__(311);
 	var user_service_1 = __webpack_require__(339);
 	var bid_service_1 = __webpack_require__(514);
-	var angular2_flash_messages_1 = __webpack_require__(515);
+	var auction_service_1 = __webpack_require__(515);
+	var angular2_flash_messages_1 = __webpack_require__(516);
 	var AuctionComponent = (function () {
-	    function AuctionComponent(_userService, bidService, _flashMessagesService) {
+	    function AuctionComponent(_auctionService, _userService, bidService, _flashMessagesService) {
+	        this._auctionService = _auctionService;
 	        this._userService = _userService;
 	        this.bidService = bidService;
 	        this._flashMessagesService = _flashMessagesService;
 	        this.userSignedIn = false;
 	        this.currentUser = {};
-	        var user = _userService.getCurrentUser();
-	        if (user) {
-	            this.currentUser = user;
-	            this.userSignedIn = true;
-	        }
 	    }
 	    AuctionComponent.prototype.bid = function () {
 	        var _this = this;
@@ -64085,13 +64082,29 @@
 	    AuctionComponent.prototype.onAuctionFinished = function (event) {
 	        console.log(event);
 	    };
+	    AuctionComponent.prototype.setCurrentUser = function () {
+	        var user = this._userService.getCurrentUser();
+	        if (user) {
+	            this.currentUser = user;
+	            this.userSignedIn = true;
+	        }
+	    };
 	    AuctionComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.setCurrentUser();
 	        this.determineUserSignedIn();
+	        this.auctionSubscription = this._auctionService
+	            .getAuctionSubscription(this.auction.id)
+	            .subscribe();
+	        this.auctionSubscription.on('update', function (object) {
+	            _this.auction = object;
+	        });
 	    };
 	    AuctionComponent.prototype.ngOnDestroy = function () {
 	        this.subscription.unsubscribe();
 	        this.currentUser = null;
 	        this.userSignedIn = false;
+	        this.auctionSubscription.unsubscribe();
 	    };
 	    AuctionComponent.prototype.determineUserSignedIn = function () {
 	        var _this = this;
@@ -64106,15 +64119,15 @@
 	        return this.userSignedIn;
 	    };
 	    __decorate([
-	        core_1.Input(), 
+	        core_1.Input('auction'), 
 	        __metadata('design:type', Object)
 	    ], AuctionComponent.prototype, "auction", void 0);
 	    AuctionComponent = __decorate([
 	        core_1.Component({
 	            selector: "auction",
-	            template: __webpack_require__(521),
+	            template: __webpack_require__(522)
 	        }), 
-	        __metadata('design:paramtypes', [user_service_1.UserService, bid_service_1.BidService, angular2_flash_messages_1.FlashMessagesService])
+	        __metadata('design:paramtypes', [auction_service_1.AuctionService, user_service_1.UserService, bid_service_1.BidService, angular2_flash_messages_1.FlashMessagesService])
 	    ], AuctionComponent);
 	    return AuctionComponent;
 	}());
@@ -64161,25 +64174,78 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	__export(__webpack_require__(516));
-	//# sourceMappingURL=index.js.map
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var parse_wrapper_1 = __webpack_require__(340);
+	var util_deferred_1 = __webpack_require__(510);
+	var AuctionService = (function (_super) {
+	    __extends(AuctionService, _super);
+	    function AuctionService() {
+	        _super.call(this, "Auction");
+	    }
+	    AuctionService.prototype.initializeObject = function () {
+	        return this.model();
+	    };
+	    AuctionService.prototype.getAuctions = function () {
+	        var deferred = new util_deferred_1.Deferred();
+	        this.query().find().then(function (auctions) {
+	            deferred.resolve(auctions);
+	        }, function (result, error) {
+	            deferred.reject(error);
+	        });
+	        return deferred.promise;
+	    };
+	    AuctionService.prototype.getAuction = function (auction_id) {
+	        debugger;
+	        var deferred = new util_deferred_1.Deferred();
+	        var qry = this.query();
+	        qry.equalTo("objectId", auction_id);
+	        qry.find().then(function (auction) {
+	            deferred.resolve(auction);
+	        }, function (err) {
+	            deferred.reject(err);
+	        });
+	        return deferred.toPromise();
+	    };
+	    AuctionService.prototype.getAuctionSubscription = function (auction_id) {
+	        var qry = this.query();
+	        if (auction_id) {
+	            qry.equalTo("objectId", auction_id);
+	        }
+	        return qry;
+	    };
+	    return AuctionService;
+	}(parse_wrapper_1.ParseWrapper));
+	exports.AuctionService = AuctionService;
+
 
 /***/ },
 /* 516 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var module_1 = __webpack_require__(517);
-	exports.FlashMessagesModule = module_1.FlashMessagesModule;
-	var flash_messages_service_1 = __webpack_require__(520);
-	exports.FlashMessagesService = flash_messages_service_1.FlashMessagesService;
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	__export(__webpack_require__(517));
 	//# sourceMappingURL=index.js.map
 
 /***/ },
 /* 517 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var module_1 = __webpack_require__(518);
+	exports.FlashMessagesModule = module_1.FlashMessagesModule;
+	var flash_messages_service_1 = __webpack_require__(521);
+	exports.FlashMessagesService = flash_messages_service_1.FlashMessagesService;
+	//# sourceMappingURL=index.js.map
+
+/***/ },
+/* 518 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64194,8 +64260,8 @@
 	};
 	var core_1 = __webpack_require__(311);
 	var common_1 = __webpack_require__(332);
-	var flash_messages_component_1 = __webpack_require__(518);
-	var flash_messages_service_1 = __webpack_require__(520);
+	var flash_messages_component_1 = __webpack_require__(519);
+	var flash_messages_service_1 = __webpack_require__(521);
 	var FlashMessagesModule = (function () {
 	    function FlashMessagesModule() {
 	    }
@@ -64214,7 +64280,7 @@
 	//# sourceMappingURL=module.js.map
 
 /***/ },
-/* 518 */
+/* 519 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64228,8 +64294,8 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var flash_message_1 = __webpack_require__(519);
-	var flash_messages_service_1 = __webpack_require__(520);
+	var flash_message_1 = __webpack_require__(520);
+	var flash_messages_service_1 = __webpack_require__(521);
 	var FlashMessagesComponent = (function () {
 	    function FlashMessagesComponent(_flashMessagesService) {
 	        this._flashMessagesService = _flashMessagesService;
@@ -64283,7 +64349,7 @@
 	//# sourceMappingURL=flash-messages.component.js.map
 
 /***/ },
-/* 519 */
+/* 520 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -64300,7 +64366,7 @@
 	//# sourceMappingURL=flash-message.js.map
 
 /***/ },
-/* 520 */
+/* 521 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64327,41 +64393,10 @@
 	//# sourceMappingURL=flash-messages.service.js.map
 
 /***/ },
-/* 521 */
+/* 522 */
 /***/ function(module, exports) {
 
 	module.exports = "\n    <div class=\"col-sm-6\">\n      <div class=\"thumbnail\">\n        <img src=\"https://dummyimage.com/242x200/fafafa/000000\" alt=\"dummy-img\">\n        <div class=\"caption\">\n          <h3>{{auction.get('name')}}</h3>\n          <p>\n            Precio Actual: {{ auction.get('currentPrice') | currency:\"USD\":2 }}\n          </p>\n          <p>Subastas: {{ auction.get('bids') }}</p>\n          <countdown units=\"Days | Hours | Minutes | Seconds\" (ended)=\"onAuctionFinished($event)\" [date]=\"auction.get('endDate')\"></countdown>\n          <p><button *ngIf=\"userSignedIn\" class=\"btn btn-primary\" role=\"button\" (click)=\"bid()\">Subastar</button></p>\n          <p><a *ngIf=\"!userSignedIn\" routerLink=\"/register\">Registrarse para subastar</a></p>\n        </div>\n      </div>\n    </div>\n"
-
-/***/ },
-/* 522 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var parse_wrapper_1 = __webpack_require__(340);
-	var util_deferred_1 = __webpack_require__(510);
-	var AuctionService = (function (_super) {
-	    __extends(AuctionService, _super);
-	    function AuctionService() {
-	        _super.call(this, "Auction");
-	    }
-	    AuctionService.prototype.getAuctions = function () {
-	        var deferred = new util_deferred_1.Deferred();
-	        this.query().find().then(function (auctions) {
-	            deferred.resolve(auctions);
-	        }, function (result, error) {
-	            deferred.reject(error);
-	        });
-	        return deferred.promise;
-	    };
-	    return AuctionService;
-	}(parse_wrapper_1.ParseWrapper));
-	exports.AuctionService = AuctionService;
-
 
 /***/ },
 /* 523 */
@@ -64381,7 +64416,7 @@
 	var router_1 = __webpack_require__(524);
 	var user_service_1 = __webpack_require__(339);
 	__webpack_require__(554);
-	var angular2_flash_messages_1 = __webpack_require__(515);
+	var angular2_flash_messages_1 = __webpack_require__(516);
 	var AuthenticationService = (function () {
 	    function AuthenticationService(router, userService, _flashMessagesService) {
 	        this.router = router;
@@ -70808,7 +70843,7 @@
 	var core_1 = __webpack_require__(311);
 	var router_1 = __webpack_require__(524);
 	var user_service_1 = __webpack_require__(339);
-	var angular2_flash_messages_1 = __webpack_require__(515);
+	var angular2_flash_messages_1 = __webpack_require__(516);
 	var RegisterComponent = (function () {
 	    function RegisterComponent(router, userService, _flashMessagesService) {
 	        this.router = router;
@@ -70990,7 +71025,7 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var auction_service_1 = __webpack_require__(522);
+	var auction_service_1 = __webpack_require__(515);
 	var AutionListComponent = (function () {
 	    function AutionListComponent(auctionService) {
 	        var _this = this;
@@ -71040,6 +71075,16 @@
 	        this.signalFinished = new core_1.EventEmitter();
 	        this.units = [];
 	    }
+	    CountdownComponent.prototype.ngOnChanges = function (changes) {
+	        debugger;
+	        var changedProp = changes['date'];
+	        var newDate = changedProp.currentValue;
+	        var dateDifference = newDate.getTime() - new Date().getTime();
+	        if (dateDifference > 0) {
+	            this.date = newDate;
+	            this.startTimer();
+	        }
+	    };
 	    CountdownComponent.prototype.displayDate = function () {
 	        if (typeof this.unitsAsString === 'string') {
 	            this.units = this.unitsAsString.split('|');
@@ -71086,13 +71131,16 @@
 	        this.displayString = returnString;
 	    };
 	    CountdownComponent.prototype.ngOnInit = function () {
+	        this.startTimer();
+	    };
+	    CountdownComponent.prototype.startTimer = function () {
 	        var _this = this;
 	        this.timerId = setInterval(function () { return _this.displayDate(); }, 1);
 	    };
 	    CountdownComponent.prototype.ngOnDestroy = function () {
 	    };
 	    __decorate([
-	        core_1.Input(), 
+	        core_1.Input('date'), 
 	        __metadata('design:type', Date)
 	    ], CountdownComponent.prototype, "date", void 0);
 	    __decorate([
