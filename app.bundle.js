@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -51,8 +51,8 @@
 	var core_1 = __webpack_require__(311);
 	var platform_browser_dynamic_1 = __webpack_require__(329);
 	var app_module_1 = __webpack_require__(333);
-	console.info('app.environment:', ("development"));
-	if (false) {
+	console.info('app.environment:', ("production"));
+	if (true) {
 	    core_1.enableProdMode();
 	}
 	platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule);
