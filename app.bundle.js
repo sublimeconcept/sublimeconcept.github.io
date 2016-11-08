@@ -44578,12 +44578,12 @@
 	var forms_1 = __webpack_require__(334);
 	var platform_browser_1 = __webpack_require__(331);
 	var app_component_1 = __webpack_require__(338);
-	var auction_component_1 = __webpack_require__(513);
-	var auction_service_1 = __webpack_require__(515);
-	var authentication_service_1 = __webpack_require__(523);
+	var auction_component_1 = __webpack_require__(514);
+	var auction_service_1 = __webpack_require__(516);
+	var authentication_service_1 = __webpack_require__(524);
 	var alert_component_1 = __webpack_require__(555);
 	var app_routing_1 = __webpack_require__(559);
-	var bid_service_1 = __webpack_require__(514);
+	var bid_service_1 = __webpack_require__(515);
 	var user_service_1 = __webpack_require__(339);
 	var navbar_component_1 = __webpack_require__(568);
 	var home_component_1 = __webpack_require__(560);
@@ -44592,7 +44592,7 @@
 	var countdown_component_1 = __webpack_require__(572);
 	var register_component_1 = __webpack_require__(564);
 	var login_component_1 = __webpack_require__(566);
-	var angular2_flash_messages_1 = __webpack_require__(516);
+	var angular2_flash_messages_1 = __webpack_require__(517);
 	var declarations = [
 	    app_component_1.AppComponent,
 	    auction_component_1.AuctionComponent,
@@ -49348,8 +49348,8 @@
 	    AppComponent = __decorate([
 	        core_1.Component({
 	            selector: 'my-app',
-	            template: __webpack_require__(511),
-	            styles: [__webpack_require__(512)]
+	            template: __webpack_require__(512),
+	            styles: [__webpack_require__(513)]
 	        }), 
 	        __metadata('design:paramtypes', [user_service_1.UserService])
 	    ], AppComponent);
@@ -49370,19 +49370,18 @@
 	};
 	var parse_wrapper_1 = __webpack_require__(340);
 	var util_deferred_1 = __webpack_require__(510);
-	var Subject_1 = __webpack_require__(312);
+	var BehaviorSubject_1 = __webpack_require__(511);
 	var UserService = (function (_super) {
 	    __extends(UserService, _super);
 	    function UserService() {
 	        _super.call(this, "User");
-	        this.userLoggedInSource = new Subject_1.Subject();
-	        this.userLoggedIn = this.userLoggedInSource.asObservable();
-	        //this.determineUserLoggedIn();
+	        this._loggedIn = new BehaviorSubject_1.BehaviorSubject(false);
+	        this.determineUserLoggedIn();
 	    }
 	    UserService.prototype.determineUserLoggedIn = function () {
 	        var user = this.getCurrentUser();
 	        if (user) {
-	            this.userLoggedInSource.next(user);
+	            this._loggedIn.next(true);
 	        }
 	    };
 	    UserService.prototype.save = function (user) {
@@ -49402,7 +49401,7 @@
 	        this.Parse.User
 	            .logIn(username, password)
 	            .then(function (user) {
-	            _this.determineUserLoggedIn();
+	            _this._loggedIn.next(true);
 	            deferred.resolve(user);
 	        }, function (err) {
 	            deferred.reject(err);
@@ -49459,12 +49458,18 @@
 	            return undefined;
 	        }
 	    };
+	    UserService.prototype.isUserLoggedIn = function () {
+	        return this._loggedIn;
+	    };
 	    /**
 	     * Kills the session
 	     */
 	    UserService.prototype.logOut = function () {
-	        this.userLoggedInSource.next(null);
+	        this._loggedIn.next(false);
 	        return this.Parse.User.logOut();
+	    };
+	    UserService.prototype.hasEnoughCredit = function () {
+	        return this.getCurrentUser().get('credits') > 0;
 	    };
 	    return UserService;
 	}(parse_wrapper_1.ParseWrapper));
@@ -64014,18 +64019,72 @@
 
 /***/ },
 /* 511 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<navbar></navbar>\n<div class=\"container\">\n      <!--alert></alert-->\n      <flash-messages></flash-messages>\n      <router-outlet></router-outlet>\n</div>"
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Subject_1 = __webpack_require__(312);
+	var ObjectUnsubscribedError_1 = __webpack_require__(327);
+	/**
+	 * @class BehaviorSubject<T>
+	 */
+	var BehaviorSubject = (function (_super) {
+	    __extends(BehaviorSubject, _super);
+	    function BehaviorSubject(_value) {
+	        _super.call(this);
+	        this._value = _value;
+	    }
+	    Object.defineProperty(BehaviorSubject.prototype, "value", {
+	        get: function () {
+	            return this.getValue();
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    BehaviorSubject.prototype._subscribe = function (subscriber) {
+	        var subscription = _super.prototype._subscribe.call(this, subscriber);
+	        if (subscription && !subscription.closed) {
+	            subscriber.next(this._value);
+	        }
+	        return subscription;
+	    };
+	    BehaviorSubject.prototype.getValue = function () {
+	        if (this.hasError) {
+	            throw this.thrownError;
+	        }
+	        else if (this.closed) {
+	            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+	        }
+	        else {
+	            return this._value;
+	        }
+	    };
+	    BehaviorSubject.prototype.next = function (value) {
+	        _super.prototype.next.call(this, this._value = value);
+	    };
+	    return BehaviorSubject;
+	}(Subject_1.Subject));
+	exports.BehaviorSubject = BehaviorSubject;
+	//# sourceMappingURL=BehaviorSubject.js.map
 
 /***/ },
 /* 512 */
 /***/ function(module, exports) {
 
-	module.exports = "\n\n\n"
+	module.exports = "<navbar></navbar>\n<div class=\"container\">\n      <!--alert></alert-->\n      <flash-messages></flash-messages>\n      <router-outlet></router-outlet>\n</div>"
 
 /***/ },
 /* 513 */
+/***/ function(module, exports) {
+
+	module.exports = "\n\n\n"
+
+/***/ },
+/* 514 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64040,30 +64099,27 @@
 	};
 	var core_1 = __webpack_require__(311);
 	var user_service_1 = __webpack_require__(339);
-	var bid_service_1 = __webpack_require__(514);
-	var auction_service_1 = __webpack_require__(515);
-	var angular2_flash_messages_1 = __webpack_require__(516);
+	var bid_service_1 = __webpack_require__(515);
+	var auction_service_1 = __webpack_require__(516);
+	var angular2_flash_messages_1 = __webpack_require__(517);
 	var AuctionComponent = (function () {
 	    function AuctionComponent(_auctionService, _userService, bidService, _flashMessagesService) {
 	        this._auctionService = _auctionService;
 	        this._userService = _userService;
 	        this.bidService = bidService;
 	        this._flashMessagesService = _flashMessagesService;
-	        this.userSignedIn = false;
-	        this.currentUser = {};
 	    }
 	    AuctionComponent.prototype.bid = function () {
 	        var _this = this;
-	        this.currentUser.fetch(); // REMOTE THIS WHEN WE HAVE A WAY OF ADDING CREDITS
-	        console.log("this.currentUser.get('credits') = " + this.currentUser.get('credits'));
-	        if (this.currentUser.get('credits') <= 0) {
+	        //this.currentUser.fetch(); // REMOTE THIS WHEN WE HAVE A WAY OF ADDING CREDITS
+	        if (this._userService.getCurrentUser().get('credits') <= 0) {
 	            this._flashMessagesService.show("No tienes suficientes créditos.", { cssClass: 'alert-danger', timeout: 5000 });
 	        }
 	        else {
-	            this.bidService.bidAuction(this.currentUser, this.auction).then(function (bid) {
+	            this.bidService.bidAuction(this._userService.getCurrentUser(), this.auction).then(function (bid) {
 	                // BEGIN: THIS SHOULD OCCUR IN PARSE SERVER
-	                _this.currentUser.increment('credits', -1);
-	                _this.currentUser.save();
+	                _this._userService.getCurrentUser().increment('credits', -1);
+	                _this._userService.getCurrentUser().save();
 	                _this.auction.increment("bids");
 	                _this.auction.increment("currentPrice", 0.01);
 	                var newTime = _this.auction.get("endDate");
@@ -64072,7 +64128,7 @@
 	                _this.auction.save();
 	                // END: THIS SHOULD OCCUR IN PARSE SERVER
 	                _this.auction.fetch();
-	                _this.currentUser.fetch();
+	                //this.currentUser.fetch();
 	                _this._flashMessagesService.show("Subasta Exitosa", { cssClass: 'alert-success', timeout: 2000 });
 	            }).catch(function (error) {
 	                _this._flashMessagesService.show(error.message, { cssClass: 'alert-danger', timeout: 5000 });
@@ -64082,17 +64138,8 @@
 	    AuctionComponent.prototype.onAuctionFinished = function (event) {
 	        console.log(event);
 	    };
-	    AuctionComponent.prototype.setCurrentUser = function () {
-	        var user = this._userService.getCurrentUser();
-	        if (user) {
-	            this.currentUser = user;
-	            this.userSignedIn = true;
-	        }
-	    };
 	    AuctionComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        this.setCurrentUser();
-	        this.determineUserSignedIn();
 	        this.auctionSubscription = this._auctionService
 	            .getAuctionSubscription(this.auction.id)
 	            .subscribe();
@@ -64101,22 +64148,7 @@
 	        });
 	    };
 	    AuctionComponent.prototype.ngOnDestroy = function () {
-	        this.subscription.unsubscribe();
-	        this.currentUser = null;
-	        this.userSignedIn = false;
 	        this.auctionSubscription.unsubscribe();
-	    };
-	    AuctionComponent.prototype.determineUserSignedIn = function () {
-	        var _this = this;
-	        this.subscription = this._userService.userLoggedIn.subscribe(function (user) {
-	            if (user) {
-	                _this.currentUser = user;
-	                _this.userSignedIn = true;
-	            }
-	        });
-	    };
-	    AuctionComponent.prototype.isUserSignedIn = function () {
-	        return this.userSignedIn;
 	    };
 	    __decorate([
 	        core_1.Input('auction'), 
@@ -64125,7 +64157,7 @@
 	    AuctionComponent = __decorate([
 	        core_1.Component({
 	            selector: "auction",
-	            template: __webpack_require__(522)
+	            template: __webpack_require__(523)
 	        }), 
 	        __metadata('design:paramtypes', [auction_service_1.AuctionService, user_service_1.UserService, bid_service_1.BidService, angular2_flash_messages_1.FlashMessagesService])
 	    ], AuctionComponent);
@@ -64135,7 +64167,7 @@
 
 
 /***/ },
-/* 514 */
+/* 515 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64170,7 +64202,7 @@
 
 
 /***/ },
-/* 515 */
+/* 516 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64223,29 +64255,29 @@
 
 
 /***/ },
-/* 516 */
+/* 517 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
-	__export(__webpack_require__(517));
-	//# sourceMappingURL=index.js.map
-
-/***/ },
-/* 517 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var module_1 = __webpack_require__(518);
-	exports.FlashMessagesModule = module_1.FlashMessagesModule;
-	var flash_messages_service_1 = __webpack_require__(521);
-	exports.FlashMessagesService = flash_messages_service_1.FlashMessagesService;
+	__export(__webpack_require__(518));
 	//# sourceMappingURL=index.js.map
 
 /***/ },
 /* 518 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var module_1 = __webpack_require__(519);
+	exports.FlashMessagesModule = module_1.FlashMessagesModule;
+	var flash_messages_service_1 = __webpack_require__(522);
+	exports.FlashMessagesService = flash_messages_service_1.FlashMessagesService;
+	//# sourceMappingURL=index.js.map
+
+/***/ },
+/* 519 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64260,8 +64292,8 @@
 	};
 	var core_1 = __webpack_require__(311);
 	var common_1 = __webpack_require__(332);
-	var flash_messages_component_1 = __webpack_require__(519);
-	var flash_messages_service_1 = __webpack_require__(521);
+	var flash_messages_component_1 = __webpack_require__(520);
+	var flash_messages_service_1 = __webpack_require__(522);
 	var FlashMessagesModule = (function () {
 	    function FlashMessagesModule() {
 	    }
@@ -64280,7 +64312,7 @@
 	//# sourceMappingURL=module.js.map
 
 /***/ },
-/* 519 */
+/* 520 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64294,8 +64326,8 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var flash_message_1 = __webpack_require__(520);
-	var flash_messages_service_1 = __webpack_require__(521);
+	var flash_message_1 = __webpack_require__(521);
+	var flash_messages_service_1 = __webpack_require__(522);
 	var FlashMessagesComponent = (function () {
 	    function FlashMessagesComponent(_flashMessagesService) {
 	        this._flashMessagesService = _flashMessagesService;
@@ -64349,7 +64381,7 @@
 	//# sourceMappingURL=flash-messages.component.js.map
 
 /***/ },
-/* 520 */
+/* 521 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -64366,7 +64398,7 @@
 	//# sourceMappingURL=flash-message.js.map
 
 /***/ },
-/* 521 */
+/* 522 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64393,13 +64425,13 @@
 	//# sourceMappingURL=flash-messages.service.js.map
 
 /***/ },
-/* 522 */
+/* 523 */
 /***/ function(module, exports) {
 
-	module.exports = "\n    <div class=\"col-sm-6\">\n      <div class=\"thumbnail\">\n        <img src=\"https://dummyimage.com/242x200/fafafa/000000\" alt=\"dummy-img\">\n        <div class=\"caption\">\n          <h3>{{auction.get('name')}}</h3>\n          <p>\n            Precio Actual: {{ auction.get('currentPrice') | currency:\"USD\":2 }}\n          </p>\n          <p>Subastas: {{ auction.get('bids') }}</p>\n          <countdown units=\"Days | Hours | Minutes | Seconds\" (ended)=\"onAuctionFinished($event)\" [date]=\"auction.get('endDate')\"></countdown>\n          <p><button *ngIf=\"userSignedIn\" class=\"btn btn-primary\" role=\"button\" (click)=\"bid()\">Subastar</button></p>\n          <p><a *ngIf=\"!userSignedIn\" routerLink=\"/register\">Registrarse para subastar</a></p>\n        </div>\n      </div>\n    </div>\n"
+	module.exports = "\n    <div class=\"col-sm-6\">\n      <div class=\"thumbnail\">\n        <img src=\"https://dummyimage.com/242x200/fafafa/000000\" alt=\"dummy-img\">\n        <div class=\"caption\">\n          <h3>{{auction.get('name')}}</h3>\n          <p>\n            Precio Actual: {{ auction.get('currentPrice') | currency:\"USD\":2 }}\n          </p>\n          <p>Subastas: {{ auction.get('bids') }}</p>\n          <countdown units=\"Days | Hours | Minutes | Seconds\" (ended)=\"onAuctionFinished($event)\" [date]=\"auction.get('endDate')\"></countdown>\n          <p><button *ngIf=\"_userService.isUserLoggedIn() | async\" class=\"btn btn-primary\" role=\"button\" (click)=\"bid()\">Subastar</button></p>\n          <p *ngIf=\"!(_userService.isUserLoggedIn() | async)\"><a routerLink=\"/register\">Registrarse</a> o <a routerLink=\"/login\">inicie sesión</a> para subastar</p>\n        </div>\n      </div>\n    </div>\n"
 
 /***/ },
-/* 523 */
+/* 524 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -64413,10 +64445,10 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var router_1 = __webpack_require__(524);
+	var router_1 = __webpack_require__(525);
 	var user_service_1 = __webpack_require__(339);
 	__webpack_require__(554);
-	var angular2_flash_messages_1 = __webpack_require__(516);
+	var angular2_flash_messages_1 = __webpack_require__(517);
 	var AuthenticationService = (function () {
 	    function AuthenticationService(router, userService, _flashMessagesService) {
 	        this.router = router;
@@ -64447,7 +64479,7 @@
 
 
 /***/ },
-/* 524 */
+/* 525 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -64456,7 +64488,7 @@
 	 * License: MIT
 	 */
 	(function (global, factory) {
-	     true ? factory(exports, __webpack_require__(332), __webpack_require__(311), __webpack_require__(312), __webpack_require__(525), __webpack_require__(537), __webpack_require__(538), __webpack_require__(543), __webpack_require__(544), __webpack_require__(545), __webpack_require__(539), __webpack_require__(546), __webpack_require__(313), __webpack_require__(547), __webpack_require__(548), __webpack_require__(549), __webpack_require__(550), __webpack_require__(336), __webpack_require__(551), __webpack_require__(552), __webpack_require__(553)) :
+	     true ? factory(exports, __webpack_require__(332), __webpack_require__(311), __webpack_require__(312), __webpack_require__(526), __webpack_require__(538), __webpack_require__(539), __webpack_require__(544), __webpack_require__(545), __webpack_require__(546), __webpack_require__(540), __webpack_require__(547), __webpack_require__(313), __webpack_require__(548), __webpack_require__(549), __webpack_require__(550), __webpack_require__(551), __webpack_require__(336), __webpack_require__(552), __webpack_require__(511), __webpack_require__(553)) :
 	    typeof define === 'function' && define.amd ? define(['exports', '@angular/common', '@angular/core', 'rxjs/Subject', 'rxjs/observable/from', 'rxjs/observable/of', 'rxjs/operator/concatMap', 'rxjs/operator/every', 'rxjs/operator/map', 'rxjs/operator/mergeAll', 'rxjs/operator/mergeMap', 'rxjs/operator/reduce', 'rxjs/Observable', 'rxjs/operator/catch', 'rxjs/operator/concatAll', 'rxjs/operator/first', 'rxjs/util/EmptyError', 'rxjs/observable/fromPromise', 'rxjs/operator/last', 'rxjs/BehaviorSubject', 'rxjs/operator/filter'], factory) :
 	    (factory((global.ng = global.ng || {}, global.ng.router = global.ng.router || {}),global.ng.common,global.ng.core,global.Rx,global.Rx.Observable,global.Rx.Observable,global.rxjs_operator_concatMap,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable.prototype));
 	}(this, function (exports,_angular_common,_angular_core,rxjs_Subject,rxjs_observable_from,rxjs_observable_of,rxjs_operator_concatMap,rxjs_operator_every,rxjs_operator_map,rxjs_operator_mergeAll,rxjs_operator_mergeMap,rxjs_operator_reduce,rxjs_Observable,rxjs_operator_catch,rxjs_operator_concatAll,rxjs_operator_first,rxjs_util_EmptyError,rxjs_observable_fromPromise,l,rxjs_BehaviorSubject,rxjs_operator_filter) { 'use strict';
@@ -68306,16 +68338,16 @@
 
 
 /***/ },
-/* 525 */
+/* 526 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var FromObservable_1 = __webpack_require__(526);
+	var FromObservable_1 = __webpack_require__(527);
 	exports.from = FromObservable_1.FromObservable.create;
 	//# sourceMappingURL=from.js.map
 
 /***/ },
-/* 526 */
+/* 527 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68325,14 +68357,14 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var isArray_1 = __webpack_require__(319);
-	var isPromise_1 = __webpack_require__(527);
+	var isPromise_1 = __webpack_require__(528);
 	var PromiseObservable_1 = __webpack_require__(337);
-	var IteratorObservable_1 = __webpack_require__(528);
-	var ArrayObservable_1 = __webpack_require__(530);
-	var ArrayLikeObservable_1 = __webpack_require__(534);
-	var iterator_1 = __webpack_require__(529);
+	var IteratorObservable_1 = __webpack_require__(529);
+	var ArrayObservable_1 = __webpack_require__(531);
+	var ArrayLikeObservable_1 = __webpack_require__(535);
+	var iterator_1 = __webpack_require__(530);
 	var Observable_1 = __webpack_require__(313);
-	var observeOn_1 = __webpack_require__(535);
+	var observeOn_1 = __webpack_require__(536);
 	var observable_1 = __webpack_require__(326);
 	var isArrayLike = (function (x) { return x && typeof x.length === 'number'; });
 	/**
@@ -68436,7 +68468,7 @@
 	//# sourceMappingURL=FromObservable.js.map
 
 /***/ },
-/* 527 */
+/* 528 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -68447,7 +68479,7 @@
 	//# sourceMappingURL=isPromise.js.map
 
 /***/ },
-/* 528 */
+/* 529 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68458,7 +68490,7 @@
 	};
 	var root_1 = __webpack_require__(314);
 	var Observable_1 = __webpack_require__(313);
-	var iterator_1 = __webpack_require__(529);
+	var iterator_1 = __webpack_require__(530);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -68609,7 +68641,7 @@
 	//# sourceMappingURL=IteratorObservable.js.map
 
 /***/ },
-/* 529 */
+/* 530 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68646,7 +68678,7 @@
 	//# sourceMappingURL=iterator.js.map
 
 /***/ },
-/* 530 */
+/* 531 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68656,9 +68688,9 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(313);
-	var ScalarObservable_1 = __webpack_require__(531);
-	var EmptyObservable_1 = __webpack_require__(532);
-	var isScheduler_1 = __webpack_require__(533);
+	var ScalarObservable_1 = __webpack_require__(532);
+	var EmptyObservable_1 = __webpack_require__(533);
+	var isScheduler_1 = __webpack_require__(534);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -68773,7 +68805,7 @@
 	//# sourceMappingURL=ArrayObservable.js.map
 
 /***/ },
-/* 531 */
+/* 532 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68836,7 +68868,7 @@
 	//# sourceMappingURL=ScalarObservable.js.map
 
 /***/ },
-/* 532 */
+/* 533 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68916,7 +68948,7 @@
 	//# sourceMappingURL=EmptyObservable.js.map
 
 /***/ },
-/* 533 */
+/* 534 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -68927,7 +68959,7 @@
 	//# sourceMappingURL=isScheduler.js.map
 
 /***/ },
-/* 534 */
+/* 535 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68937,8 +68969,8 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(313);
-	var ScalarObservable_1 = __webpack_require__(531);
-	var EmptyObservable_1 = __webpack_require__(532);
+	var ScalarObservable_1 = __webpack_require__(532);
+	var EmptyObservable_1 = __webpack_require__(533);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -69002,7 +69034,7 @@
 	//# sourceMappingURL=ArrayLikeObservable.js.map
 
 /***/ },
-/* 535 */
+/* 536 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -69012,7 +69044,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(316);
-	var Notification_1 = __webpack_require__(536);
+	var Notification_1 = __webpack_require__(537);
 	/**
 	 * @see {@link Notification}
 	 *
@@ -69082,7 +69114,7 @@
 	//# sourceMappingURL=observeOn.js.map
 
 /***/ },
-/* 536 */
+/* 537 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -69214,20 +69246,20 @@
 	//# sourceMappingURL=Notification.js.map
 
 /***/ },
-/* 537 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var ArrayObservable_1 = __webpack_require__(530);
-	exports.of = ArrayObservable_1.ArrayObservable.of;
-	//# sourceMappingURL=of.js.map
-
-/***/ },
 /* 538 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeMap_1 = __webpack_require__(539);
+	var ArrayObservable_1 = __webpack_require__(531);
+	exports.of = ArrayObservable_1.ArrayObservable.of;
+	//# sourceMappingURL=of.js.map
+
+/***/ },
+/* 539 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var mergeMap_1 = __webpack_require__(540);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable, in a serialized fashion waiting for each one to complete before
@@ -69291,7 +69323,7 @@
 	//# sourceMappingURL=concatMap.js.map
 
 /***/ },
-/* 539 */
+/* 540 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -69300,8 +69332,8 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var subscribeToResult_1 = __webpack_require__(540);
-	var OuterSubscriber_1 = __webpack_require__(542);
+	var subscribeToResult_1 = __webpack_require__(541);
+	var OuterSubscriber_1 = __webpack_require__(543);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable.
@@ -69457,16 +69489,16 @@
 	//# sourceMappingURL=mergeMap.js.map
 
 /***/ },
-/* 540 */
+/* 541 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var root_1 = __webpack_require__(314);
 	var isArray_1 = __webpack_require__(319);
-	var isPromise_1 = __webpack_require__(527);
+	var isPromise_1 = __webpack_require__(528);
 	var Observable_1 = __webpack_require__(313);
-	var iterator_1 = __webpack_require__(529);
-	var InnerSubscriber_1 = __webpack_require__(541);
+	var iterator_1 = __webpack_require__(530);
+	var InnerSubscriber_1 = __webpack_require__(542);
 	var observable_1 = __webpack_require__(326);
 	function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
 	    var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
@@ -69536,7 +69568,7 @@
 	//# sourceMappingURL=subscribeToResult.js.map
 
 /***/ },
-/* 541 */
+/* 542 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -69577,7 +69609,7 @@
 	//# sourceMappingURL=InnerSubscriber.js.map
 
 /***/ },
-/* 542 */
+/* 543 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -69612,7 +69644,7 @@
 	//# sourceMappingURL=OuterSubscriber.js.map
 
 /***/ },
-/* 543 */
+/* 544 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -69685,7 +69717,7 @@
 	//# sourceMappingURL=every.js.map
 
 /***/ },
-/* 544 */
+/* 545 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -69777,7 +69809,7 @@
 	//# sourceMappingURL=map.js.map
 
 /***/ },
-/* 545 */
+/* 546 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -69786,8 +69818,8 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(542);
-	var subscribeToResult_1 = __webpack_require__(540);
+	var OuterSubscriber_1 = __webpack_require__(543);
+	var subscribeToResult_1 = __webpack_require__(541);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable which
 	 * concurrently delivers all values that are emitted on the inner Observables.
@@ -69893,7 +69925,7 @@
 	//# sourceMappingURL=mergeAll.js.map
 
 /***/ },
-/* 546 */
+/* 547 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70010,7 +70042,7 @@
 	//# sourceMappingURL=reduce.js.map
 
 /***/ },
-/* 547 */
+/* 548 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70019,8 +70051,8 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(542);
-	var subscribeToResult_1 = __webpack_require__(540);
+	var OuterSubscriber_1 = __webpack_require__(543);
+	var subscribeToResult_1 = __webpack_require__(541);
 	/**
 	 * Catches errors on the observable to be handled by returning a new observable or throwing an error.
 	 * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
@@ -70080,11 +70112,11 @@
 	//# sourceMappingURL=catch.js.map
 
 /***/ },
-/* 548 */
+/* 549 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeAll_1 = __webpack_require__(545);
+	var mergeAll_1 = __webpack_require__(546);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by
 	 * concatenating the inner Observables in order.
@@ -70134,7 +70166,7 @@
 	//# sourceMappingURL=concatAll.js.map
 
 /***/ },
-/* 549 */
+/* 550 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70144,7 +70176,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(316);
-	var EmptyError_1 = __webpack_require__(550);
+	var EmptyError_1 = __webpack_require__(551);
 	/**
 	 * Emits only the first value (or the first value that meets some condition)
 	 * emitted by the source Observable.
@@ -70287,7 +70319,7 @@
 	//# sourceMappingURL=first.js.map
 
 /***/ },
-/* 550 */
+/* 551 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -70320,7 +70352,7 @@
 	//# sourceMappingURL=EmptyError.js.map
 
 /***/ },
-/* 551 */
+/* 552 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -70330,7 +70362,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(316);
-	var EmptyError_1 = __webpack_require__(550);
+	var EmptyError_1 = __webpack_require__(551);
 	/**
 	 * Returns an Observable that emits only the last item emitted by the source Observable.
 	 * It optionally takes a predicate function as a parameter, in which case, rather than emitting
@@ -70443,60 +70475,6 @@
 	//# sourceMappingURL=last.js.map
 
 /***/ },
-/* 552 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var Subject_1 = __webpack_require__(312);
-	var ObjectUnsubscribedError_1 = __webpack_require__(327);
-	/**
-	 * @class BehaviorSubject<T>
-	 */
-	var BehaviorSubject = (function (_super) {
-	    __extends(BehaviorSubject, _super);
-	    function BehaviorSubject(_value) {
-	        _super.call(this);
-	        this._value = _value;
-	    }
-	    Object.defineProperty(BehaviorSubject.prototype, "value", {
-	        get: function () {
-	            return this.getValue();
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    BehaviorSubject.prototype._subscribe = function (subscriber) {
-	        var subscription = _super.prototype._subscribe.call(this, subscriber);
-	        if (subscription && !subscription.closed) {
-	            subscriber.next(this._value);
-	        }
-	        return subscription;
-	    };
-	    BehaviorSubject.prototype.getValue = function () {
-	        if (this.hasError) {
-	            throw this.thrownError;
-	        }
-	        else if (this.closed) {
-	            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
-	        }
-	        else {
-	            return this._value;
-	        }
-	    };
-	    BehaviorSubject.prototype.next = function (value) {
-	        _super.prototype.next.call(this, this._value = value);
-	    };
-	    return BehaviorSubject;
-	}(Subject_1.Subject));
-	exports.BehaviorSubject = BehaviorSubject;
-	//# sourceMappingURL=BehaviorSubject.js.map
-
-/***/ },
 /* 553 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -70600,7 +70578,7 @@
 
 	"use strict";
 	var Observable_1 = __webpack_require__(313);
-	var map_1 = __webpack_require__(544);
+	var map_1 = __webpack_require__(545);
 	Observable_1.Observable.prototype.map = map_1.map;
 	//# sourceMappingURL=map.js.map
 
@@ -70659,7 +70637,7 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var router_1 = __webpack_require__(524);
+	var router_1 = __webpack_require__(525);
 	var Subject_1 = __webpack_require__(312);
 	var AlertService = (function () {
 	    function AlertService(router) {
@@ -70723,7 +70701,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var router_1 = __webpack_require__(524);
+	var router_1 = __webpack_require__(525);
 	var home_component_1 = __webpack_require__(560);
 	var profile_component_1 = __webpack_require__(562);
 	var register_component_1 = __webpack_require__(564);
@@ -70770,7 +70748,6 @@
 	var HomeComponent = (function () {
 	    function HomeComponent(userService) {
 	        this.userService = userService;
-	        this.currentUser = localStorage.getItem('currentUser');
 	    }
 	    HomeComponent = __decorate([
 	        core_1.Component({
@@ -70841,9 +70818,9 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var router_1 = __webpack_require__(524);
+	var router_1 = __webpack_require__(525);
 	var user_service_1 = __webpack_require__(339);
-	var angular2_flash_messages_1 = __webpack_require__(516);
+	var angular2_flash_messages_1 = __webpack_require__(517);
 	var RegisterComponent = (function () {
 	    function RegisterComponent(router, userService, _flashMessagesService) {
 	        this.router = router;
@@ -70905,8 +70882,8 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var router_1 = __webpack_require__(524);
-	var authentication_service_1 = __webpack_require__(523);
+	var router_1 = __webpack_require__(525);
+	var authentication_service_1 = __webpack_require__(524);
 	var LoginComponent = (function () {
 	    function LoginComponent(router, authenticationService) {
 	        this.router = router;
@@ -70959,13 +70936,6 @@
 	var NavbarComponent = (function () {
 	    function NavbarComponent(_userService) {
 	        this._userService = _userService;
-	        this.userSignedIn = false;
-	        this.currentUser = {};
-	        var user = _userService.getCurrentUser();
-	        if (user) {
-	            this.currentUser = user;
-	            this.userSignedIn = true;
-	        }
 	    }
 	    NavbarComponent.prototype.logOut = function () {
 	        if (this._userService.getCurrentUser()) {
@@ -70973,24 +70943,8 @@
 	        }
 	    };
 	    NavbarComponent.prototype.ngOnInit = function () {
-	        this.determineUserSignedIn();
 	    };
 	    NavbarComponent.prototype.ngOnDestroy = function () {
-	        this.subscription.unsubscribe();
-	        this.currentUser = null;
-	        this.userSignedIn = false;
-	    };
-	    NavbarComponent.prototype.determineUserSignedIn = function () {
-	        var _this = this;
-	        this.subscription = this._userService.userLoggedIn.subscribe(function (user) {
-	            if (user) {
-	                _this.currentUser = user;
-	                _this.userSignedIn = true;
-	            }
-	        });
-	    };
-	    NavbarComponent.prototype.isUserSignedIn = function () {
-	        return this.userSignedIn;
 	    };
 	    NavbarComponent = __decorate([
 	        core_1.Component({
@@ -71008,7 +70962,7 @@
 /* 569 */
 /***/ function(module, exports) {
 
-	module.exports = "<nav class=\"navbar navbar-default\">\n  <div class=\"container-fluid\">\n    <!-- Brand and toggle get grouped for better mobile display -->\n    <div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\">\n        <span class=\"sr-only\">Toggle navigation</span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"navbar-brand\" href=\"\">App</a>\n    </div>\n\n    <!-- Collect the nav links, forms, and other content for toggling -->\n    <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n      <ul class=\"nav navbar-nav\">\n        <!--li class=\"active\"><a href=\"#\">Link <span class=\"sr-only\">(current)</span></a></li-->\n        <li><a routerLink=\"/\">Home</a></li>\n        <!--li class=\"dropdown\">\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Dropdown <span class=\"caret\"></span></a>\n          <ul class=\"dropdown-menu\">\n            <li><a href=\"#\">Action</a></li>\n            <li><a href=\"#\">Another action</a></li>\n            <li><a href=\"#\">Something else here</a></li>\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"#\">Separated link</a></li>\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"#\">One more separated link</a></li>\n          </ul>\n        </li-->\n      </ul>\n      <!--form class=\"navbar-form navbar-left\">\n        <div class=\"form-group\">\n          <input type=\"text\" class=\"form-control\" placeholder=\"Search\">\n        </div>\n        <button type=\"submit\" class=\"btn btn-default\">Submit</button>\n      </form-->\n      <ul class=\"nav navbar-nav navbar-right\">\n        <li *ngIf=\"!isUserSignedIn()\"><a routerLink=\"/login\">Iniciar Sesión</a></li>\n        <li *ngIf=\"!isUserSignedIn()\"><a routerLink=\"/register\">Registrarse</a></li>\n        <li *ngIf=\"isUserSignedIn()\" class=\"dropdown\">\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Mi Perfil <span class=\"caret\"></span></a>\n          <ul class=\"dropdown-menu\">\n            <li><a routerLink=\"/profile\">{{ currentUser.attributes.firstName }} {{ currentUser.attributes.lastName }}</a></li>\n            <!--li><a href=\"#\">Another action</a></li-->\n            <!--li><a href=\"#\">Something else here</a></li-->\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"\">TuPuja Dashboard</a></li>\n            <li *ngIf=\"isUserSignedIn()\"><a href=\"\" (click)=\"logOut()\">Logout</a></li>\n          </ul>\n        </li>\n      </ul>\n    </div><!-- /.navbar-collapse -->\n  </div><!-- /.container-fluid -->\n</nav>"
+	module.exports = "<nav class=\"navbar navbar-default\">\n  <div class=\"container-fluid\">\n    <!-- Brand and toggle get grouped for better mobile display -->\n    <div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\">\n        <span class=\"sr-only\">Toggle navigation</span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"navbar-brand\" href=\"\">App</a>\n    </div>\n\n    <!-- Collect the nav links, forms, and other content for toggling -->\n    <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n      <ul class=\"nav navbar-nav\">\n        <!--li class=\"active\"><a href=\"#\">Link <span class=\"sr-only\">(current)</span></a></li-->\n        <li><a routerLink=\"/\">Home</a></li>\n        <!--li class=\"dropdown\">\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Dropdown <span class=\"caret\"></span></a>\n          <ul class=\"dropdown-menu\">\n            <li><a href=\"#\">Action</a></li>\n            <li><a href=\"#\">Another action</a></li>\n            <li><a href=\"#\">Something else here</a></li>\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"#\">Separated link</a></li>\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"#\">One more separated link</a></li>\n          </ul>\n        </li-->\n      </ul>\n      <!--form class=\"navbar-form navbar-left\">\n        <div class=\"form-group\">\n          <input type=\"text\" class=\"form-control\" placeholder=\"Search\">\n        </div>\n        <button type=\"submit\" class=\"btn btn-default\">Submit</button>\n      </form-->\n      <ul class=\"nav navbar-nav navbar-right\">\n        <li *ngIf=\"!(_userService.isUserLoggedIn() | async)\"><a routerLink=\"/login\">Iniciar Sesión</a></li>\n        <li *ngIf=\"!(_userService.isUserLoggedIn() | async)\"><a routerLink=\"/register\">Registrarse</a></li>\n        <li *ngIf=\"_userService.isUserLoggedIn() | async\" class=\"dropdown\">\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Mi Perfil <span class=\"caret\"></span></a>\n          <ul class=\"dropdown-menu\">\n            <li><a routerLink=\"/profile\">{{ _userService.getCurrentUser().attributes.firstName }} {{ _userService.getCurrentUser().attributes.lastName }}</a></li>\n            <!--li><a href=\"#\">Another action</a></li-->\n            <!--li><a href=\"#\">Something else here</a></li-->\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"\">TuPuja Dashboard</a></li>\n            <li *ngIf=\"_userService.isUserLoggedIn() | async\"><a href=\"\" (click)=\"logOut()\">Logout</a></li>\n          </ul>\n        </li>\n      </ul>\n    </div><!-- /.navbar-collapse -->\n  </div><!-- /.container-fluid -->\n</nav>"
 
 /***/ },
 /* 570 */
@@ -71025,7 +70979,7 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(311);
-	var auction_service_1 = __webpack_require__(515);
+	var auction_service_1 = __webpack_require__(516);
 	var AutionListComponent = (function () {
 	    function AutionListComponent(auctionService) {
 	        var _this = this;
@@ -71076,7 +71030,6 @@
 	        this.units = [];
 	    }
 	    CountdownComponent.prototype.ngOnChanges = function (changes) {
-	        debugger;
 	        var changedProp = changes['date'];
 	        var newDate = changedProp.currentValue;
 	        var dateDifference = newDate.getTime() - new Date().getTime();
