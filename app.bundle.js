@@ -44589,7 +44589,9 @@
 	var home_component_1 = __webpack_require__(560);
 	var profile_component_1 = __webpack_require__(562);
 	var auction_list_component_1 = __webpack_require__(570);
-	var countdown_component_1 = __webpack_require__(572);
+	var auction_slider_component_1 = __webpack_require__(572);
+	var outstanding_auction_component_1 = __webpack_require__(574);
+	var countdown_component_1 = __webpack_require__(576);
 	var register_component_1 = __webpack_require__(564);
 	var login_component_1 = __webpack_require__(566);
 	var angular2_flash_messages_1 = __webpack_require__(517);
@@ -44600,6 +44602,8 @@
 	    home_component_1.HomeComponent,
 	    profile_component_1.ProfileComponent,
 	    auction_list_component_1.AutionListComponent,
+	    auction_slider_component_1.AutionSliderComponent,
+	    outstanding_auction_component_1.OutstandingAuctionComponent,
 	    alert_component_1.AlertComponent,
 	    countdown_component_1.CountdownComponent,
 	    register_component_1.RegisterComponent,
@@ -64217,6 +64221,7 @@
 	    __extends(AuctionService, _super);
 	    function AuctionService() {
 	        _super.call(this, "Auction");
+	        this.OUTSTANDING_AUCTIONS_LIMIT = 1;
 	    }
 	    AuctionService.prototype.initializeObject = function () {
 	        return this.model();
@@ -64224,6 +64229,17 @@
 	    AuctionService.prototype.getAuctions = function () {
 	        var deferred = new util_deferred_1.Deferred();
 	        this.query().find().then(function (auctions) {
+	            deferred.resolve(auctions);
+	        }, function (result, error) {
+	            deferred.reject(error);
+	        });
+	        return deferred.promise;
+	    };
+	    AuctionService.prototype.getOutstandingAuctions = function () {
+	        var deferred = new util_deferred_1.Deferred();
+	        this.query().descending("bids")
+	            .limit(this.OUTSTANDING_AUCTIONS_LIMIT)
+	            .find().then(function (auctions) {
 	            deferred.resolve(auctions);
 	        }, function (result, error) {
 	            deferred.reject(error);
@@ -70765,7 +70781,7 @@
 /* 561 */
 /***/ function(module, exports) {
 
-	module.exports = "<auction-list></auction-list>"
+	module.exports = "<auction-slider></auction-slider>\n<hr>\n<auction-list></auction-list>"
 
 /***/ },
 /* 562 */
@@ -70962,7 +70978,7 @@
 /* 569 */
 /***/ function(module, exports) {
 
-	module.exports = "<nav class=\"navbar navbar-default\">\n  <div class=\"container-fluid\">\n    <!-- Brand and toggle get grouped for better mobile display -->\n    <div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\">\n        <span class=\"sr-only\">Toggle navigation</span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"navbar-brand\" href=\"\">App</a>\n    </div>\n\n    <!-- Collect the nav links, forms, and other content for toggling -->\n    <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n      <ul class=\"nav navbar-nav\">\n        <!--li class=\"active\"><a href=\"#\">Link <span class=\"sr-only\">(current)</span></a></li-->\n        <li><a routerLink=\"/\">Home</a></li>\n        <!--li class=\"dropdown\">\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Dropdown <span class=\"caret\"></span></a>\n          <ul class=\"dropdown-menu\">\n            <li><a href=\"#\">Action</a></li>\n            <li><a href=\"#\">Another action</a></li>\n            <li><a href=\"#\">Something else here</a></li>\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"#\">Separated link</a></li>\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"#\">One more separated link</a></li>\n          </ul>\n        </li-->\n      </ul>\n      <!--form class=\"navbar-form navbar-left\">\n        <div class=\"form-group\">\n          <input type=\"text\" class=\"form-control\" placeholder=\"Search\">\n        </div>\n        <button type=\"submit\" class=\"btn btn-default\">Submit</button>\n      </form-->\n      <ul class=\"nav navbar-nav navbar-right\">\n        <li *ngIf=\"!(_userService.isUserLoggedIn() | async)\"><a routerLink=\"/login\">Iniciar Sesión</a></li>\n        <li *ngIf=\"!(_userService.isUserLoggedIn() | async)\"><a routerLink=\"/register\">Registrarse</a></li>\n        <li *ngIf=\"_userService.isUserLoggedIn() | async\" class=\"dropdown\">\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Mi Perfil <span class=\"caret\"></span></a>\n          <ul class=\"dropdown-menu\">\n            <li><a routerLink=\"/profile\">{{ _userService.getCurrentUser().attributes.firstName }} {{ _userService.getCurrentUser().attributes.lastName }}</a></li>\n            <!--li><a href=\"#\">Another action</a></li-->\n            <!--li><a href=\"#\">Something else here</a></li-->\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"\">TuPuja Dashboard</a></li>\n            <li *ngIf=\"_userService.isUserLoggedIn() | async\"><a href=\"\" (click)=\"logOut()\">Logout</a></li>\n          </ul>\n        </li>\n      </ul>\n    </div><!-- /.navbar-collapse -->\n  </div><!-- /.container-fluid -->\n</nav>"
+	module.exports = "<nav class=\"navbar navbar-default\">\n  <div class=\"container-fluid\">\n    <!-- Brand and toggle get grouped for better mobile display -->\n    <div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\">\n        <span class=\"sr-only\">Toggle navigation</span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"navbar-brand\" href=\"\">TuPuja</a>\n    </div>\n\n    <!-- Collect the nav links, forms, and other content for toggling -->\n    <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n      <ul class=\"nav navbar-nav\">\n        <!--li class=\"active\"><a href=\"#\">Link <span class=\"sr-only\">(current)</span></a></li-->\n        <li><a routerLink=\"/\">Home</a></li>\n        <!--li class=\"dropdown\">\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Dropdown <span class=\"caret\"></span></a>\n          <ul class=\"dropdown-menu\">\n            <li><a href=\"#\">Action</a></li>\n            <li><a href=\"#\">Another action</a></li>\n            <li><a href=\"#\">Something else here</a></li>\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"#\">Separated link</a></li>\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"#\">One more separated link</a></li>\n          </ul>\n        </li-->\n      </ul>\n      <!--form class=\"navbar-form navbar-left\">\n        <div class=\"form-group\">\n          <input type=\"text\" class=\"form-control\" placeholder=\"Search\">\n        </div>\n        <button type=\"submit\" class=\"btn btn-default\">Submit</button>\n      </form-->\n      <ul class=\"nav navbar-nav navbar-right\">\n        <li *ngIf=\"!(_userService.isUserLoggedIn() | async)\"><a routerLink=\"/login\">Iniciar Sesión</a></li>\n        <li *ngIf=\"!(_userService.isUserLoggedIn() | async)\"><a routerLink=\"/register\">Registrarse</a></li>\n        <li *ngIf=\"_userService.isUserLoggedIn() | async\" class=\"dropdown\">\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Mi Perfil <span class=\"caret\"></span></a>\n          <ul class=\"dropdown-menu\">\n            <li><a routerLink=\"/profile\">{{ _userService.getCurrentUser().attributes.firstName }} {{ _userService.getCurrentUser().attributes.lastName }}</a></li>\n            <!--li><a href=\"#\">Another action</a></li-->\n            <!--li><a href=\"#\">Something else here</a></li-->\n            <li role=\"separator\" class=\"divider\"></li>\n            <li><a href=\"\">TuPuja Dashboard</a></li>\n            <li *ngIf=\"_userService.isUserLoggedIn() | async\"><a href=\"\" (click)=\"logOut()\">Logout</a></li>\n          </ul>\n        </li>\n      </ul>\n    </div><!-- /.navbar-collapse -->\n  </div><!-- /.container-fluid -->\n</nav>"
 
 /***/ },
 /* 570 */
@@ -71011,6 +71027,103 @@
 
 /***/ },
 /* 572 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(311);
+	var auction_service_1 = __webpack_require__(516);
+	var AutionSliderComponent = (function () {
+	    function AutionSliderComponent(auctionService) {
+	        var _this = this;
+	        this.auctionService = auctionService;
+	        this.auctions = [];
+	        this.auctionService.getOutstandingAuctions()
+	            .then(function (auctions) {
+	            _this.auctions = auctions;
+	        })
+	            .catch(function (error) { return console.error(error); });
+	    }
+	    AutionSliderComponent = __decorate([
+	        core_1.Component({
+	            selector: "auction-slider",
+	            template: __webpack_require__(573)
+	        }), 
+	        __metadata('design:paramtypes', [auction_service_1.AuctionService])
+	    ], AutionSliderComponent);
+	    return AutionSliderComponent;
+	}());
+	exports.AutionSliderComponent = AutionSliderComponent;
+
+
+/***/ },
+/* 573 */
+/***/ function(module, exports) {
+
+	module.exports = "<div *ngIf=\"auctions.length > 0\" class=\"row text-center\">\n  <h2>Subasta del Momento</h2>\n  <outstanding-auction *ngFor=\"let auction of auctions\" [auction]=\"auction\"></outstanding-auction>\n</div>\n"
+
+/***/ },
+/* 574 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(311);
+	var user_service_1 = __webpack_require__(339);
+	var bid_service_1 = __webpack_require__(515);
+	var auction_service_1 = __webpack_require__(516);
+	var angular2_flash_messages_1 = __webpack_require__(517);
+	var auction_component_1 = __webpack_require__(514);
+	var OutstandingAuctionComponent = (function (_super) {
+	    __extends(OutstandingAuctionComponent, _super);
+	    function OutstandingAuctionComponent(__auctionService, __userService, _bidService, __flashMessagesService) {
+	        _super.call(this, __auctionService, __userService, _bidService, __flashMessagesService);
+	        this.__auctionService = __auctionService;
+	        this.__userService = __userService;
+	        this._bidService = _bidService;
+	        this.__flashMessagesService = __flashMessagesService;
+	    }
+	    OutstandingAuctionComponent = __decorate([
+	        core_1.Component({
+	            selector: "outstanding-auction",
+	            template: __webpack_require__(575)
+	        }), 
+	        __metadata('design:paramtypes', [auction_service_1.AuctionService, user_service_1.UserService, bid_service_1.BidService, angular2_flash_messages_1.FlashMessagesService])
+	    ], OutstandingAuctionComponent);
+	    return OutstandingAuctionComponent;
+	}(auction_component_1.AuctionComponent));
+	exports.OutstandingAuctionComponent = OutstandingAuctionComponent;
+
+
+/***/ },
+/* 575 */
+/***/ function(module, exports) {
+
+	module.exports = "\n    <div class=\"col-sm-12\">\n      <div class=\"thumbnail\">\n        <div class=\"row\">\n          <div class=\"col-sm-6\">\n            <div class=\"caption text-left\">\n              <h3>{{auction.get('name')}}</h3>\n              <p>Descripción: {{ auction.get('description') }}</p>\n              <p>\n                Precio Actual: {{ auction.get('currentPrice') | currency:\"USD\":2 }}\n              </p>\n              <p>Subastas: {{ auction.get('bids') }}</p>\n              <countdown units=\"Days | Hours | Minutes | Seconds\" (ended)=\"onAuctionFinished($event)\" [date]=\"auction.get('endDate')\"></countdown>\n              <p><button *ngIf=\"_userService.isUserLoggedIn() | async\" class=\"btn btn-primary\" role=\"button\" (click)=\"bid()\">Subastar</button></p>\n              <p *ngIf=\"!(_userService.isUserLoggedIn() | async)\"><a routerLink=\"/register\">Registrarse</a> o <a routerLink=\"/login\">inicie sesión</a> para subastar</p>\n            </div>\n          </div>\n          <div class=\"col-sm-6 text-center\">\n            <img src=\"https://dummyimage.com/250x230/d1d1d1/000.png\" alt=\"dummy-img\">\n          </div>\n        </div>\n      </div>\n    </div>\n"
+
+/***/ },
+/* 576 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -71107,7 +71220,7 @@
 	    CountdownComponent = __decorate([
 	        core_1.Component({
 	            selector: "countdown",
-	            template: __webpack_require__(573),
+	            template: __webpack_require__(577),
 	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], CountdownComponent);
@@ -71117,7 +71230,7 @@
 
 
 /***/ },
-/* 573 */
+/* 577 */
 /***/ function(module, exports) {
 
 	module.exports = "<span>{{displayString}}</span>"
